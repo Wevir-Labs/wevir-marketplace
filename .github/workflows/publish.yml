@@ -1,0 +1,84 @@
+name: publish
+
+# main → signed index.json on the orphan dist branch → main and dist mirrored to CNB and Gitee.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node scripts/validate.mjs
+      - name: Build index
+        id: build
+        run: |
+          mkdir -p "$RUNNER_TEMP/dist"
+          git show origin/dist:index.json > "$RUNNER_TEMP/previous.json" 2>/dev/null || rm -f "$RUNNER_TEMP/previous.json"
+          previous=()
+          [ -f "$RUNNER_TEMP/previous.json" ] && previous=(--previous "$RUNNER_TEMP/previous.json")
+          out=$(node scripts/build-index.mjs --commit "$GITHUB_SHA" --out "$RUNNER_TEMP/dist" "${previous[@]}")
+          echo "$out"
+          [ "$out" = unchanged ] && echo "changed=false" >> "$GITHUB_OUTPUT" || echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Sign
+        if: steps.build.outputs.changed == 'true'
+        env:
+          MARKET_SIGNING_KEY: ${{ secrets.MARKET_SIGNING_KEY }}
+        run: node scripts/sign.mjs "$RUNNER_TEMP/dist"
+      - name: Push dist
+        if: steps.build.outputs.changed == 'true'
+        working-directory: ${{ runner.temp }}/dist
+        run: |
+          git init -q -b dist
+          git config user.name "wevir-market-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.json index.json.sig
+          git commit -q -m "Publish $(node -p 'require("./index.json").sequence') from ${GITHUB_SHA::12}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" dist
+
+  mirror:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Push main and dist to CNB and Gitee
+        env:
+          CNB_TOKEN: ${{ secrets.CNB_TOKEN }}
+          GITEE_USER: ${{ vars.GITEE_USER }}
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+        run: |
+          git fetch -q origin
+          push() {
+            git push -f "$1" refs/remotes/origin/main:refs/heads/main refs/remotes/origin/dist:refs/heads/dist \
+              && echo "mirrored to $2" || { echo "::error::mirror to $2 failed"; failed=1; }
+          }
+          failed=0
+          if [ -n "$CNB_TOKEN" ]; then
+            push "https://cnb:${CNB_TOKEN}@cnb.cool/wevir-labs/wevir-marketplace.git" cnb.cool
+          else
+            echo "::warning::CNB_TOKEN is not set; skipped cnb.cool"
+          fi
+          if [ -n "$GITEE_TOKEN" ] && [ -n "$GITEE_USER" ]; then
+            push "https://${GITEE_USER}:${GITEE_TOKEN}@gitee.com/wevir-labs/wevir-marketplace.git" gitee.com
+          else
+            echo "::warning::GITEE_USER or GITEE_TOKEN is not set; skipped gitee.com"
+          fi
+          exit $failed

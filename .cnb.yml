@@ -1,0 +1,13 @@
+# cnb.cool mirrors main and dist from GitHub. Pull requests opened here get the same checks as on GitHub;
+# maintainers merge on GitHub and the mirror brings the result back.
+main:
+  pull_request:
+    - docker:
+        image: node:24
+      stages:
+        - name: install
+          script: npm ci
+        - name: test
+          script: npm test
+        - name: validate
+          script: node scripts/validate.mjs

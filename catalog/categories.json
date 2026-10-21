@@ -1,0 +1,9 @@
+[
+  { "id": "development", "name": { "zh-CN": "开发", "en": "Development" } },
+  { "id": "productivity", "name": { "zh-CN": "效率", "en": "Productivity" } },
+  { "id": "data", "name": { "zh-CN": "数据", "en": "Data" } },
+  { "id": "design", "name": { "zh-CN": "设计", "en": "Design" } },
+  { "id": "writing", "name": { "zh-CN": "写作", "en": "Writing" } },
+  { "id": "search", "name": { "zh-CN": "搜索", "en": "Search" } },
+  { "id": "other", "name": { "zh-CN": "其他", "en": "Other" } }
+]
