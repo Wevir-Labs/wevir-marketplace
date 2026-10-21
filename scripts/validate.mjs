@@ -1,42 +1,23 @@
 // Checks every entry and the catalog. With --base <ref> it also checks a pull request against that ref:
-// versions must go up, and contributors other than the maintainers may only touch plugins/ and skills/.
-//   node scripts/validate.mjs [--base origin/main] [--author <login>]
+// versions must go up, and contributors other than the maintainers may only touch plugins/ and skills/. The
+// upstream-sync bot (--sync-bot <login>) may also update catalog/entries/<id>.json of the entries it changes.
+//   node scripts/validate.mjs [--base origin/main] [--author <login>] [--sync-bot <login>]
 import { execFileSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 import semver from 'semver';
-import { ENTRY_ID, listEntries, MANIFEST, parseSkill, ROOT, readEntry, readJson } from './lib.mjs';
+import { checkRepository, ENTRY_ID, MANIFEST, parseSkill, ROOT } from './lib.mjs';
 
 const { values: args } = parseArgs({
-  options: { base: { type: 'string' }, author: { type: 'string' } },
+  options: { base: { type: 'string' }, author: { type: 'string' }, 'sync-bot': { type: 'string' } },
 });
 const problems = [];
 const report = (where, message) => problems.push(`${where}: ${message}`);
 const git = (...argv) => execFileSync('git', argv, { cwd: ROOT, encoding: 'utf8' });
 
-const categories = await readJson('catalog/categories.json');
-const categoryIds = new Set(categories.map((c) => c.id));
-const ids = new Map();
-for (const ref of await listEntries()) {
-  const { entry, problems: found } = await readEntry(ref);
-  for (const message of found) report(ref.dir, message);
-  if (!entry) continue;
-  if (ids.has(entry.id)) report(ref.dir, `id "${entry.id}" is also used by ${ids.get(entry.id)}`);
-  ids.set(entry.id, ref.dir);
-  if (entry.category && !categoryIds.has(entry.category))
-    report(ref.dir, `unknown category "${entry.category}" (see catalog/categories.json)`);
-  if (!semver.valid(entry.version)) report(ref.dir, `version "${entry.version}" is not semver`);
-}
-
-for (const group of await readJson('catalog/featured.json')) {
-  for (const id of group.entries) {
-    if (!ids.has(id)) report('catalog/featured.json', `unknown entry "${id}" in ${group.id}`);
-  }
-}
-for (const id of (await readJson('catalog/trust.json')).official) {
-  if (!ids.has(id)) report('catalog/trust.json', `unknown entry "${id}"`);
-}
+const { ids, problems: found } = await checkRepository();
+problems.push(...found);
 
 /** Version an entry had at `ref`, or null when it did not exist there. */
 function versionAt(ref, dir) {
@@ -69,14 +50,21 @@ function maintainers() {
 if (args.base) {
   const changed = git('diff', '--name-only', `${args.base}...HEAD`).split('\n').filter(Boolean);
   const isMaintainer = args.author && (await maintainers()).has(args.author.toLowerCase());
+  const isSyncBot = Boolean(args.author && args['sync-bot'] && args.author === args['sync-bot']);
   const dirs = new Set();
   for (const file of changed) {
     const [type, id] = file.split('/');
     if ((type === 'plugins' || type === 'skills') && id && file.split('/').length > 2) {
       dirs.add(`${type}/${id}`);
-    } else if (!isMaintainer) {
-      report(file, 'only maintainers can change files outside plugins/<id>/ and skills/<name>/');
     }
+  }
+  const touched = new Set([...dirs].map((dir) => dir.split('/')[1]));
+  for (const file of changed) {
+    const [type, id] = file.split('/');
+    if ((type === 'plugins' || type === 'skills') && id && file.split('/').length > 2) continue;
+    const synced = isSyncBot && touched.has(/^catalog\/entries\/([^/]+)\.json$/.exec(file)?.[1]);
+    if (!isMaintainer && !synced)
+      report(file, 'only maintainers can change files outside plugins/<id>/ and skills/<name>/');
   }
   for (const dir of dirs) {
     const [type, id] = dir.split('/');

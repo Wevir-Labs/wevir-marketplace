@@ -4,7 +4,17 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
-import { listEntries, readEntry, readJson, schemaErrors, validateIndex } from './lib.mjs';
+import {
+  catalogEntry,
+  expandFeatured,
+  listedTimes,
+  listEntries,
+  readCatalog,
+  readEntry,
+  readJson,
+  schemaErrors,
+  validateIndex,
+} from './lib.mjs';
 
 const { values: args } = parseArgs({
   options: {
@@ -22,7 +32,14 @@ const previous = args.previous
   ? JSON.parse(await readFile(args.previous, 'utf8').catch(() => 'null'))
   : null;
 const before = new Map((previous?.entries ?? []).map((e) => [e.id, e]));
-const official = new Set((await readJson('catalog/trust.json')).official);
+const catalog = await readCatalog();
+if (catalog.problems.length) {
+  console.error(catalog.problems.join('\n'));
+  process.exit(1);
+}
+const generatedAt = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+// Entries not committed yet (a local run) count as listed now.
+const listed = listedTimes(args.commit);
 
 const entries = [];
 for (const ref of await listEntries()) {
@@ -35,21 +52,23 @@ for (const ref of await listEntries()) {
   let history = old?.history ?? [];
   if (old && old.version !== entry.version)
     history = [{ version: old.version, commit: previous.commit }, ...history].slice(0, 5);
-  entries.push({
-    ...entry,
-    trust: official.has(entry.id) ? 'official' : 'community',
-    ...(history.length && { history }),
-  });
+  entries.push(
+    catalogEntry(entry, {
+      catalog: catalog.entries.get(entry.id),
+      listedAt: listed.get(ref.dir) ?? generatedAt,
+      history,
+    }),
+  );
 }
 
 const index = {
   schemaVersion: 1,
   name: 'Wevir',
-  generatedAt: new Date().toISOString().replace(/\.\d+Z$/, 'Z'),
+  generatedAt,
   sequence: (previous?.sequence ?? 0) + 1,
   commit: args.commit,
   categories: await readJson('catalog/categories.json'),
-  featured: await readJson('catalog/featured.json'),
+  featured: expandFeatured(await readJson('catalog/featured.json'), entries),
   entries,
 };
 if (!validateIndex(index)) {

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Marketplace-side metadata of one entry (catalog/entries/<id>.json)",
+  "description": "Used only in this repository. Category, verification and upstream are set by maintainers; authors cannot change them.",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "category": {
+      "description": "Overrides the manifest's suggestion; must be an id in catalog/categories.json.",
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "verification": {
+      "type": "object",
+      "properties": {
+        "level": { "enum": ["official", "verified"] },
+        "publisher": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "since": { "type": "string", "pattern": "^\\d{4}-(?:0[1-9]|1[0-2])$" },
+        "note": {
+          "type": "object",
+          "propertyNames": { "type": "string", "maxLength": 35, "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$" },
+          "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 280 }
+        }
+      },
+      "required": ["level", "since"],
+      "if": { "properties": { "level": { "const": "verified" } } },
+      "then": { "required": ["publisher"] },
+      "additionalProperties": false
+    },
+    "upstream": {
+      "type": "object",
+      "properties": {
+        "repo": {
+          "description": "https git address on any host, without user name or password.",
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^https://[^/@\\s]+/[^\\s]+$"
+        },
+        "path": {
+          "description": "Subdirectory inside the repository; omit for the root.",
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^(?!\\.{1,2}(?:/|$))[^/\\\\]+(?:/(?!\\.{1,2}(?:/|$))[^/\\\\]+)*$"
+        },
+        "track": {
+          "description": "release (GitHub only), branch:<name> or tag:<glob>.",
+          "type": "string",
+          "pattern": "^(?:release|branch:[^\\s]+|tag:[^\\s]+)$"
+        },
+        "format": { "enum": ["wevir", "claude", "codex", "skill", "package"] },
+        "package": {
+          "description": "npm:<name> or pypi:<name>; only the version pinned in connector commands is updated.",
+          "type": "string",
+          "pattern": "^(?:npm:(?:@[a-z0-9][\\w.-]*/)?[a-z0-9][\\w.-]*|pypi:[A-Za-z0-9][\\w.-]*)$"
+        },
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "version": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "license": { "description": "SPDX expression, same as upstream.", "type": "string", "minLength": 1, "maxLength": 128 },
+        "keep": {
+          "description": "Files we added to the entry directory; sync leaves them alone (globs relative to the entry directory).",
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 256 }
+        },
+        "overlay": {
+          "description": "Deep-merged into the generated wevir-plugin.json (claude and codex formats).",
+          "type": "object"
+        }
+      },
+      "required": ["license"],
+      "oneOf": [
+        {
+          "required": ["repo", "track", "format"],
+          "not": { "required": ["package"] },
+          "properties": { "format": { "enum": ["wevir", "claude", "codex", "skill"] } }
+        },
+        {
+          "required": ["package"],
+          "not": { "anyOf": [{ "required": ["repo"] }, { "required": ["commit"] }, { "required": ["path"] }, { "required": ["track"] }] },
+          "properties": { "format": { "const": "package" } }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

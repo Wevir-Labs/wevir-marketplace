@@ -1,9 +1,17 @@
 [
-  { "id": "development", "name": { "zh-CN": "开发", "en": "Development" } },
   { "id": "productivity", "name": { "zh-CN": "效率", "en": "Productivity" } },
-  { "id": "data", "name": { "zh-CN": "数据", "en": "Data" } },
-  { "id": "design", "name": { "zh-CN": "设计", "en": "Design" } },
+  { "id": "communication", "name": { "zh-CN": "沟通", "en": "Communication" } },
+  { "id": "creative", "name": { "zh-CN": "创意与设计", "en": "Creative & design" } },
+  { "id": "developer-tools", "name": { "zh-CN": "开发者工具", "en": "Developer tools" } },
+  { "id": "data", "name": { "zh-CN": "数据与分析", "en": "Data & analytics" } },
   { "id": "writing", "name": { "zh-CN": "写作", "en": "Writing" } },
-  { "id": "search", "name": { "zh-CN": "搜索", "en": "Search" } },
+  { "id": "research", "name": { "zh-CN": "搜索与研究", "en": "Search & research" } },
+  { "id": "education", "name": { "zh-CN": "教育", "en": "Education" } },
+  { "id": "business", "name": { "zh-CN": "业务与运营", "en": "Business & operations" } },
+  { "id": "finance", "name": { "zh-CN": "金融", "en": "Finance" } },
+  { "id": "health", "name": { "zh-CN": "健康", "en": "Health" } },
+  { "id": "travel", "name": { "zh-CN": "旅行", "en": "Travel" } },
+  { "id": "entertainment", "name": { "zh-CN": "娱乐", "en": "Entertainment" } },
+  { "id": "security", "name": { "zh-CN": "安全", "en": "Security" } },
   { "id": "other", "name": { "zh-CN": "其他", "en": "Other" } }
 ]

@@ -1,8 +1,11 @@
-// Shared by validate.mjs and build-index.mjs: read an entry directory, check it and describe it as an index entry.
+// Shared by validate.mjs, build-index.mjs and upstream-sync.mjs: read an entry directory, check it, describe it as
+// an index entry and merge in the catalog (category, verification, upstream, listing time).
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { lstat, readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Ajv2020 } from 'ajv/dist/2020.js';
+import semver from 'semver';
 import addFormats from 'ajv-formats';
 import YAML from 'yaml';
 
@@ -25,6 +28,7 @@ const schema = (name) =>
   readFile(path.join(ROOT, 'schemas', name), 'utf8').then((text) => ajv.compile(JSON.parse(text)));
 export const validateManifest = await schema('wevir-plugin.schema.json');
 export const validateIndex = await schema('wevir-market.schema.json');
+export const validateCatalogEntry = await schema('catalog-entry.schema.json');
 
 export const schemaErrors = (validate) =>
   (validate.errors ?? []).map((e) => `${e.instancePath || '/'} ${e.message}`);
@@ -142,8 +146,9 @@ const strings = (value) =>
         : [];
 
 /**
- * Reads one entry directory. Returns `{ entry, version, problems }`: `entry` is the index entry
- * without `trust` and `history`, or null when the directory is unusable.
+ * Reads one entry directory. Returns `{ entry, version, problems }`: `entry` is the index entry before the catalog
+ * is merged in (see `catalogEntry`), with the manifest's own `category` suggestion, or null when the directory is
+ * unusable.
  */
 export async function readEntry({ type, id, dir }, root = ROOT) {
   const problems = [];
@@ -285,6 +290,13 @@ export async function readEntry({ type, id, dir }, root = ROOT) {
     ...(meta.icon && { icon: `${dir}/${meta.icon.slice(2)}` }),
     ...(meta.category && { category: meta.category }),
     ...(meta.keywords && { keywords: meta.keywords }),
+    ...(meta.examples && { examples: meta.examples }),
+    ...((meta.privacyPolicy || meta.termsOfService) && {
+      links: {
+        ...(meta.privacyPolicy && { privacy: meta.privacyPolicy }),
+        ...(meta.termsOfService && { terms: meta.termsOfService }),
+      },
+    }),
     ...(meta.requires && { requires: meta.requires }),
     contents: {
       connectors,
@@ -299,3 +311,190 @@ export async function readEntry({ type, id, dir }, root = ROOT) {
 
 export const readJson = async (rel, root = ROOT) =>
   JSON.parse(await readFile(path.join(root, rel), 'utf8'));
+
+/** Root files that carry an upstream's license; entries with an upstream must keep them. */
+export const LICENSE_FILE = /^(?:LICEN[CS]E|COPYING|NOTICE)(?:[.-][\w.-]+)?$/i;
+
+/** `catalog/entries/<id>.json` by id, with problems for files that are not valid JSON or fail the schema. */
+export async function readCatalog(root = ROOT) {
+  const entries = new Map();
+  const problems = [];
+  const dir = path.join(root, 'catalog/entries');
+  const names = await readdir(dir).catch(() => []);
+  for (const name of names.sort()) {
+    if (name === '.gitkeep') continue;
+    const rel = `catalog/entries/${name}`;
+    if (!name.endsWith('.json')) {
+      problems.push(`${rel}: only <id>.json files belong here`);
+      continue;
+    }
+    let data;
+    try {
+      data = JSON.parse(await readFile(path.join(dir, name), 'utf8'));
+    } catch (error) {
+      problems.push(`${rel}: ${error.message}`);
+      continue;
+    }
+    if (!validateCatalogEntry(data)) {
+      for (const message of schemaErrors(validateCatalogEntry)) problems.push(`${rel}${message}`);
+      continue;
+    }
+    entries.set(name.slice(0, -5), data);
+  }
+  return { entries, problems };
+}
+
+/** The catalog decides; the manifest's `category` is a suggestion; everything else is `other`. */
+export const resolveCategory = (catalog, suggested) => catalog?.category ?? suggested ?? 'other';
+
+/**
+ * When each entry directory first appeared on the first-parent history of `commit`, as UTC `…Z` times without
+ * fractions. Directories that are not committed yet are missing from the map.
+ */
+export function listedTimes(commit, root = ROOT) {
+  let out;
+  try {
+    out = execFileSync(
+      'git',
+      ['log', '--first-parent', '--diff-filter=A', '--name-only', '--format=%x00%ct', commit, '--', 'plugins', 'skills'],
+      { cwd: root, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 },
+    );
+  } catch {
+    return new Map();
+  }
+  const times = new Map();
+  // Newest first, so the last time seen for a directory is its first appearance.
+  for (const block of out.split('\0').filter(Boolean)) {
+    const [time, ...names] = block.split('\n').filter(Boolean);
+    const iso = new Date(Number(time) * 1000).toISOString().replace(/\.\d+Z$/, 'Z');
+    for (const name of names) {
+      const [type, id] = name.split('/');
+      if (id && name.split('/').length > 2) times.set(`${type}/${id}`, iso);
+    }
+  }
+  return times;
+}
+
+/** Featured groups for the index: `auto: "recent"` becomes the `limit` most recently listed entries. */
+export function expandFeatured(groups, entries) {
+  const recent = [...entries]
+    .sort((a, b) => (a.listedAt < b.listedAt ? 1 : a.listedAt > b.listedAt ? -1 : a.id.localeCompare(b.id)))
+    .map((e) => e.id);
+  return groups.map(({ id, name, entries: ids, auto, limit }) => ({
+    id,
+    name,
+    entries: auto === 'recent' ? recent.slice(0, limit ?? 6) : ids,
+  }));
+}
+
+/** Web page of an upstream for the index; a subdirectory gets a tree link where the host has one. */
+export function upstreamUrl(upstream) {
+  if (upstream.package) {
+    const [registry, name] = upstream.package.split(/:(.*)/s);
+    return registry === 'npm' ? `https://www.npmjs.com/package/${name}` : `https://pypi.org/project/${name}/`;
+  }
+  const base = upstream.repo.replace(/\/+$/, '').replace(/\.git$/, '');
+  if (!upstream.path) return base;
+  const ref =
+    upstream.commit ?? (upstream.track?.startsWith('branch:') ? upstream.track.slice(7) : 'HEAD');
+  const host = new URL(base).hostname;
+  if (host === 'github.com' || host === 'gitee.com') return `${base}/tree/${ref}/${upstream.path}`;
+  if (host === 'gitlab.com') return `${base}/-/tree/${ref}/${upstream.path}`;
+  return base;
+}
+
+/** The index's `upstream`: display fields only, never the registration (repo, track, format, keep, overlay). */
+export const indexUpstream = (upstream) => ({
+  url: upstreamUrl(upstream),
+  ...(upstream.version && { version: upstream.version }),
+  ...(upstream.commit && !upstream.package && { commit: upstream.commit }),
+  license: upstream.license,
+});
+
+/** Index entry: `readEntry`'s result with the catalog merged in, in the field order of the index format. */
+export function catalogEntry(entry, { catalog, listedAt, history }) {
+  const { category, ...rest } = entry;
+  const ordered = {};
+  for (const key of ['id', 'kind', 'path', 'name', 'i18n', 'version', 'description', 'author', 'homepage', 'license', 'icon']) {
+    if (rest[key] !== undefined) ordered[key] = rest[key];
+  }
+  ordered.category = resolveCategory(catalog, category);
+  if (rest.keywords) ordered.keywords = rest.keywords;
+  ordered.listedAt = listedAt;
+  if (catalog?.verification) ordered.verification = catalog.verification;
+  if (catalog?.upstream) ordered.upstream = indexUpstream(catalog.upstream);
+  for (const key of ['examples', 'links', 'requires', 'contents', 'files', 'digest']) {
+    if (rest[key] !== undefined) ordered[key] = rest[key];
+  }
+  if (history?.length) ordered.history = history;
+  return ordered;
+}
+
+/**
+ * Checks every entry and the catalog (categories, catalog/entries, patches, featured groups). Returns the entry
+ * directories by id and the problems found; validate.mjs adds the pull request checks.
+ */
+export async function checkRepository(root = ROOT) {
+  const problems = [];
+  const report = (where, message) => problems.push(`${where}: ${message}`);
+  const categories = await readJson('catalog/categories.json', root);
+  const categoryIds = new Set(categories.map((c) => c.id));
+  if (!categoryIds.has('other')) report('catalog/categories.json', 'the "other" category is required');
+  const catalog = await readCatalog(root);
+  for (const message of catalog.problems) problems.push(message);
+
+  const ids = new Map();
+  for (const ref of await listEntries(root)) {
+    const { entry, problems: found } = await readEntry(ref, root);
+    for (const message of found) report(ref.dir, message);
+    if (!entry) continue;
+    if (ids.has(entry.id)) report(ref.dir, `id "${entry.id}" is also used by ${ids.get(entry.id)}`);
+    ids.set(entry.id, ref.dir);
+    const meta = catalog.entries.get(entry.id);
+    // The author's category only matters when the catalog does not decide.
+    if (entry.category && !meta?.category && !categoryIds.has(entry.category))
+      report(ref.dir, `unknown category "${entry.category}" (see catalog/categories.json)`);
+    if (!semver.valid(entry.version)) report(ref.dir, `version "${entry.version}" is not semver`);
+    if (meta?.upstream) {
+      if (!entry.files.some((f) => !f.path.includes('/') && LICENSE_FILE.test(f.path) && !/^NOTICE/i.test(f.path)))
+        report(ref.dir, 'entries with an upstream must keep its LICENSE file');
+      const skill = meta.upstream.format === 'skill';
+      if (skill !== (ref.type === 'skills'))
+        report(ref.dir, `upstream format "${meta.upstream.format ?? 'package'}" belongs in ${skill ? 'skills/' : 'plugins/'}`);
+    }
+  }
+
+  for (const [id, meta] of catalog.entries) {
+    const where = `catalog/entries/${id}.json`;
+    if (!ids.has(id)) report(where, `no entry "${id}" under plugins/ or skills/`);
+    if (meta.category && !categoryIds.has(meta.category))
+      report(where, `unknown category "${meta.category}" (see catalog/categories.json)`);
+    if (meta.verification?.level === 'verified' && !meta.verification.publisher)
+      report(where, 'verified entries need a publisher');
+    if (meta.upstream?.overlay && !['claude', 'codex'].includes(meta.upstream.format))
+      report(where, 'overlay is only used by the claude and codex formats');
+  }
+  for (const id of await readdir(path.join(root, 'catalog/patches')).catch(() => [])) {
+    if (id !== '.gitkeep' && !catalog.entries.get(id)?.upstream?.repo)
+      report(`catalog/patches/${id}`, 'patches need an entry with a git upstream');
+  }
+
+  const groupIds = new Set();
+  for (const group of await readJson('catalog/featured.json', root)) {
+    const where = `catalog/featured.json ${group.id}`;
+    if (groupIds.has(group.id)) report(where, 'duplicate group id');
+    groupIds.add(group.id);
+    if (group.auto !== undefined) {
+      if (group.auto !== 'recent') report(where, 'auto must be "recent"');
+      if (group.entries !== undefined) report(where, 'automatic groups have no entries');
+      if (group.limit !== undefined && !(Number.isInteger(group.limit) && group.limit >= 1 && group.limit <= 50))
+        report(where, 'limit must be an integer from 1 to 50');
+      continue;
+    }
+    if (!Array.isArray(group.entries)) report(where, 'entries or auto is required');
+    for (const id of group.entries ?? []) {
+      if (!ids.has(id)) report(where, `unknown entry "${id}"`);
+    }
+  }
+  return { ids, problems };
+}
