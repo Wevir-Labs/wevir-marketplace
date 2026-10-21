@@ -11,3 +11,4 @@
 - [ ] No secrets, telemetry or unexpected network access in the files
 - [ ] Inputs ask only for what the server needs; secrets are marked `secret`
 - [ ] License allows redistribution
+- [ ] Sync pull requests (`upstream-sync`): the upstream diff and every `risk:*` label checked

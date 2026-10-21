@@ -25,9 +25,11 @@ jobs:
         env:
           BASE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || '' }}
           AUTHOR: ${{ github.event.pull_request.user.login }}
+          # Login of the GitHub App that opens upstream-sync pull requests, such as wevir-upstream-sync[bot].
+          SYNC_BOT: ${{ vars.UPSTREAM_SYNC_BOT }}
         run: |
           if [ -n "$BASE" ]; then
-            node scripts/validate.mjs --base "$BASE" --author "$AUTHOR"
+            node scripts/validate.mjs --base "$BASE" --author "$AUTHOR" --sync-bot "$SYNC_BOT"
           else
             node scripts/validate.mjs
           fi

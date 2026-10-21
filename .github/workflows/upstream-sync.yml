@@ -1,0 +1,60 @@
+name: upstream-sync
+
+# Entries with an upstream (catalog/entries/<id>.json) → one pull request per changed entry on sync/<id>, or an issue
+# "upstream: <id>" when the sync fails. Nothing is merged automatically.
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+    inputs:
+      entries:
+        description: Entry ids separated by spaces (empty for all)
+        required: false
+        default: ''
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      # Pull requests opened with the workflow's own token do not trigger the validate workflow, so a GitHub App
+      # token is preferred when the app is configured.
+      HAS_APP: ${{ secrets.UPSTREAM_SYNC_APP_ID != '' && secrets.UPSTREAM_SYNC_APP_KEY != '' }}
+    steps:
+      - name: App token
+        id: app
+        if: env.HAS_APP == 'true'
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.UPSTREAM_SYNC_APP_ID }}
+          private-key: ${{ secrets.UPSTREAM_SYNC_APP_KEY }}
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Sync
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token || github.token }}
+          TOKEN_KIND: ${{ steps.app.outputs.token && 'app' || 'actions' }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          BASE_BRANCH: main
+          ENTRIES: ${{ inputs.entries }}
+        run: |
+          set -f
+          entries=()
+          for id in $ENTRIES; do entries+=(--entry "$id"); done
+          node scripts/upstream-sync.mjs "${entries[@]}"
