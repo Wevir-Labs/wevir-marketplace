@@ -1,0 +1,44 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "slack",
+  "name": "Slack",
+  "version": "1.0.0",
+  "description": "Search messages and files, read channels and threads, and post replies in Slack through Slack's hosted MCP server. Sign in with your Slack account.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://docs.slack.dev/ai/slack-mcp-server/",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "communication",
+  "keywords": ["slack", "chat", "messages", "channels", "search"],
+  "examples": [
+    "Summarize what was said in #engineering since yesterday and list the open questions.",
+    "Search Slack for the decision about the database migration and link the thread.",
+    "Draft a reply to the last message in #release and show it to me before posting."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Slack",
+      "description": "通过 Slack 官方托管的 MCP 服务搜索消息与文件、阅读频道与讨论串，并发布回复。用 Slack 账号登录。",
+      "examples": [
+        "概括 #engineering 从昨天到现在聊了什么，并列出还没解决的问题。",
+        "在 Slack 里搜索数据库迁移的决定，并给我讨论串的链接。",
+        "为 #release 里的最后一条消息起草回复，发布前先给我看。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://slack.com/trust/privacy/privacy-policy",
+  "termsOfService": "https://slack.com/terms-of-service",
+  "connectors": {
+    "slack": {
+      "transport": "http",
+      "url": "https://mcp.slack.com/mcp",
+      "auth": "oauth",
+      "oauth": {
+        "clientId": "12364306940359.12373464886259",
+        "callbackUrl": "https://www.wevir.si/oauth/callback/",
+        "callbackPort": 47821
+      }
+    }
+  }
+}

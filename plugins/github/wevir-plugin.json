@@ -1,0 +1,43 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "github",
+  "name": "GitHub",
+  "version": "1.0.0",
+  "description": "Read and work with repositories, issues, pull requests, Actions runs and code on GitHub through GitHub's hosted MCP server. Sign in with your GitHub account.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://github.com/github/github-mcp-server",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "developer-tools",
+  "keywords": ["github", "git", "pull request", "issues", "actions", "code search"],
+  "examples": [
+    "List the open pull requests assigned to me and summarize what each one changes.",
+    "Find where the retry logic lives in this repository and open an issue for the missing backoff.",
+    "Why did the last CI run on main fail? Show the failing job's log."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "GitHub",
+      "description": "通过 GitHub 官方托管的 MCP 服务读取并处理仓库、Issue、Pull Request、Actions 运行与代码。用 GitHub 账号登录。",
+      "examples": [
+        "列出分配给我的未合并 Pull Request，并概括每个改了什么。",
+        "找出这个仓库里重试逻辑在哪，并为缺少退避提一个 Issue。",
+        "main 上最近一次 CI 为什么失败？给我看失败任务的日志。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement",
+  "termsOfService": "https://docs.github.com/site-policy/github-terms/github-terms-of-service",
+  "connectors": {
+    "github": {
+      "transport": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "auth": "oauth",
+      "oauth": {
+        "clientId": "Ov23li184CS59xbnV3tE",
+        "clientSecret": "1fe28a53e28bdd5df695d0f0881546d0b49655f5"
+      }
+    }
+  }
+}
