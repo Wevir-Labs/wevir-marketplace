@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "id": "github",
   "name": "GitHub",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Read and work with repositories, issues, pull requests, Actions runs and code on GitHub through GitHub's hosted MCP server. Sign in with your GitHub account.",
   "author": { "name": "Wevir", "url": "https://www.wevir.si" },
   "homepage": "https://github.com/github/github-mcp-server",
@@ -36,7 +36,8 @@
       "auth": "oauth",
       "oauth": {
         "clientId": "Ov23li184CS59xbnV3tE",
-        "clientSecret": "1fe28a53e28bdd5df695d0f0881546d0b49655f5"
+        "clientSecret": "1fe28a53e28bdd5df695d0f0881546d0b49655f5",
+        "scopes": ["repo", "read:org", "read:user", "user:email", "gist", "notifications"]
       }
     }
   }
