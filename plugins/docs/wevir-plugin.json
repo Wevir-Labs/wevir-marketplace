@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "docs",
+  "name": "Docs",
+  "version": "1.0.0",
+  "description": "Write and revise reports, memos, proposals, PRDs, meeting notes and letters, then export them to Word (.docx), PDF or a self-contained web page. Works offline with a bundled converter; Chinese typography included.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/docs",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "writing",
+  "keywords": ["document", "word", "docx", "pdf", "report", "memo", "proposal", "prd", "meeting notes", "markdown"],
+  "examples": [
+    "Turn these meeting notes into minutes with decisions and an action table, as a Word file.",
+    "Write a two-page proposal for moving our support team to one queue, and give me a PDF.",
+    "Tighten this report to half its length without losing the numbers, then export it to Word."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "文档",
+      "description": "撰写和修改报告、备忘录、方案、需求文档、会议纪要与信函，并导出为 Word（.docx）、PDF 或单个网页文件。自带离线转换器，照顾中文排版。",
+      "examples": [
+        "把这份会议记录整理成会议纪要，列出决定和待办表格，导出 Word。",
+        "写一份两页的方案，建议把客服合并成一个队列，给我 PDF。",
+        "把这份报告压缩到一半篇幅、保留所有数字，再导出 Word。"
+      ]
+    }
+  },
+  "requires": { "runtimes": ["node>=22"] }
+}

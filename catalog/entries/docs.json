@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schemas/catalog-entry.schema.json",
+  "category": "writing",
+  "verification": {
+    "level": "official",
+    "since": "2026-10",
+    "note": {
+      "zh-CN": "由 Wevir 编写与维护，全部在本机运行",
+      "en": "Written and maintained by Wevir; runs entirely on your computer"
+    }
+  }
+}
