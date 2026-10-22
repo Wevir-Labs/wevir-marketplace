@@ -6,6 +6,8 @@
 
 Pull requests are welcome on GitHub, CNB and Gitee. Maintainers review and merge on GitHub; the mirrors follow.
 
+Working with a coding agent? Point it at [authoring/SKILL.md](authoring/SKILL.md): it covers the full manifest, MCP servers, inputs and OAuth, writing skills, testing in Wevir and submitting. The README has a prompt to copy.
+
 ### Submit a plugin
 
 Add `plugins/<id>/` with:
@@ -13,6 +15,8 @@ Add `plugins/<id>/` with:
 - `wevir-plugin.json`: the manifest (`"$schema": "../../schemas/wevir-plugin.schema.json"` gives editor completion). `id` must equal the directory name.
 - `README.md`: what it does, what it connects to, and how to get any keys it asks for.
 - Optional: `skills/<name>/SKILL.md`, an icon (`.png` or `.svg`, at most 128 KiB), server files.
+
+The full field reference, with examples for MCP servers, inputs and the `${input:KEY}` / `${pluginDir}` placeholders, is [authoring/references/manifest.md](authoring/references/manifest.md).
 
 Optional manifest fields for the marketplace: `category` (an id from `catalog/categories.json`; a suggestion, maintainers may file the entry elsewhere), `keywords`, `examples` (up to 3 example prompts, 200 characters each), `i18n` (localized `name`, `description` and `examples`), `privacyPolicy` and `termsOfService` (http(s) links), `requires.runtimes` (such as `node>=20`).
 
@@ -31,13 +35,15 @@ Add `skills/<name>/SKILL.md` with `name` (equal to the directory name) and `desc
 - Limits per entry: 200 files, 1 MiB per file, 8 MiB in total.
 - One pull request may change only your own entries; `catalog/`, `schemas/`, `scripts/` and workflows are for maintainers.
 
-Run the checks locally:
+Run the checks locally, with `upstream` pointing to this repository (`gh repo fork --clone` sets it up; otherwise `git remote add upstream https://github.com/Wevir-Labs/wevir-marketplace.git && git fetch upstream`):
 
 ```bash
 npm ci
 npm test
-node scripts/validate.mjs --base origin/main
+node scripts/validate.mjs --base upstream/main
 ```
+
+Then install the directory in Wevir (Plugins → Add → Install from file → Choose folder) and try its example prompts before opening the pull request.
 
 ### Your own repository
 
@@ -51,6 +57,8 @@ Entries are listed without a badge. Maintainers decide the final category, featu
 
 GitHub、CNB 与 Gitee 都接受 PR。维护者在 GitHub 上审核与合并，镜像随后同步。
 
+用 coding agent 做插件的，让它读 [authoring/SKILL.md](authoring/SKILL.md)：完整的清单字段、MCP 服务、输入项与 OAuth、怎样写 skill、在 Wevir 里试用与投稿都在里面。README 里有一段可以直接复制的 prompt。
+
 ### 投稿插件
 
 新建 `plugins/<id>/`，包含：
@@ -58,6 +66,8 @@ GitHub、CNB 与 Gitee 都接受 PR。维护者在 GitHub 上审核与合并，�
 - `wevir-plugin.json`：清单（写上 `"$schema": "../../schemas/wevir-plugin.schema.json"` 可在编辑器里补全）。`id` 必须与目录名相同。
 - `README.md`：做什么、连接什么、需要的密钥怎么获取。
 - 可选：`skills/<name>/SKILL.md`、图标（`.png` 或 `.svg`，最大 128 KiB）、服务端文件。
+
+完整的字段说明，以及 MCP 服务、输入项和 `${input:KEY}` / `${pluginDir}` 占位符的例子，见 [authoring/references/manifest.md](authoring/references/manifest.md)（英文）。
 
 市场用的可选清单字段：`category`（`catalog/categories.json` 里的 ID；只是建议，维护者可以归到别的类）、`keywords`、`examples`（最多 3 条示例 prompt，每条最长 200 字）、`i18n`（多语言的 `name`、`description` 与 `examples`）、`privacyPolicy` 与 `termsOfService`（http(s) 链接）、`requires.runtimes`（如 `node>=20`）。
 
@@ -76,13 +86,15 @@ GitHub、CNB 与 Gitee 都接受 PR。维护者在 GitHub 上审核与合并，�
 - 每个条目最多 200 个文件、单个文件 1 MiB、合计 8 MiB。
 - 一个 PR 只改自己的条目；`catalog/`、`schemas/`、`scripts/` 与工作流由维护者修改。
 
-本地检查：
+本地检查（`upstream` 指向本仓库；`gh repo fork --clone` 会自动设好，否则执行 `git remote add upstream https://github.com/Wevir-Labs/wevir-marketplace.git && git fetch upstream`）：
 
 ```bash
 npm ci
 npm test
-node scripts/validate.mjs --base origin/main
+node scripts/validate.mjs --base upstream/main
 ```
+
+开 PR 之前，在 Wevir 里安装这个目录（插件 → 添加 → 从文件安装 → 选择文件夹），把示例说法都试一遍。
 
 ### 自己有仓库的作者
 

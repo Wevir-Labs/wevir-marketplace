@@ -25,6 +25,7 @@ catalog/               仅维护者修改：
 schemas/               wevir-plugin.json、index.json 与 catalog 条目的 JSON Schema
 keys/                  索引签名用的公钥
 scripts/               校验、生成索引、签名与上游同步
+authoring/             教 coding agent 制作与投稿条目的 skill
 ```
 
 Wevir 安装的内容全部存放在本仓库里，条目不指向其他仓库。
@@ -49,6 +50,34 @@ Wevir 安装的内容全部存放在本仓库里，条目不指向其他仓库�
 2. 条目文件按索引里记录的 `main` 提交读取，逐个文件核对索引中的 sha256。
 
 镜像只负责传输。签名与散列在 Wevir 内校验，过期或被篡改的镜像改变不了安装的内容。
+
+## 让 agent 帮你做插件
+
+[`authoring/`](authoring/SKILL.md) 是写给 coding agent（Claude Code、Codex、Wevir 等）的 skill：清单格式、MCP 服务与输入项、怎样写 skill、校验与投稿流程。把下面这段复制给你的 agent，改掉第一行：
+
+```text
+帮我做一个 Wevir 插件市场的插件：<它要做什么>。
+
+1. Fork https://github.com/Wevir-Labs/wevir-marketplace 并克隆我的 fork（已经克隆过就用现有的）。
+2. 阅读仓库里的 authoring/SKILL.md 并照着做，需要的参考文档它会链接到。
+3. 条目放在 plugins/<id>/（单个 skill 放 skills/<name>/），目录以外的文件一律不动。
+4. 跑它列出的检查直到全部通过，然后告诉我怎样在 Wevir 里安装这个文件夹、要试哪些说法。
+5. 等我确认能用，把分支推到我的 fork，向 Wevir-Labs/wevir-marketplace 开 PR 并填好模板。不要合并任何东西。
+```
+
+想一直带着这个 skill，可以在 Wevir 里安装 `authoring` 文件夹（插件 → 添加 → 从文件安装 → 选择文件夹），或复制进你所用 agent 的 skills 目录。
+
+## 从草稿到上架
+
+1. **创建：** 在自己 fork 的分支上写好 `plugins/<id>/` 或 `skills/<name>/`。
+2. **检查：** 跑 `npm ci && npm test && node scripts/validate.mjs --base upstream/main` 直到通过。
+3. **试用：** 在 Wevir 里安装这个文件夹，把示例说法都试一遍。
+4. **提交：** 在 GitHub 上向 `main` 开 PR 并填好模板，PR 上会跑同样的检查。
+5. **审核：** 维护者检查文件、命令、联网与许可，可能请你修改，推到同一个分支即可。分类、推荐位与认证徽章由维护者决定。
+6. **发布：** 合并后生成并签名新的索引；Wevir 刷新后（最多一小时，或点“刷新”）就能在“市场”分段看到。
+7. **更新：** 再开一个 PR，并提高 `version`。
+
+细节见 [CONTRIBUTING.md](CONTRIBUTING.md) 与 [authoring/references/submit.md](authoring/references/submit.md)。
 
 ## 投稿
 
