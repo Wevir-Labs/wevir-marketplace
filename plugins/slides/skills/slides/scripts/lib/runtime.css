@@ -1,0 +1,439 @@
+/* Wevir Slides runtime: the deck's base styles and the viewer. Injected by `deck.mjs build`. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Arial, sans-serif;
+  font-size: 32px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+section {
+  box-sizing: border-box;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  position: relative;
+  flex: none;
+}
+section:not([style*='display']) {
+  display: flex;
+  flex-direction: column;
+}
+section[hidden] {
+  display: none !important;
+}
+section *,
+section *::before,
+section *::after {
+  box-sizing: border-box;
+}
+section h1,
+section h2,
+section h3,
+section p,
+section ul,
+section ol,
+section li,
+section table,
+section blockquote,
+section figure {
+  margin: 0;
+}
+section h1 {
+  font-size: 96px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+section h2 {
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+section h3 {
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+section ul,
+section ol {
+  padding-left: 1.2em;
+}
+section li + li {
+  margin-top: 0.35em;
+}
+section div:not([style*='display']) {
+  display: flex;
+  flex-direction: column;
+}
+section img,
+section svg,
+section video {
+  display: block;
+  flex: none;
+  max-width: none;
+}
+section a {
+  color: inherit;
+}
+section aside {
+  display: none !important;
+}
+section hr {
+  border: none;
+  border-top: 2px solid currentColor;
+  width: 100%;
+  margin: 0;
+  flex: none;
+}
+section table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: inherit;
+}
+section th,
+section td {
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  padding: 0.35em 0.6em;
+  text-align: left;
+  vertical-align: top;
+}
+section th {
+  font-weight: 600;
+}
+x-icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex: none;
+}
+x-icon > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+x-shape {
+  display: block;
+  flex: none;
+  width: 160px;
+  height: 160px;
+  position: relative;
+}
+x-shape[kind='rounded'] {
+  border-radius: 24px;
+}
+x-shape[kind='ellipse'] {
+  border-radius: 50%;
+}
+x-shape > svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
+x-connector {
+  display: block;
+  flex: none;
+  color: #6b7280;
+  pointer-events: none;
+}
+x-connector[x1] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+x-connector:not([x1]) {
+  position: relative;
+  width: 96px;
+  height: 24px;
+  align-self: center;
+}
+x-connector > svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  display: block;
+}
+
+/* Viewer */
+body[data-deck-mode='view'],
+body[data-deck-mode='overview'] {
+  background: #0f0f10;
+  overflow: hidden;
+  height: 100vh;
+}
+.deck-stage {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: var(--deck-notes-h, 0px);
+  overflow: hidden;
+  outline: none;
+}
+.deck-cell {
+  display: contents;
+}
+body[data-deck-mode='view'] section {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) scale(var(--deck-scale, 1)) !important;
+  visibility: hidden;
+}
+body[data-deck-mode='view'] section.deck-current,
+body[data-deck-mode='view'] section.deck-leaving {
+  visibility: visible;
+}
+section.deck-leaving {
+  pointer-events: none;
+}
+body[data-deck-mode='view'] .deck-build-pending {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+.deck-build-in {
+  animation: deck-build var(--deck-build-ms, 450ms) cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes deck-build {
+  from {
+    opacity: 0;
+    translate: var(--deck-build-dx, 0) var(--deck-build-dy, 0);
+    scale: var(--deck-build-scale, 1);
+  }
+}
+.deck-anim-fade-in {
+  animation: deck-fade-in 420ms ease both;
+}
+.deck-anim-fade-out {
+  animation: deck-fade-out 420ms ease both;
+}
+@keyframes deck-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes deck-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+.deck-anim-push-in,
+.deck-anim-push-out {
+  animation: 520ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+.deck-anim-push-in {
+  animation-name: deck-push-in;
+}
+.deck-anim-push-out {
+  animation-name: deck-push-out;
+}
+@keyframes deck-push-in {
+  from {
+    translate: calc(var(--deck-push-dir, 1) * 100vw) 0;
+  }
+}
+@keyframes deck-push-out {
+  to {
+    translate: calc(var(--deck-push-dir, 1) * -100vw) 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-build-in,
+  .deck-anim-fade-in,
+  .deck-anim-fade-out,
+  .deck-anim-push-in,
+  .deck-anim-push-out {
+    animation: none;
+  }
+}
+
+/* Overview grid */
+body[data-deck-mode='overview'] .deck-stage {
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  align-content: start;
+  gap: 28px;
+  padding: 40px;
+}
+body[data-deck-mode='overview'] .deck-cell {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+body[data-deck-mode='overview'] .deck-cell.deck-current {
+  box-shadow: 0 0 0 3px #e8e6df;
+}
+body[data-deck-mode='overview'] .deck-cell::after {
+  content: attr(data-n);
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  font: 600 13px/1 system-ui, sans-serif;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+body[data-deck-mode='overview'] section {
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  transform-origin: 0 0;
+  transform: scale(var(--deck-cell-scale, 0.16)) !important;
+  pointer-events: none;
+}
+body[data-deck-mode='overview'] .deck-build-pending {
+  opacity: 1 !important;
+  visibility: visible;
+}
+
+/* Controls and notes */
+.deck-ui {
+  position: fixed;
+  right: 16px;
+  bottom: calc(var(--deck-notes-h, 0px) + 16px);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 10px;
+  background: rgba(24, 24, 26, 0.82);
+  backdrop-filter: blur(12px);
+  color: #ecebe6;
+  font: 500 13px/1 system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  z-index: 10;
+  user-select: none;
+}
+body.deck-ui-awake .deck-ui,
+.deck-ui:hover,
+.deck-ui:focus-within {
+  opacity: 1;
+}
+.deck-ui button {
+  all: unset;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  cursor: pointer;
+  color: inherit;
+}
+.deck-ui button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.deck-ui button:focus-visible {
+  outline: 2px solid #8ab4f8;
+}
+.deck-ui button[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.16);
+}
+.deck-ui svg {
+  width: 16px;
+  height: 16px;
+}
+.deck-ui .deck-count {
+  min-width: 56px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+.deck-notes {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--deck-notes-h, 0px);
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 18px 24px;
+  background: #18181a;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #dcdad3;
+  font: 400 16px/1.55 system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  white-space: pre-wrap;
+}
+.deck-notes:empty::before {
+  content: attr(data-empty);
+  opacity: 0.5;
+}
+body:not(.deck-notes-open) .deck-notes {
+  display: none;
+}
+
+/* Export (PDF, images) and print: every visible slide at full size, one per page. */
+body[data-deck-mode='export'] {
+  background: transparent;
+  width: 1920px;
+}
+body[data-deck-mode='export'] .deck-build-pending {
+  opacity: 1 !important;
+  visibility: visible;
+}
+@page {
+  size: 1920px 1080px;
+  margin: 0;
+}
+@media print {
+  body {
+    background: none !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+  .deck-ui,
+  .deck-notes {
+    display: none !important;
+  }
+  .deck-stage {
+    position: static !important;
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+  .deck-cell {
+    display: block !important;
+    position: static !important;
+    aspect-ratio: auto !important;
+    box-shadow: none !important;
+  }
+  .deck-cell::after {
+    display: none !important;
+  }
+  section {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    animation: none !important;
+    break-after: page;
+    break-inside: avoid;
+  }
+  .deck-build-pending {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

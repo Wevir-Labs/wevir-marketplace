@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "slides",
+  "name": "Slides",
+  "version": "1.0.0",
+  "description": "Make and revise presentation decks. The agent writes 1920×1080 slides as HTML, checks the layout in a real browser, and exports a self-contained HTML deck with a presenter view, a PDF, or a PowerPoint file.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/slides",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "productivity",
+  "keywords": ["slides", "presentation", "deck", "pptx", "powerpoint", "pdf", "keynote", "幻灯片", "演示文稿", "PPT"],
+  "examples": [
+    "Turn these meeting notes into an eight-slide deck for Thursday's team update.",
+    "Make a ten-slide investor pitch for our product from the README, then export it as PDF.",
+    "Make slides 3 and 5 of my deck less crowded and give them speaker notes."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "幻灯片",
+      "description": "制作和修改演示文稿。agent 用 HTML 写 1920×1080 的幻灯片，在真实浏览器里检查版面，导出可离线放映的网页（带演讲者备注）、PDF 或 PowerPoint 文件。",
+      "examples": [
+        "把这份会议纪要整理成周四团队例会用的 8 页幻灯片。",
+        "根据 README 给我们的产品做一份 10 页的融资路演 PPT，再导出 PDF。",
+        "把我这份幻灯片的第 3、5 页改得不那么挤，并加上演讲备注。"
+      ]
+    }
+  },
+  "requires": { "runtimes": ["node>=22"] }
+}
