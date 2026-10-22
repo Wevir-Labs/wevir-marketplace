@@ -14,7 +14,7 @@ Open the plugin in Wevir and choose **Sign in**. Your browser opens GitHub's aut
 
 ## What it asks for
 
-Wevir requests `repo`, `read:org`, `read:user`, `user:email`, `gist` and `notifications`: enough for repositories, issues, pull requests, Actions, code search, gists and notifications. It leaves out the package and project scopes GitHub's server also offers; if a tool needs more, GitHub says so and Wevir asks you to sign in again with the extra permission. Older Wevir versions ignore this list and request every scope the server advertises. The agent still asks you before it uses a tool that changes anything.
+Wevir requests `repo`, `read:org`, `read:user`, `user:email`, `gist` and `notifications`: enough for repositories, issues, pull requests, Actions, code search, gists and notifications. It leaves out the package and project scopes GitHub's server also offers, so tools for GitHub Packages and Projects will be refused. Older Wevir versions ignore this list and request every scope the server advertises. The agent still asks you before it uses a tool that changes anything.
 
 ## About the client secret
 
