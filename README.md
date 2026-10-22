@@ -1,59 +1,75 @@
 # Wevir Marketplace
 
-[简体中文](README.zh-CN.md)
+[![Entries](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FWevir-Labs%2Fwevir-marketplace%2Fdist%2Findex.json&query=%24.entries.length&label=entries&color=0969da&cacheSeconds=3600)](https://github.com/Wevir-Labs/wevir-marketplace/blob/dist/index.json)
+[![Index](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FWevir-Labs%2Fwevir-marketplace%2Fdist%2Findex.json&query=%24.sequence&label=index&prefix=%23&color=6e7781&cacheSeconds=3600)](https://github.com/Wevir-Labs/wevir-marketplace/tree/dist)
+[![Signature](https://img.shields.io/badge/signature-ed25519-2da44e)](keys/)
+[![Validate](https://img.shields.io/github/actions/workflow/status/Wevir-Labs/wevir-marketplace/validate.yml?branch=main&event=push&label=validate)](https://github.com/Wevir-Labs/wevir-marketplace/actions/workflows/validate.yml)
+[![Publish](https://img.shields.io/github/actions/workflow/status/Wevir-Labs/wevir-marketplace/publish.yml?branch=main&label=publish)](https://github.com/Wevir-Labs/wevir-marketplace/actions/workflows/publish.yml)
+[![License](https://img.shields.io/github/license/Wevir-Labs/wevir-marketplace?color=6e7781)](LICENSE)
 
-The official plugin marketplace for [Wevir](https://github.com/marvinli001/wevir). Wevir reads it directly from this repository and its mirrors; there is no separate server.
+English · [简体中文](README.zh-CN.md)
 
-| Mirror | Repository |
-|---|---|
-| GitHub (primary) | [Wevir-Labs/wevir-marketplace](https://github.com/Wevir-Labs/wevir-marketplace) |
-| CNB | [wevir-labs/wevir-marketplace](https://cnb.cool/wevir-labs/wevir-marketplace) |
-| Gitee | [wevir-labs/wevir-marketplace](https://gitee.com/wevir-labs/wevir-marketplace) |
+Official plugin and skill catalog for [Wevir](https://github.com/marvinli001/wevir). Served as static files from this repository and its mirrors, with a signed index and per-file hashes; no backend.
 
-CNB and Gitee are synced from GitHub after every publish. Wevir picks the fastest mirror on first use and remembers it; you can choose one in Settings.
+| Mirror | Repository | Role |
+|---|---|---|
+| GitHub | [Wevir-Labs/wevir-marketplace](https://github.com/Wevir-Labs/wevir-marketplace) | Primary; review and merge |
+| CNB | [wevir-labs/wevir-marketplace](https://cnb.cool/wevir-labs/wevir-marketplace) | Mirror |
+| Gitee | [wevir-labs/wevir-marketplace](https://gitee.com/wevir-labs/wevir-marketplace) | Mirror |
+
+Mirrors receive `main` and `dist` after every publish. Wevir selects the fastest mirror on first use; override in Settings.
 
 ## Layout
 
 ```
-plugins/<id>/          Wevir plugin packages (wevir-plugin.json, skills/, README.md, icon)
-skills/<name>/         Single skills: a SKILL.md and its files
-catalog/               Maintainers only:
-  categories.json        Categories in display order
-  featured.json          Featured groups: listed by hand, or "auto": "recent" for the newest entries
-  entries/<id>.json      Per-entry category, verification badge and upstream
-  patches/<id>/*.patch   Our changes to upstream files, applied on every sync
-schemas/               JSON Schemas for wevir-plugin.json, index.json and catalog entries
-keys/                  Public keys that sign the index
-scripts/               Validation, index generation, signing and upstream sync
-authoring/             A skill that teaches coding agents to build and submit entries
+plugins/<id>/            Plugin packages: wevir-plugin.json, skills/, README.md, icon
+skills/<name>/           Single skills: SKILL.md and supporting files
+catalog/                 Maintainer-owned
+  categories.json          Categories, in display order
+  featured.json            Featured groups: explicit lists or {"auto": "recent"}
+  entries/<id>.json        Category, verification and upstream per entry
+  patches/<id>/*.patch     Local changes reapplied on every upstream sync
+schemas/                 JSON Schemas: wevir-plugin.json, index.json, catalog entries
+keys/                    Public keys for index signatures
+scripts/                 Validation, index build, signing, upstream sync
+authoring/               Agent skill for building and submitting entries
 ```
 
-Everything Wevir installs is stored in this repository; entries never point to other repositories.
+All installable content is stored in this repository. Entries never reference other repositories or download at install time.
 
-## Catalog
+## Catalog metadata
 
-- **Category:** `catalog/entries/<id>.json` decides; otherwise the manifest's `category` is taken as a suggestion; otherwise `other`.
-- **Verification:** `verification.level` is `official` (maintained by Wevir) or `verified` (reviewed, publisher identity confirmed; `publisher` is required). Wevir shows a badge next to the name. It belongs to the entry, not a version; removing it revokes it.
-- **Listing time:** the time an entry directory first appeared on `main`, computed from git history at publish. `{"auto": "recent", "limit": 6}` in `featured.json` lists the newest entries.
+| Field | Source | Rule |
+|---|---|---|
+| Category | `catalog/entries/<id>.json` → manifest `category` → `other` | First match wins; the manifest value is a suggestion |
+| Verification | `verification.level` in `catalog/entries/<id>.json` | `official`: maintained by Wevir. `verified`: reviewed, publisher confirmed, `publisher` required. Bound to the entry, not a version; removal revokes |
+| Listed at | First commit on `main` containing the entry directory | Computed at publish; `{"auto": "recent", "limit": 6}` in `featured.json` lists the newest |
+
+## Distribution and integrity
+
+1. **Index:** `index.json` and `index.json.sig` on the orphan `dist` branch, rebuilt on every push to `main` and signed with ed25519. The public key ships in `keys/` and in Wevir.
+2. **Files:** fetched at the `main` commit recorded in the index and verified against the sha256 of each listed file.
+
+Signature and hash checks run inside Wevir; a stale or modified mirror cannot alter installed content.
 
 ## Upstream sync
 
-Entries copied from open-source projects register their source as `upstream` in `catalog/entries/<id>.json`: a git repository (`repo`, optional `path`, `track` of `release`, `branch:<name>` or `tag:<glob>`, and `format` of `wevir`, `claude`, `codex` or `skill`) or an npm / PyPI `package` whose pinned version is updated in the connector command. `keep` lists files we added, `overlay` is merged into a generated `wevir-plugin.json`, and `catalog/patches/<id>/` holds our changes.
+| Aspect | Specification |
+|---|---|
+| Source | `upstream` in `catalog/entries/<id>.json`. Git: `repo`, optional `path`, `track` (`release`, `branch:<name>`, `tag:<glob>`), `format` (`wevir`, `claude`, `codex`, `skill`). Package: npm or PyPI `package`, pinned version rewritten in the connector command |
+| Local changes | `keep`: files added on our side. `overlay`: merged into the generated `wevir-plugin.json`. `catalog/patches/<id>/`: patches |
+| Schedule | `upstream-sync` workflow, daily or on demand for selected entries |
+| Output | Converted entry, patches applied, patch version raised, validation run; pull request on `sync/<id>`. Never merged automatically |
+| Risk labels | `risk:connector`, `risk:inputs`, `risk:license`, `risk:exec`, `risk:size` |
+| Failures | Issue `upstream: <id>`, closed automatically on the next successful sync |
+| Licensing | Upstream `LICENSE` / `NOTICE` files retained |
+| Credentials | GitHub App via secrets `UPSTREAM_SYNC_APP_ID` and `UPSTREAM_SYNC_APP_KEY`, so `validate` runs on sync pull requests; otherwise the workflow token, with results written to the pull request body. Variable `UPSTREAM_SYNC_BOT` (e.g. `wevir-upstream-sync[bot]`) authorizes edits to synced `catalog/entries/<id>.json` |
 
-The `upstream-sync` workflow runs daily (or by hand for chosen entries). For every upstream that moved it converts the new version into the entry directory, applies the patches, raises the patch version, runs the validation and opens or updates a pull request on `sync/<id>` labelled with the risks it found (`risk:connector`, `risk:inputs`, `risk:license`, `risk:exec`, `risk:size`). Failures open an issue `upstream: <id>` that closes itself once the entry syncs again. Sync pull requests are never merged automatically. Entries with an upstream keep its LICENSE / NOTICE files. Check what is out of date locally with `node scripts/upstream-sync.mjs --check`.
+Local status: `node scripts/upstream-sync.mjs --check`.
 
-The workflow uses a GitHub App token from the secrets `UPSTREAM_SYNC_APP_ID` and `UPSTREAM_SYNC_APP_KEY` when they are set, so the validate workflow runs on its pull requests; without them it uses the workflow token and writes the validation result into the pull request. Set the repository variable `UPSTREAM_SYNC_BOT` to the app's login (such as `wevir-upstream-sync[bot]`) so validation lets it update `catalog/entries/<id>.json` for the entries it syncs.
+## Authoring with an agent
 
-## How Wevir reads it
-
-1. `index.json` and `index.json.sig` on the `dist` branch. CI rebuilds them on every push to `main` and signs `index.json` with an ed25519 key whose public half is in `keys/` and built into Wevir.
-2. Entry files by the `main` commit recorded in the index, checked against the sha256 of every file listed there.
-
-A mirror only carries bytes; the signature and hashes are checked inside Wevir, so a stale or altered mirror cannot change what gets installed.
-
-## Build a plugin with your agent
-
-[`authoring/`](authoring/SKILL.md) is a skill for coding agents (Claude Code, Codex, Wevir and others): the manifest format, MCP servers and inputs, writing skills, the checks and how to submit. Copy this prompt into your agent and fill in the first line:
+[`authoring/`](authoring/SKILL.md) is a skill for coding agents (Claude Code, Codex, Wevir and others) covering the manifest, MCP servers and inputs, skill writing, checks and submission. Prompt template; replace the first line:
 
 ```text
 Build a Wevir marketplace plugin that <what it should do>.
@@ -65,24 +81,22 @@ Build a Wevir marketplace plugin that <what it should do>.
 5. When I confirm it works, push a branch to my fork and open a pull request to Wevir-Labs/wevir-marketplace with the template filled in. Do not merge anything.
 ```
 
-To keep the skill around, install the `authoring` folder in Wevir (Plugins → Add → Install from file → Choose folder) or copy it into your agent's skills folder.
+Persistent install: Wevir → Plugins → Add → Install from file → Choose folder → `authoring/`, or copy it into the agent's skills directory.
 
-## From a draft to the marketplace
+## Submission
 
-1. **Create:** write the entry in `plugins/<id>/` or `skills/<name>/` on a branch of your fork.
-2. **Check:** `npm ci && npm test && node scripts/validate.mjs --base upstream/main` until it passes.
-3. **Try it:** install the folder in Wevir and run its example prompts.
-4. **Submit:** open a pull request against `main` on GitHub and fill in the template. The same checks run on it.
-5. **Review:** a maintainer reviews the files, commands, network access and license, and may ask for changes; push them to the same branch. Category, featuring and verification badges are set by the maintainers.
-6. **Publish:** merging signs a new index; Wevir shows the entry on the Marketplace tab once it refreshes (at most an hour, or Refresh).
-7. **Update:** a new pull request with a higher `version`.
+| Stage | Action |
+|---|---|
+| Create | `plugins/<id>/` or `skills/<name>/` on a branch of your fork |
+| Check | `npm ci && npm test && node scripts/validate.mjs --base upstream/main` |
+| Test | Install the folder in Wevir; run the example prompts |
+| Submit | Pull request against `main` on GitHub, template completed; CI runs the same checks |
+| Review | Files, commands, network access and license. Category, featuring and verification are set by maintainers |
+| Publish | Merge signs a new index; visible in Wevir after refresh (hourly, or Refresh) |
+| Update | New pull request with a higher `version` |
 
-Details are in [CONTRIBUTING.md](CONTRIBUTING.md) and [authoring/references/submit.md](authoring/references/submit.md).
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+Rules and field reference: [CONTRIBUTING.md](CONTRIBUTING.md), [authoring/references/submit.md](authoring/references/submit.md).
 
 ## License
 
-The scripts and catalog are MIT licensed. Each entry carries its own license, given in its manifest or SKILL.md, and entries copied from upstream projects keep the upstream's license files.
+Scripts and catalog data: [MIT](LICENSE). Each entry declares its own license in its manifest or `SKILL.md`; upstream-derived entries retain upstream license files.
