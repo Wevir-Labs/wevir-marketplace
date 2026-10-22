@@ -1,0 +1,631 @@
+{
+  "schemaVersion": 1,
+  "name": "Wevir",
+  "generatedAt": "2026-10-22T05:09:06Z",
+  "sequence": 6,
+  "commit": "1cc2eab79920c92e5d3d47e651a00c8f00591f3a",
+  "categories": [
+    {
+      "id": "productivity",
+      "name": {
+        "zh-CN": "效率",
+        "en": "Productivity"
+      }
+    },
+    {
+      "id": "communication",
+      "name": {
+        "zh-CN": "沟通",
+        "en": "Communication"
+      }
+    },
+    {
+      "id": "creative",
+      "name": {
+        "zh-CN": "创意与设计",
+        "en": "Creative & design"
+      }
+    },
+    {
+      "id": "developer-tools",
+      "name": {
+        "zh-CN": "开发者工具",
+        "en": "Developer tools"
+      }
+    },
+    {
+      "id": "data",
+      "name": {
+        "zh-CN": "数据与分析",
+        "en": "Data & analytics"
+      }
+    },
+    {
+      "id": "writing",
+      "name": {
+        "zh-CN": "写作",
+        "en": "Writing"
+      }
+    },
+    {
+      "id": "research",
+      "name": {
+        "zh-CN": "搜索与研究",
+        "en": "Search & research"
+      }
+    },
+    {
+      "id": "education",
+      "name": {
+        "zh-CN": "教育",
+        "en": "Education"
+      }
+    },
+    {
+      "id": "business",
+      "name": {
+        "zh-CN": "业务与运营",
+        "en": "Business & operations"
+      }
+    },
+    {
+      "id": "finance",
+      "name": {
+        "zh-CN": "金融",
+        "en": "Finance"
+      }
+    },
+    {
+      "id": "health",
+      "name": {
+        "zh-CN": "健康",
+        "en": "Health"
+      }
+    },
+    {
+      "id": "travel",
+      "name": {
+        "zh-CN": "旅行",
+        "en": "Travel"
+      }
+    },
+    {
+      "id": "entertainment",
+      "name": {
+        "zh-CN": "娱乐",
+        "en": "Entertainment"
+      }
+    },
+    {
+      "id": "security",
+      "name": {
+        "zh-CN": "安全",
+        "en": "Security"
+      }
+    },
+    {
+      "id": "other",
+      "name": {
+        "zh-CN": "其他",
+        "en": "Other"
+      }
+    }
+  ],
+  "featured": [
+    {
+      "id": "new",
+      "name": {
+        "zh-CN": "新品推荐",
+        "en": "New"
+      },
+      "entries": [
+        "docs",
+        "slides",
+        "github",
+        "slack"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "id": "docs",
+      "kind": "skill",
+      "path": "plugins/docs",
+      "name": "Docs",
+      "i18n": {
+        "zh-CN": {
+          "name": "文档",
+          "description": "撰写和修改报告、备忘录、方案、需求文档、会议纪要与信函，并导出为 Word（.docx）、PDF 或单个网页文件。自带离线转换器，照顾中文排版。",
+          "examples": [
+            "把这份会议记录整理成会议纪要，列出决定和待办表格，导出 Word。",
+            "写一份两页的方案，建议把客服合并成一个队列，给我 PDF。",
+            "把这份报告压缩到一半篇幅、保留所有数字，再导出 Word。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Write and revise reports, memos, proposals, PRDs, meeting notes and letters, then export them to Word (.docx), PDF or a self-contained web page. Works offline with a bundled converter; Chinese typography included.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/docs",
+      "license": "MIT",
+      "icon": "plugins/docs/icon.svg",
+      "category": "writing",
+      "keywords": [
+        "document",
+        "word",
+        "docx",
+        "pdf",
+        "report",
+        "memo",
+        "proposal",
+        "prd",
+        "meeting notes",
+        "markdown"
+      ],
+      "listedAt": "2026-10-22T05:08:54Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 编写与维护，全部在本机运行",
+          "en": "Written and maintained by Wevir; runs entirely on your computer"
+        }
+      },
+      "examples": [
+        "Turn these meeting notes into minutes with decisions and an action table, as a Word file.",
+        "Write a two-page proposal for moving our support team to one queue, and give me a PDF.",
+        "Tighten this report to half its length without losing the numbers, then export it to Word."
+      ],
+      "requires": {
+        "runtimes": [
+          "node>=22"
+        ]
+      },
+      "contents": {
+        "connectors": [],
+        "skills": [
+          {
+            "name": "docs",
+            "description": "Write and revise documents (reports, memos, proposals, PRDs, specs and design docs, meeting notes, one-pagers, briefs, weekly updates, letters) as Markdown in the session folder, and export them to Word (.docx), PDF or a self-contained HTML page with the bundled converter. Use when the user asks for a document, a write-up, a report, or a Word or PDF file; when they want an existing document edited, restructured, shortened or polished; or when notes, transcripts or data should become a finished document. Not for slide decks (use the slides skill) or for docs that belong in a code repository (README, API reference)."
+          }
+        ],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 1734,
+          "sha256": "546cb24439747610b96155b0769adbd6d83815e4f299cd8d58d303d165d88bdf"
+        },
+        {
+          "path": "icon.svg",
+          "size": 515,
+          "sha256": "33f0152cbeab6f7c4e7f16d9caca1cd64ea0cf81d91a6107ad8eec2cc63b5482"
+        },
+        {
+          "path": "skills/docs/SKILL.md",
+          "size": 10858,
+          "sha256": "7cee5d94e542dc9dbab18a7d1dfd60398d5eee2afa56c5198672db0b53497194"
+        },
+        {
+          "path": "skills/docs/references/format.md",
+          "size": 5708,
+          "sha256": "877fd5c2d794a36c66123e2ff2ff1bad8d1ad19e124408c3d1e2dce66052fae4"
+        },
+        {
+          "path": "skills/docs/references/kinds.md",
+          "size": 4525,
+          "sha256": "c1b92a0098bb60c64b7ee19c226b73321f59990b9c27349804066b07beb20135"
+        },
+        {
+          "path": "skills/docs/references/style.md",
+          "size": 3234,
+          "sha256": "b4b9284efbea01a8eda5977ef158f0f62c0b3455b4afa59844b7b955ade79765"
+        },
+        {
+          "path": "skills/docs/scripts/doc.mjs",
+          "size": 9044,
+          "sha256": "1a7c5bf67191d8cb3d34795973269524cce26c5b6c7697e847c293e0654eb7c9"
+        },
+        {
+          "path": "skills/docs/scripts/lib/chrome.mjs",
+          "size": 8474,
+          "sha256": "a0760d3593890a466d90734ab196fea08e798075d4a25f8ec43501675aad9f32"
+        },
+        {
+          "path": "skills/docs/scripts/lib/docx.mjs",
+          "size": 35734,
+          "sha256": "23245d1c9def1ab5e8a73e6a10b746020635ae259d9fa11e465730c6d2c3ed6f"
+        },
+        {
+          "path": "skills/docs/scripts/lib/html.mjs",
+          "size": 11899,
+          "sha256": "da2f7c33f5b874059d049aa09712057303b847d3e0cac038d639a2b914cd3576"
+        },
+        {
+          "path": "skills/docs/scripts/lib/images.mjs",
+          "size": 4265,
+          "sha256": "5fbbec4f4f70807d84506b9214e3a71e5dbe43c19f876086b7ebf77c722c240f"
+        },
+        {
+          "path": "skills/docs/scripts/lib/markdown.mjs",
+          "size": 29184,
+          "sha256": "4fb207640bef6d8cb66d876b108524b6f0158d5a5cf174f884112942a9831a83"
+        },
+        {
+          "path": "skills/docs/scripts/lib/themes.mjs",
+          "size": 2959,
+          "sha256": "07998ca411c1f648c1978740ccf6afb5beccf74ff637f83e7f049e2f6534672b"
+        },
+        {
+          "path": "skills/docs/scripts/lib/zip.mjs",
+          "size": 3268,
+          "sha256": "f2a1e7609ed3fc853fef86675d0762c712dc27d4ff35abd5eedadc7f6bd210f9"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1644,
+          "sha256": "1fd8fc596956abd697722bcace6b86635d9c1c3435db1246ff32f49e961b9a9c"
+        }
+      ],
+      "digest": "3238c268833f222f1cfe268d0556c97e0f8c8a6d632f6cba5cf445b9a910fa5e"
+    },
+    {
+      "id": "github",
+      "kind": "mcp",
+      "path": "plugins/github",
+      "name": "GitHub",
+      "i18n": {
+        "zh-CN": {
+          "name": "GitHub",
+          "description": "通过 GitHub 官方托管的 MCP 服务读取并处理仓库、Issue、Pull Request、Actions 运行与代码。用 GitHub 账号登录。",
+          "examples": [
+            "列出分配给我的未合并 Pull Request，并概括每个改了什么。",
+            "找出这个仓库里重试逻辑在哪，并为缺少退避提一个 Issue。",
+            "main 上最近一次 CI 为什么失败？给我看失败任务的日志。"
+          ]
+        }
+      },
+      "version": "1.0.2",
+      "description": "Read and work with repositories, issues, pull requests, Actions runs and code on GitHub through GitHub's hosted MCP server. Sign in with your GitHub account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://github.com/github/github-mcp-server",
+      "license": "MIT",
+      "icon": "plugins/github/icon.svg",
+      "category": "developer-tools",
+      "keywords": [
+        "github",
+        "git",
+        "pull request",
+        "issues",
+        "actions",
+        "code search"
+      ],
+      "listedAt": "2026-10-22T03:27:00Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的登录设置，连接 GitHub 官方托管的 MCP 服务",
+          "en": "Sign-in settings maintained by Wevir for GitHub's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "List the open pull requests assigned to me and summarize what each one changes.",
+        "Find where the retry logic lives in this repository and open an issue for the missing backoff.",
+        "Why did the last CI run on main fail? Show the failing job's log."
+      ],
+      "links": {
+        "privacy": "https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement",
+        "terms": "https://docs.github.com/site-policy/github-terms/github-terms-of-service"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "github",
+            "transport": "http",
+            "url": "https://api.githubcopilot.com/mcp/"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2268,
+          "sha256": "997fb895c7ba929af916f08c6241bff284dfe9bfdb4799c1776e87f66d19a67b"
+        },
+        {
+          "path": "icon.svg",
+          "size": 1387,
+          "sha256": "6ea0c28127927e0776680d3320a2ff96c9c3ffb2a83dcb7501e9125da24c488d"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1983,
+          "sha256": "49838edaed8847c50bba808498396c43b69895fdb69e50badbd49a1eb9a747ba"
+        }
+      ],
+      "digest": "6614cec4b3c6d10099dce4268ceaa7c57104b6bbee39ca550ff2e221f5cab4ab",
+      "history": [
+        {
+          "version": "1.0.1",
+          "commit": "4e9d1d40ff718c86a89cf1a61648e260917e07ab"
+        },
+        {
+          "version": "1.0.0",
+          "commit": "3587cb45e3db3bc984167ae385fa47ebd926b08f"
+        }
+      ]
+    },
+    {
+      "id": "slack",
+      "kind": "mcp",
+      "path": "plugins/slack",
+      "name": "Slack",
+      "i18n": {
+        "zh-CN": {
+          "name": "Slack",
+          "description": "通过 Slack 官方托管的 MCP 服务搜索消息与文件、阅读频道与讨论串，并发布回复。用 Slack 账号登录。",
+          "examples": [
+            "概括 #engineering 从昨天到现在聊了什么，并列出还没解决的问题。",
+            "在 Slack 里搜索数据库迁移的决定，并给我讨论串的链接。",
+            "为 #release 里的最后一条消息起草回复，发布前先给我看。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Search messages and files, read channels and threads, and post replies in Slack through Slack's hosted MCP server. Sign in with your Slack account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://docs.slack.dev/ai/slack-mcp-server/",
+      "license": "MIT",
+      "icon": "plugins/slack/icon.svg",
+      "category": "communication",
+      "keywords": [
+        "slack",
+        "chat",
+        "messages",
+        "channels",
+        "search"
+      ],
+      "listedAt": "2026-10-22T03:27:00Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的登录设置，连接 Slack 官方托管的 MCP 服务",
+          "en": "Sign-in settings maintained by Wevir for Slack's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "Summarize what was said in #engineering since yesterday and list the open questions.",
+        "Search Slack for the decision about the database migration and link the thread.",
+        "Draft a reply to the last message in #release and show it to me before posting."
+      ],
+      "links": {
+        "privacy": "https://slack.com/trust/privacy/privacy-policy",
+        "terms": "https://slack.com/terms-of-service"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "slack",
+            "transport": "http",
+            "url": "https://mcp.slack.com/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2093,
+          "sha256": "d25887ef428160554e3f416e3ea830d1ed4c986c8e3b3e4f7e588e5fffb3aadf"
+        },
+        {
+          "path": "icon.svg",
+          "size": 1761,
+          "sha256": "7275d2ff824352b2c83add2d6cb9d89e3e4ad06c01e8a6ba12f874100882021f"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1813,
+          "sha256": "d22d47ff141c3c329e5904f07fabb1e282a531c7b1efc66ff3e46d09991a9a48"
+        }
+      ],
+      "digest": "55748795c218bfaf68c0620a4030368e94c85a6bb0e280b567cc701ffb12c714"
+    },
+    {
+      "id": "slides",
+      "kind": "skill",
+      "path": "plugins/slides",
+      "name": "Slides",
+      "i18n": {
+        "zh-CN": {
+          "name": "幻灯片",
+          "description": "制作和修改演示文稿。agent 用 HTML 写 1920×1080 的幻灯片，在真实浏览器里检查版面，导出可离线放映的网页（带演讲者备注）、PDF 或 PowerPoint 文件。",
+          "examples": [
+            "把这份会议纪要整理成周四团队例会用的 8 页幻灯片。",
+            "根据 README 给我们的产品做一份 10 页的融资路演 PPT，再导出 PDF。",
+            "把我这份幻灯片的第 3、5 页改得不那么挤，并加上演讲备注。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Make and revise presentation decks. The agent writes 1920×1080 slides as HTML, checks the layout in a real browser, and exports a self-contained HTML deck with a presenter view, a PDF, or a PowerPoint file.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/slides",
+      "license": "MIT",
+      "icon": "plugins/slides/icon.svg",
+      "category": "productivity",
+      "keywords": [
+        "slides",
+        "presentation",
+        "deck",
+        "pptx",
+        "powerpoint",
+        "pdf",
+        "keynote",
+        "幻灯片",
+        "演示文稿",
+        "PPT"
+      ],
+      "listedAt": "2026-10-22T05:08:54Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 编写与维护，全部在本机运行",
+          "en": "Written and maintained by Wevir; runs entirely on your computer"
+        }
+      },
+      "examples": [
+        "Turn these meeting notes into an eight-slide deck for Thursday's team update.",
+        "Make a ten-slide investor pitch for our product from the README, then export it as PDF.",
+        "Make slides 3 and 5 of my deck less crowded and give them speaker notes."
+      ],
+      "requires": {
+        "runtimes": [
+          "node>=22"
+        ]
+      },
+      "contents": {
+        "connectors": [],
+        "skills": [
+          {
+            "name": "slides",
+            "description": "Make and revise presentation decks: pitch decks, project updates, research readouts, training, keynotes, lecture slides. Writes one HTML file of 1920×1080 slides, checks its layout in a real browser, and exports a self-contained HTML deck with a presenter view, a PDF, or a PowerPoint (.pptx) file. Use whenever the user asks for slides, a deck, a presentation or PPT, 幻灯片 or 演示文稿, or to turn notes, a document or data into one, or to change a deck made this way."
+          }
+        ],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2470,
+          "sha256": "50fd2123db833320c3440bf6acaf57ecd3eaa217ab3148f43e9a55b837d6f2a9"
+        },
+        {
+          "path": "icon.svg",
+          "size": 464,
+          "sha256": "880476e9c5d88b9799a2e5489c7bbb2214c43b1cc1ddb2cd91d56bedc9d5faf6"
+        },
+        {
+          "path": "skills/slides/SKILL.md",
+          "size": 12289,
+          "sha256": "0e5d031c2dd3f698a87db3c6e343f857cc680a0d029a83a7ef3f7600dd77e1f7"
+        },
+        {
+          "path": "skills/slides/references/craft.md",
+          "size": 5334,
+          "sha256": "716a5deb0fbe99482064a13a155fa7609b3712a8619e19ab068a42b4c62831aa"
+        },
+        {
+          "path": "skills/slides/references/diagrams.md",
+          "size": 8692,
+          "sha256": "195b58a51933d80b78870e1b69f1a98e199c05cd84942bc1bef44e9d5df3cde2"
+        },
+        {
+          "path": "skills/slides/references/fonts.md",
+          "size": 5053,
+          "sha256": "e94bee2397d5382061f9f8615bfe7542e7f6077a697a1569639197e29ec11a1b"
+        },
+        {
+          "path": "skills/slides/references/format.md",
+          "size": 8355,
+          "sha256": "381f371df09ea05204b6a793fda342d7d4f3c12ccb5e2a0d7c2caabcfc3f1e49"
+        },
+        {
+          "path": "skills/slides/references/images.md",
+          "size": 3232,
+          "sha256": "fe38cf6a29f053b1bf81a5e90a61fa32a44295531af05e94d613949882dd9fb4"
+        },
+        {
+          "path": "skills/slides/references/layout.md",
+          "size": 6633,
+          "sha256": "77265d25d231fe81e064d5c67078f8cb794d4a52ff7a98ffcf93d43259f237f0"
+        },
+        {
+          "path": "skills/slides/references/questions.md",
+          "size": 3141,
+          "sha256": "87dbdc000c89ac0d8f87589ec07f8e9f693a2a70edeb6287e0fca7e66e956ce9"
+        },
+        {
+          "path": "skills/slides/references/sample-deck.html",
+          "size": 13770,
+          "sha256": "bff5b3aeaaba1a9bb3af4535f79d0c28d40f2a5af6e480814dbc41d5b960f3e7"
+        },
+        {
+          "path": "skills/slides/scripts/LICENSE-lucide.txt",
+          "size": 3208,
+          "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+        },
+        {
+          "path": "skills/slides/scripts/deck.mjs",
+          "size": 14834,
+          "sha256": "efcb9aa8c3ffb52b14d5f985d04d71204e0b279a4355f76ca66711075609abce"
+        },
+        {
+          "path": "skills/slides/scripts/lib/chrome.mjs",
+          "size": 8474,
+          "sha256": "a0760d3593890a466d90734ab196fea08e798075d4a25f8ec43501675aad9f32"
+        },
+        {
+          "path": "skills/slides/scripts/lib/fonts.mjs",
+          "size": 4951,
+          "sha256": "5c601ce34a44edd03f0a05487f3e449d2dfcc33ba5cb236e10c6665952faa211"
+        },
+        {
+          "path": "skills/slides/scripts/lib/icons.mjs",
+          "size": 13079,
+          "sha256": "7ab6a3c848b0098601a94f930f3a8f8f20f030de26c17ab20377fd6736e2c7c9"
+        },
+        {
+          "path": "skills/slides/scripts/lib/lint.mjs",
+          "size": 15497,
+          "sha256": "71fec708b5b6a566aed9ce4ecb43cbce81fd4da72e744ad50f2033031cec5a8f"
+        },
+        {
+          "path": "skills/slides/scripts/lib/pptx.mjs",
+          "size": 12673,
+          "sha256": "15281bcda54996f5e7db6879f6069c8fead32aa3b0d2863081f5d86a76e5dccf"
+        },
+        {
+          "path": "skills/slides/scripts/lib/runtime.css",
+          "size": 8573,
+          "sha256": "dfc0b45b08574e3a078682f925747c5cc20ff8b868079c57b7b9180109669104"
+        },
+        {
+          "path": "skills/slides/scripts/lib/runtime.js",
+          "size": 34652,
+          "sha256": "b86595356e8707688ba796bca1864bdb94e952a340ac9d3d5c1fa0c18b8ecd60"
+        },
+        {
+          "path": "skills/slides/scripts/lib/zip.mjs",
+          "size": 3268,
+          "sha256": "f2a1e7609ed3fc853fef86675d0762c712dc27d4ff35abd5eedadc7f6bd210f9"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1635,
+          "sha256": "9df1b58dd978a95379dbe2065b7585fb89910aa19e80795382a8300ebbce6b5c"
+        }
+      ],
+      "digest": "18dedc4539fff3309c77c03957dcad9706c81cf706edcabce28c21cb31c08fdb"
+    }
+  ]
+}
