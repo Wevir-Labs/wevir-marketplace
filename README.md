@@ -25,6 +25,7 @@ catalog/               Maintainers only:
 schemas/               JSON Schemas for wevir-plugin.json, index.json and catalog entries
 keys/                  Public keys that sign the index
 scripts/               Validation, index generation, signing and upstream sync
+authoring/             A skill that teaches coding agents to build and submit entries
 ```
 
 Everything Wevir installs is stored in this repository; entries never point to other repositories.
@@ -49,6 +50,34 @@ The workflow uses a GitHub App token from the secrets `UPSTREAM_SYNC_APP_ID` and
 2. Entry files by the `main` commit recorded in the index, checked against the sha256 of every file listed there.
 
 A mirror only carries bytes; the signature and hashes are checked inside Wevir, so a stale or altered mirror cannot change what gets installed.
+
+## Build a plugin with your agent
+
+[`authoring/`](authoring/SKILL.md) is a skill for coding agents (Claude Code, Codex, Wevir and others): the manifest format, MCP servers and inputs, writing skills, the checks and how to submit. Copy this prompt into your agent and fill in the first line:
+
+```text
+Build a Wevir marketplace plugin that <what it should do>.
+
+1. Fork https://github.com/Wevir-Labs/wevir-marketplace and clone the fork (or use my existing clone).
+2. Read authoring/SKILL.md in that repository and follow it; it links to the references you need.
+3. Put the entry in plugins/<id>/ (or a single skill in skills/<name>/) and change nothing outside it.
+4. Run the checks it lists until they pass, then tell me how to install the folder in Wevir and what to try.
+5. When I confirm it works, push a branch to my fork and open a pull request to Wevir-Labs/wevir-marketplace with the template filled in. Do not merge anything.
+```
+
+To keep the skill around, install the `authoring` folder in Wevir (Plugins → Add → Install from file → Choose folder) or copy it into your agent's skills folder.
+
+## From a draft to the marketplace
+
+1. **Create:** write the entry in `plugins/<id>/` or `skills/<name>/` on a branch of your fork.
+2. **Check:** `npm ci && npm test && node scripts/validate.mjs --base upstream/main` until it passes.
+3. **Try it:** install the folder in Wevir and run its example prompts.
+4. **Submit:** open a pull request against `main` on GitHub and fill in the template. The same checks run on it.
+5. **Review:** a maintainer reviews the files, commands, network access and license, and may ask for changes; push them to the same branch. Category, featuring and verification badges are set by the maintainers.
+6. **Publish:** merging signs a new index; Wevir shows the entry on the Marketplace tab once it refreshes (at most an hour, or Refresh).
+7. **Update:** a new pull request with a higher `version`.
+
+Details are in [CONTRIBUTING.md](CONTRIBUTING.md) and [authoring/references/submit.md](authoring/references/submit.md).
 
 ## Contributing
 
