@@ -1,0 +1,53 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "atlassian",
+  "name": "Atlassian (Jira and Confluence)",
+  "version": "1.0.0",
+  "description": "Search, read, create and update Jira work items and Confluence pages through Atlassian's hosted Rovo MCP server. Sign in with your Atlassian account.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "productivity",
+  "keywords": ["atlassian", "jira", "confluence", "rovo", "issues", "wiki", "工单", "项目管理", "知识库", "需求"],
+  "examples": [
+    "List the open Jira work items assigned to me, grouped by project, with their status.",
+    "Find the Confluence page about our release process and summarize the steps.",
+    "Draft a Jira bug in project WEB titled \"Login button misaligned on mobile\" and create it after I confirm."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Atlassian（Jira 与 Confluence）",
+      "description": "通过 Atlassian 官方托管的 Rovo MCP 服务搜索、阅读、创建和更新 Jira 工作项与 Confluence 页面。用 Atlassian 账号登录。",
+      "examples": [
+        "列出分配给我的未完成 Jira 工作项，按项目分组并带上状态。",
+        "找到 Confluence 上讲发布流程的页面，概括其中的步骤。",
+        "在 WEB 项目里起草一个标题为“移动端登录按钮错位”的 Jira 缺陷，我确认后再创建。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://www.atlassian.com/legal/privacy-policy",
+  "termsOfService": "https://www.atlassian.com/legal/atlassian-customer-agreement",
+  "connectors": {
+    "atlassian": {
+      "transport": "http",
+      "url": "https://mcp.atlassian.com/v2/mcp",
+      "auth": "oauth",
+      "oauth": {
+        "scopes": [
+          "offline_access",
+          "read:me",
+          "read:account",
+          "read:jira:agent-interface",
+          "search:jira:agent-interface",
+          "write:jira:agent-interface",
+          "read:confluence:agent-interface",
+          "search:confluence:agent-interface",
+          "write:confluence:agent-interface",
+          "search:rovo:agent-interface"
+        ]
+      }
+    }
+  }
+}
