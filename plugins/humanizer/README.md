@@ -14,7 +14,7 @@ The marketplace follows upstream releases: each new release becomes a sync pull 
 
 ## Layout
 
-Upstream keeps `SKILL.md` at the root of its repository. Wevir loads plugin skills from `skills/<name>/`, so the file sits at `skills/humanizer/SKILL.md`; `catalog/patches/humanizer/` moves it there on every sync without touching its text. `AGENTS.md`, `CHANGELOG.md`, `.cursor-plugin/` and `scripts/validate-package.py` come from upstream unchanged and are not used by Wevir; the validation script is for the upstream maintainers and the skill never runs it. Upstream's `agents/openai.yaml` and Claude Code marketplace files are left out, and this README replaces upstream's.
+Upstream keeps `SKILL.md` at the root of its repository. Wevir loads plugin skills from `skills/<name>/`, so the sync puts the file at `skills/humanizer/SKILL.md` without touching its text. `AGENTS.md`, `CHANGELOG.md`, `.cursor-plugin/` and `scripts/validate-package.py` come from upstream unchanged and are not used by Wevir; the validation script is for the upstream maintainers and the skill never runs it. Upstream's `agents/openai.yaml` and Claude Code marketplace files are left out, and this README replaces upstream's.
 
 ## Requirements and privacy
 

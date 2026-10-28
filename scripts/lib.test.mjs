@@ -578,6 +578,53 @@ describe('upstream', () => {
     await rm(m.dir, { recursive: true, force: true });
   });
 
+  it('moves a skill in the plugin root to skills/<name>/ with the resources it mentions', async () => {
+    const up = await upstreamRepo();
+    await up.commit({
+      LICENSE: 'MIT\n',
+      '.claude-plugin/plugin.json': JSON.stringify({ name: 'tidy', version: '2.0.0', skills: ['./'] }),
+      'SKILL.md': `---\nname: tidy\ndescription: Tidies text\n---\n\nSee references/rules.md and run ./assets/check.txt.\n`,
+      'references/rules.md': '# Rules\n',
+      'assets/check.txt': 'ok\n',
+      'scripts/release.py': 'print(1)\n',
+      'README.md': '# Tidy\n',
+    });
+    const m = await market();
+    const result = await sync(m, 'tidy', { upstream: { repo: up.url, track: 'branch:main', format: 'claude', license: 'MIT' } });
+    const written = JSON.parse(await readText(m.dir, 'plugins/tidy/wevir-plugin.json'));
+    assert.equal(written.skills, undefined, 'skills/ is the default');
+    assert.ok(await fileExists(m.dir, 'plugins/tidy/skills/tidy/SKILL.md'));
+    assert.ok(await fileExists(m.dir, 'plugins/tidy/skills/tidy/references/rules.md'));
+    assert.ok(await fileExists(m.dir, 'plugins/tidy/skills/tidy/assets/check.txt'));
+    assert.ok(!(await fileExists(m.dir, 'plugins/tidy/SKILL.md')));
+    assert.ok(!(await fileExists(m.dir, 'plugins/tidy/references/rules.md')));
+    assert.ok(await fileExists(m.dir, 'plugins/tidy/scripts/release.py'), 'directories the skill does not mention stay');
+    assert.ok(!(await fileExists(m.dir, 'plugins/tidy/skills/tidy/scripts/release.py')));
+    assert.deepEqual(result.problems, []);
+    const { entry } = await readEntry({ type: 'plugins', id: 'tidy', dir: 'plugins/tidy' }, m.dir);
+    assert.deepEqual(entry.contents.skills, [{ name: 'tidy', description: 'Tidies text' }]);
+    assert.equal(entry.kind, 'skill');
+
+    // A root SKILL.md next to the default skills/ directory: both end up under skills/.
+    await up.commit({
+      '.claude-plugin/plugin.json': JSON.stringify({ name: 'tidy', version: '2.1.0' }),
+      'skills/polish/SKILL.md': skill('polish'),
+    });
+    const saved = JSON.parse(await readText(m.dir, 'catalog/entries/tidy.json'));
+    await sync(m, 'tidy', saved);
+    assert.ok(await fileExists(m.dir, 'plugins/tidy/skills/tidy/SKILL.md'));
+    assert.ok(await fileExists(m.dir, 'plugins/tidy/skills/polish/SKILL.md'));
+    assert.ok(!(await fileExists(m.dir, 'plugins/tidy/skills/skills/polish/SKILL.md')));
+
+    // The root skill's name must not collide with a skill directory, and must be usable as one.
+    await up.commit({ 'skills/tidy/SKILL.md': skill('tidy') });
+    await assert.rejects(sync(m, 'tidy', saved), /skills\/tidy exists upstream besides the root SKILL\.md/);
+    await up.commit({ 'skills/tidy/SKILL.md': null, 'SKILL.md': skill('../evil') });
+    await assert.rejects(sync(m, 'tidy', saved), /cannot be a directory name/);
+    await rm(up.dir, { recursive: true, force: true });
+    await rm(m.dir, { recursive: true, force: true });
+  });
+
   it('copies Wevir plugins as they are and puts skills under skills/', async () => {
     const up = await upstreamRepo();
     await up.commit({

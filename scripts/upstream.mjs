@@ -254,6 +254,40 @@ const MCP_FIELDS = new Set([
   'tool_timeout_sec',
 ]);
 const CONNECTOR_NAME = /^[a-z0-9_-]{1,63}$/;
+/** Resource directories of the Agent Skills layout that travel with a SKILL.md when it mentions them. */
+const SKILL_RESOURCES = ['references', 'scripts', 'assets'];
+const SKILL_DIR_NAME = /^[a-z0-9]+(?:[._-][a-z0-9]+)*$/;
+
+/**
+ * The SKILL.md at the root of `src`, or null: `{ skill, paths }` with the parsed frontmatter and the root paths that
+ * belong to the skill (SKILL.md and the resource directories it mentions, such as `references/`). Repository files
+ * the skill never mentions, like a maintainer's `scripts/`, stay where they are.
+ */
+async function findRootSkill(src) {
+  const raw = await readFile(path.join(src, 'SKILL.md'), 'utf8').catch(() => null);
+  if (raw === null) return null;
+  const skill = parseSkill(raw);
+  if (typeof skill === 'string') throw new Error(`upstream ${skill}`);
+  if (!SKILL_DIR_NAME.test(skill.name)) throw new Error(`upstream skill name "${skill.name}" cannot be a directory name`);
+  const paths = ['SKILL.md'];
+  for (const dir of SKILL_RESOURCES) {
+    const mentioned = new RegExp(`(?<![\\w/.-])(?:\\./)?${dir}/`).test(raw);
+    if (mentioned && (await lstat(path.join(src, dir)).then((s) => s.isDirectory(), () => false))) paths.push(dir);
+  }
+  return { skill, paths };
+}
+
+/** Copies a root skill to `skills/<name>/` of `out`, where Wevir looks for a plugin's skills. */
+async function copyRootSkill(src, out, { skill, paths }) {
+  const target = path.join(out, 'skills', skill.name);
+  if (await exists(target)) throw new Error(`skills/${skill.name} exists upstream besides the root SKILL.md`);
+  for (const rel of paths) {
+    if (rel === 'SKILL.md') {
+      await mkdir(target, { recursive: true });
+      await copyFile(path.join(src, rel), path.join(target, rel));
+    } else await copyTree(path.join(src, rel), path.join(target, rel));
+  }
+}
 const stringMap = (value) =>
   value && Object.fromEntries(Object.entries(record(value)).filter(([, v]) => typeof v === 'string'));
 
@@ -345,14 +379,18 @@ async function convertImported(src, out, format, id) {
       if (typeof value === 'string' && value.startsWith('./')) left.add(value.slice(2).replace(/\/$/, ''));
     }
   }
-  const relocate = skillPaths.length > 1;
+  // A SKILL.md in the plugin root (`"skills": ["./"]`, or simply there) moves to skills/<name>/, and the other skill
+  // paths join it under skills/.
+  const rootSkill = await findRootSkill(src);
+  for (const rel of rootSkill?.paths ?? []) left.add(rel);
   const skillDirs = skillPaths.map((p) => p.slice(2).replace(/\/$/, '')).filter(Boolean);
-  await copyTree(src, out, (rel) => left.has(rel) || (relocate && skillDirs.includes(rel)));
-  if (relocate) {
-    for (const rel of skillDirs) {
-      if (await exists(path.join(src, rel))) await copyTree(path.join(src, rel), path.join(out, 'skills', path.basename(rel)));
-    }
+  const relocate = skillDirs.length > 1 || (Boolean(rootSkill) && skillDirs.some((rel) => rel !== 'skills'));
+  const moved = (rel) => relocate && rel !== 'skills' && skillDirs.includes(rel);
+  await copyTree(src, out, (rel) => left.has(rel) || moved(rel));
+  for (const rel of skillDirs.filter(moved)) {
+    if (await exists(path.join(src, rel))) await copyTree(path.join(src, rel), path.join(out, 'skills', path.basename(rel)));
   }
+  if (rootSkill) await copyRootSkill(src, out, rootSkill);
 
   const ui = record(manifest.interface);
   const author = record(manifest.author);
@@ -381,7 +419,7 @@ async function convertImported(src, out, format, id) {
     ...(license && { license }),
     ...(icon && { icon }),
     ...(keywords.length && { keywords }),
-    ...(!relocate && skillDirs[0] !== 'skills' && skillDirs[0] && { skills: `./${skillDirs[0]}` }),
+    ...(!relocate && !rootSkill && skillDirs[0] !== 'skills' && skillDirs[0] && { skills: `./${skillDirs[0]}` }),
     ...(Object.keys(connectors).length && { connectors }),
   };
   return { manifest: result, ignored: ignored.sort(), version: upstreamVersion, license };
