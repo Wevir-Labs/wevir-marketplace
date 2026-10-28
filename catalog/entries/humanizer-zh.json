@@ -5,10 +5,55 @@
     "repo": "https://github.com/op7418/Humanizer-zh",
     "track": "branch:main",
     "format": "skill",
+    "asPlugin": true,
     "license": "MIT",
     "keep": [
-      "README.md"
+      "README.md",
+      "icon.svg"
     ],
+    "overlay": {
+      "name": "Humanizer-zh",
+      "description": "Edit Chinese articles, comments and documents to cut empty phrases, repetition and template wording so they read naturally, keeping the facts, the degree of certainty and the writer's voice. For Chinese text; use Humanizer for English.",
+      "author": {
+        "name": "op7418",
+        "url": "https://github.com/op7418"
+      },
+      "homepage": "https://github.com/op7418/Humanizer-zh",
+      "license": "MIT",
+      "icon": "./icon.svg",
+      "category": "writing",
+      "keywords": [
+        "writing",
+        "editing",
+        "chinese",
+        "humanize",
+        "prose",
+        "style",
+        "ai writing",
+        "rewrite",
+        "proofread",
+        "中文",
+        "去AI味",
+        "润色",
+        "改写"
+      ],
+      "examples": [
+        "Edit this Chinese blog post so it reads naturally: cut the empty phrases and repetition, but keep every fact and my voice.",
+        "Review this Chinese product announcement for template wording and list each problem with a plainer rewrite.",
+        "Tighten this Chinese reply to a customer without changing what it promises or how sure it sounds."
+      ],
+      "i18n": {
+        "zh-CN": {
+          "name": "Humanizer-zh 中文去 AI 味",
+          "description": "编辑中文文章、评论和文档中的空话、重复及模板化表达，让文字更自然，同时保留事实、确定程度和作者声音。面向中文；英文文本请用 Humanizer。",
+          "examples": [
+            "帮这篇中文博客去掉空话和重复，事实一个不改，读起来要像我自己写的。",
+            "检查这篇中文产品公告里的模板化表达，逐条列出并给出更自然的改法。",
+            "把这段给客户的中文回复改得更简洁，不改变承诺的内容，也不改变语气的确定程度。"
+          ]
+        }
+      }
+    },
     "commit": "f4518a8eab97b8bfebc66a89d34320a89bef6930"
   }
 }

@@ -172,6 +172,7 @@ function pullBody(id, upstream, result, marker, check) {
     `- Upstream version: ${from.upstreamVersion ?? '(none)'} → ${to.upstreamVersion ?? '(none)'}`,
     `- Entry version: ${from.version ?? '(new)'} → ${to.version}${result.digestChanged ? '' : ' (files unchanged)'}`,
   ];
+  if (result.moved) lines.push(`- Moved from \`${result.moved}/\` to \`${result.ref.dir}/\` (same id)`);
   if (patches.length) lines.push(`- Patches applied: ${patches.join(', ')}`);
   if (ignored.length) lines.push(`- Left out (not available in Wevir): ${ignored.join(', ')}`);
   lines.push('', '### Risks', '');
@@ -219,7 +220,7 @@ for (const [id, meta] of selected) {
       continue;
     }
     const check = validate();
-    git('add', '-A', '--', result.ref.dir, `catalog/entries/${id}.json`);
+    git('add', '-A', '--', result.ref.dir, ...(result.moved ? [result.moved] : []), `catalog/entries/${id}.json`);
     const title = `Sync ${id} with upstream ${result.to.upstreamVersion ?? target.slice(0, 12)}`;
     git(
       '-c',

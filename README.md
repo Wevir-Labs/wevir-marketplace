@@ -57,7 +57,8 @@ Signature and hash checks run inside Wevir; a stale or modified mirror cannot al
 | Aspect | Specification |
 |---|---|
 | Source | `upstream` in `catalog/entries/<id>.json`. Git: `repo`, optional `path`, `track` (`release`, `branch:<name>`, `tag:<glob>`), `format` (`wevir`, `claude`, `codex`, `skill`). Package: npm or PyPI `package`, pinned version rewritten in the connector command |
-| Local changes | `keep`: files added on our side. `overlay`: merged into the generated `wevir-plugin.json`. `catalog/patches/<id>/`: patches |
+| Layout | `skill` goes to `skills/<id>/` as it is; with `"asPlugin": true` it becomes a plugin in `plugins/<id>/` whose `wevir-plugin.json` comes from the `SKILL.md` frontmatter (`name`, `description`, `license`, `metadata.version`). Every other format is a plugin. A `SKILL.md` in a plugin's root moves to `skills/<name>/` with the `references/`, `scripts/` and `assets/` directories it mentions. Turning `asPlugin` on or off moves the entry under the same id; the sync carries over its version and `keep` files |
+| Local changes | `keep`: files added on our side. `overlay`: merged into the generated `wevir-plugin.json` (`claude`, `codex`, `skill` with `asPlugin`). `catalog/patches/<id>/`: patches |
 | Schedule | `upstream-sync` workflow, daily or on demand for selected entries |
 | Output | Converted entry, patches applied, patch version raised, validation run; pull request on `sync/<id>`. Never merged automatically |
 | Risk labels | `risk:connector`, `risk:inputs`, `risk:license`, `risk:exec`, `risk:size` |

@@ -79,7 +79,7 @@ const SECRET_PATTERNS = [
   /-----BEGIN [A-Z ]*PRIVATE KEY-----/,
 ];
 
-/** Frontmatter of a SKILL.md: `{ name, description, metadata }` or a problem string. */
+/** Frontmatter of a SKILL.md: `{ name, description, metadata, license? }` or a problem string. */
 export function parseSkill(text) {
   const match = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(text);
   if (!match) return 'SKILL.md must start with YAML frontmatter';
@@ -95,7 +95,12 @@ export function parseSkill(text) {
   if ([...data.name].length > LIMITS.skillName) return 'SKILL.md: name is too long';
   if ([...data.description].length > LIMITS.skillDescription)
     return 'SKILL.md: description is too long';
-  return { name: data.name, description: data.description, metadata: data.metadata ?? {} };
+  return {
+    name: data.name,
+    description: data.description,
+    metadata: data.metadata ?? {},
+    ...(typeof data.license === 'string' && data.license.trim() && { license: data.license.trim() }),
+  };
 }
 
 const PINNED_NPM = /^(?:@[a-z0-9][\w.-]*\/)?[a-z0-9][\w.-]*@\d+\.\d+\.\d+(?:-[\w.]+)?$/i;
@@ -345,6 +350,9 @@ export async function readCatalog(root = ROOT) {
 }
 
 /** The catalog decides; the manifest's `category` is a suggestion; everything else is `other`. */
+/** Where an entry with this upstream lives: `skills` for a skill copied as it is, `plugins` for everything else. */
+export const upstreamType = (upstream) => (upstream.format === 'skill' && !upstream.asPlugin ? 'skills' : 'plugins');
+
 export const resolveCategory = (catalog, suggested) => catalog?.category ?? suggested ?? 'other';
 
 /**
@@ -486,9 +494,12 @@ export async function checkRepository(root = ROOT) {
     if (meta?.upstream) {
       if (!entry.files.some((f) => !f.path.includes('/') && LICENSE_FILE.test(f.path) && !/^NOTICE/i.test(f.path)))
         report(ref.dir, 'entries with an upstream must keep its LICENSE file');
-      const skill = meta.upstream.format === 'skill';
-      if (skill !== (ref.type === 'skills'))
-        report(ref.dir, `upstream format "${meta.upstream.format ?? 'package'}" belongs in ${skill ? 'skills/' : 'plugins/'}`);
+      const type = upstreamType(meta.upstream);
+      if (type !== ref.type)
+        report(
+          ref.dir,
+          `upstream format "${meta.upstream.format ?? 'package'}"${meta.upstream.asPlugin ? ' with asPlugin' : ''} belongs in ${type}/`,
+        );
     }
   }
 
@@ -499,8 +510,11 @@ export async function checkRepository(root = ROOT) {
       report(where, `unknown category "${meta.category}" (see catalog/categories.json)`);
     if (meta.verification?.level === 'verified' && !meta.verification.publisher)
       report(where, 'verified entries need a publisher');
-    if (meta.upstream?.overlay && !['claude', 'codex'].includes(meta.upstream.format))
-      report(where, 'overlay is only used by the claude and codex formats');
+    if (meta.upstream?.asPlugin && meta.upstream.format !== 'skill')
+      report(where, 'asPlugin is only used by the skill format');
+    const generated = ['claude', 'codex'].includes(meta.upstream?.format) || (meta.upstream?.format === 'skill' && meta.upstream.asPlugin);
+    if (meta.upstream?.overlay && !generated)
+      report(where, 'overlay is only used by the claude and codex formats and by skill with asPlugin');
   }
   for (const id of await readdir(path.join(root, 'catalog/patches')).catch(() => [])) {
     if (id !== '.gitkeep' && !catalog.entries.get(id)?.upstream?.repo)

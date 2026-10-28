@@ -650,6 +650,93 @@ describe('upstream', () => {
     await rm(m.dir, { recursive: true, force: true });
   });
 
+  it('publishes a single skill as a plugin with asPlugin, moving an existing skill entry under the same id', async () => {
+    const up = await upstreamRepo();
+    await up.commit({
+      LICENSE: 'MIT\n',
+      'SKILL.md': `---\nname: tidy-zh\ndescription: 整理中文\nlicense: MIT\nmetadata:\n  version: 0.2.0\n---\n\nBody\n`,
+      'tests/check.py': 'print(1)\n',
+      'CHANGELOG.md': '# Changes\n',
+    });
+    const m = await market();
+    await m.write('skills/tidy-zh/README.md', '# Ours\n');
+    const upstream = { repo: up.url, track: 'branch:main', format: 'skill', license: 'MIT', keep: ['README.md', 'icon.svg'] };
+    const first = await sync(m, 'tidy-zh', { category: 'writing', upstream });
+    assert.equal(first.ref.dir, 'skills/tidy-zh');
+    assert.equal(first.to.version, '0.2.0');
+
+    // Switching to a plugin: the old directory goes, its kept README comes along, the version continues.
+    await m.write('plugins/tidy-zh/icon.svg', '<svg/>');
+    const saved = JSON.parse(await readText(m.dir, 'catalog/entries/tidy-zh.json'));
+    const meta = {
+      ...saved,
+      upstream: {
+        ...saved.upstream,
+        asPlugin: true,
+        overlay: { name: 'Tidy', icon: './icon.svg', examples: ['把这段话改自然一点'], i18n: { 'zh-CN': { name: '整理' } } },
+      },
+    };
+    const result = await sync(m, 'tidy-zh', meta);
+    assert.equal(result.ref.dir, 'plugins/tidy-zh');
+    assert.equal(result.moved, 'skills/tidy-zh');
+    assert.equal(result.from.version, '0.2.0');
+    assert.equal(result.to.version, '0.2.1');
+    assert.ok(!(await fileExists(m.dir, 'skills/tidy-zh/SKILL.md')), 'the skill entry is gone');
+    const written = JSON.parse(await readText(m.dir, 'plugins/tidy-zh/wevir-plugin.json'));
+    assert.deepEqual(written, {
+      schemaVersion: 1,
+      id: 'tidy-zh',
+      name: 'Tidy',
+      version: '0.2.1',
+      description: '整理中文',
+      license: 'MIT',
+      icon: './icon.svg',
+      examples: ['把这段话改自然一点'],
+      i18n: { 'zh-CN': { name: '整理' } },
+    });
+    assert.ok(await fileExists(m.dir, 'plugins/tidy-zh/skills/tidy-zh/SKILL.md'));
+    assert.ok(await fileExists(m.dir, 'plugins/tidy-zh/tests/check.py'));
+    assert.ok(await fileExists(m.dir, 'plugins/tidy-zh/LICENSE'));
+    assert.equal(await readText(m.dir, 'plugins/tidy-zh/README.md'), '# Ours\n');
+    assert.deepEqual(result.problems, []);
+    const { entry } = await readEntry({ type: 'plugins', id: 'tidy-zh', dir: 'plugins/tidy-zh' }, m.dir);
+    assert.equal(entry.kind, 'skill');
+    assert.deepEqual(entry.contents.skills, [{ name: 'tidy-zh', description: '整理中文' }]);
+    const after = JSON.parse(await readText(m.dir, 'catalog/entries/tidy-zh.json'));
+    assert.equal(after.upstream.asPlugin, true);
+    assert.equal(after.upstream.version, '0.2.0');
+    // The catalog schema only takes https addresses, not the test's file:// one.
+    await m.write('catalog/entries/tidy-zh.json', { ...after, upstream: { ...after.upstream, repo: 'https://example.com/tidy-zh' } });
+    assert.deepEqual((await checkRepository(m.dir)).problems, []);
+
+    // The next sync stays in plugins/ and raises the patch digit.
+    await up.commit({ 'CHANGELOG.md': '# Changes\n\nMore\n' });
+    const again = await sync(m, 'tidy-zh', after);
+    assert.equal(again.moved, undefined);
+    assert.equal(again.to.version, '0.2.2');
+    await rm(up.dir, { recursive: true, force: true });
+    await rm(m.dir, { recursive: true, force: true });
+  });
+
+  it('checks where asPlugin and overlay may be used', async () => {
+    const m = await market();
+    const up = (extra) => ({ repo: 'https://github.com/a/b', track: 'branch:main', license: 'MIT', ...extra });
+    await m.write('skills/one/SKILL.md', skill('one'));
+    await m.write('skills/one/LICENSE', 'MIT\n');
+    await m.write('catalog/entries/one.json', { upstream: up({ format: 'skill', asPlugin: true }) });
+    await m.write('skills/two/SKILL.md', skill('two'));
+    await m.write('skills/two/LICENSE', 'MIT\n');
+    await m.write('catalog/entries/two.json', { upstream: up({ format: 'skill', overlay: { name: 'Two' } }) });
+    for (const [rel, content] of Object.entries(plugin('three'))) await m.write(rel, content);
+    await m.write('plugins/three/LICENSE', 'MIT\n');
+    await m.write('catalog/entries/three.json', { upstream: up({ format: 'claude', asPlugin: true }) });
+    const text = (await checkRepository(m.dir)).problems.join('\n');
+    assert.match(text, /skills\/one: upstream format "skill" with asPlugin belongs in plugins\//);
+    assert.match(text, /two\.json: overlay is only used by the claude and codex formats and by skill with asPlugin/);
+    assert.match(text, /three\.json: asPlugin is only used by the skill format/);
+    await rm(m.dir, { recursive: true, force: true });
+  });
+
   it('copies Wevir plugins as they are and puts skills under skills/', async () => {
     const up = await upstreamRepo();
     await up.commit({

@@ -49,6 +49,10 @@
           "pattern": "^(?:release|branch:[^\\s]+|tag:[^\\s]+)$"
         },
         "format": { "enum": ["wevir", "claude", "codex", "skill", "package"] },
+        "asPlugin": {
+          "description": "skill format only: publish the skill as a plugin in plugins/<id>/ (skill in skills/<name>/, wevir-plugin.json from the SKILL.md frontmatter plus overlay) instead of skills/<id>/.",
+          "type": "boolean"
+        },
         "package": {
           "description": "npm:<name> or pypi:<name>; only the version pinned in connector commands is updated.",
           "type": "string",
@@ -63,7 +67,7 @@
           "items": { "type": "string", "minLength": 1, "maxLength": 256 }
         },
         "overlay": {
-          "description": "Deep-merged into the generated wevir-plugin.json (claude and codex formats).",
+          "description": "Deep-merged into the generated wevir-plugin.json (claude and codex formats, skill with asPlugin).",
           "type": "object"
         }
       },
@@ -76,7 +80,7 @@
         },
         {
           "required": ["package"],
-          "not": { "anyOf": [{ "required": ["repo"] }, { "required": ["commit"] }, { "required": ["path"] }, { "required": ["track"] }] },
+          "not": { "anyOf": [{ "required": ["repo"] }, { "required": ["commit"] }, { "required": ["path"] }, { "required": ["track"] }, { "required": ["asPlugin"] }] },
           "properties": { "format": { "const": "package" } }
         }
       ],

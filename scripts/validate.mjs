@@ -48,12 +48,15 @@ if (args.base) {
   for (const dir of dirs) {
     const [type, id] = dir.split('/');
     if (!ENTRY_ID.test(id)) continue;
-    const before = versionAt(args.base, dir);
+    // An entry may move between skills/ and plugins/ under the same id; it continues from its old version.
+    const other = `${type === 'plugins' ? 'skills' : 'plugins'}/${id}`;
     const now = ids.get(id) === dir ? versionAt('HEAD', dir) : null;
     if (now === null) {
-      if (before !== null && !isMaintainer) report(dir, 'only maintainers can remove an entry');
+      if (ids.get(id) !== other && versionAt(args.base, dir) !== null && !isMaintainer)
+        report(dir, 'only maintainers can remove an entry');
       continue;
     }
+    const before = versionAt(args.base, dir) ?? versionAt(args.base, other);
     // Skill submissions without metadata.version are updated by content, so their version may stay.
     if (before !== null && type === 'plugins' && !semver.gt(now, before))
       report(dir, `version must be greater than ${before} (now ${now})`);

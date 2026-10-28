@@ -1,4 +1,4 @@
-# humanizer-zh
+# Humanizer-zh
 
 A Chinese editing skill that removes empty phrases, repetition and template wording from articles, comments and documents, keeping the facts, the degree of certainty and the writer's voice. It is guidance for the agent, not a detector: it cannot tell who wrote a text and does not promise to pass any AI detector. Written by [op7418](https://github.com/op7418), based on [blader/humanizer](https://github.com/blader/humanizer), and copied here unchanged.
 
@@ -9,6 +9,10 @@ A Chinese editing skill that removes empty phrases, repetition and template word
 - License: MIT, see [`LICENSE`](LICENSE)
 
 The marketplace follows upstream `main`: when it changes, a sync pull request brings the new files here and is reviewed before it is published. The commit currently in use is recorded in `catalog/entries/humanizer-zh.json` and shown on the store page.
+
+## Layout
+
+Upstream is a single skill with `SKILL.md` at the root of its repository. The marketplace publishes it as a plugin so it can carry an icon, examples and a Chinese store page: the sync puts the file at `skills/humanizer-zh/SKILL.md` without touching its text and writes `wevir-plugin.json` from its frontmatter plus the store details in `catalog/entries/humanizer-zh.json`. Until version 1.0.0 the entry was the bare skill in `skills/humanizer-zh/`; the id and the skill name are unchanged.
 
 ## Notes for Wevir
 

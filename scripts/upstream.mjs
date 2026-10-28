@@ -7,7 +7,7 @@ import { copyFile, lstat, mkdir, readdir, readFile, rm, rmdir, writeFile } from 
 import path from 'node:path';
 import { promisify } from 'node:util';
 import semver from 'semver';
-import { LICENSE_FILE, LIMITS, MANIFEST, parseSkill, ROOT, readEntry } from './lib.mjs';
+import { LICENSE_FILE, LIMITS, MANIFEST, parseSkill, ROOT, readEntry, upstreamType } from './lib.mjs';
 
 const exec = promisify(execFile);
 export const git = async (args, cwd) => {
@@ -426,10 +426,34 @@ async function convertImported(src, out, format, id) {
 }
 
 /**
+ * Single skill → Wevir plugin (`asPlugin`): the skill goes to skills/<name>/, the rest of the repository stays in the
+ * plugin root, and wevir-plugin.json comes from the SKILL.md frontmatter (name, description, license,
+ * metadata.version).
+ */
+async function convertSkillPlugin(src, out, id) {
+  const rootSkill = await findRootSkill(src);
+  if (!rootSkill) throw new Error('upstream SKILL.md is missing');
+  await copyTree(src, out, (rel) => rootSkill.paths.includes(rel));
+  await copyRootSkill(src, out, rootSkill);
+  const { skill } = rootSkill;
+  const version = typeof skill.metadata.version === 'string' ? skill.metadata.version : undefined;
+  const license = text(skill.license, 128);
+  const manifest = {
+    schemaVersion: 1,
+    id,
+    name: text(skill.name, 128),
+    version: semver.valid(version) ? version : '1.0.0',
+    description: text(skill.description, 1024),
+    ...(license && { license }),
+  };
+  return { manifest, version, license };
+}
+
+/**
  * Converts the fetched upstream directory `src` into a fresh directory `out`. Returns `{ ignored, version, license }`:
  * the parts left out, and the upstream's own version and SPDX license when its files say so.
  */
-export async function convert(src, out, { format, id, overlay, repoRoot }) {
+export async function convert(src, out, { format, id, overlay, asPlugin, repoRoot }) {
   await mkdir(out, { recursive: true });
   let result = { ignored: [] };
   if (format === 'wevir') {
@@ -442,6 +466,15 @@ export async function convert(src, out, { format, id, overlay, repoRoot }) {
     }
     if (manifest.id !== id) throw new Error(`upstream ${MANIFEST} has id "${manifest.id}", not "${id}"`);
     result = { ignored: [], version: text(manifest.version, 64), license: text(manifest.license, 128) };
+  } else if (format === 'skill' && asPlugin) {
+    const converted = await convertSkillPlugin(src, out, id);
+    const manifest = deepMerge(converted.manifest, overlay);
+    await writeFile(path.join(out, MANIFEST), `${JSON.stringify(manifest, null, 2)}\n`);
+    result = {
+      ignored: [],
+      ...(converted.version && { version: converted.version }),
+      ...(converted.license && { license: converted.license }),
+    };
   } else if (format === 'skill') {
     await copyTree(src, out);
     const skill = parseSkill((await readFile(path.join(out, 'SKILL.md'), 'utf8').catch(() => null)) ?? '');
@@ -483,6 +516,17 @@ async function pruneEmpty(abs, keepRoot = true) {
     if (d.isDirectory()) await pruneEmpty(path.join(abs, d.name), false);
   }
   if (!keepRoot && !(await readdir(abs)).length) await rmdir(abs);
+}
+
+/** Copies the files matching the `keep` globs from `fromDir` to `toDir`, unless `toDir` has them already. */
+async function carryKept(fromDir, toDir, keep = []) {
+  const patterns = keep.map(globToRegExp);
+  for (const rel of await listFiles(fromDir)) {
+    const target = path.join(toDir, rel);
+    if (!patterns.some((p) => p.test(rel)) || (await exists(target))) continue;
+    await mkdir(path.dirname(target), { recursive: true });
+    await copyFile(path.join(fromDir, rel), target);
+  }
 }
 
 /** Replaces everything in `entryDir` but the `keep` globs with the converted files (upstream deletions included). */
@@ -640,12 +684,24 @@ const LIMIT_PROBLEM = /too many files|larger than/;
  */
 export async function syncEntry({ id, meta, latest, workDir, root = ROOT }) {
   const upstream = meta.upstream;
-  const type = upstream.format === 'skill' ? 'skills' : 'plugins';
+  const type = upstreamType(upstream);
   const ref = { type, id, dir: `${type}/${id}` };
   const entryDir = path.join(root, ref.dir);
   // A directory holding only files to keep (an icon added ahead of the first sync) counts as a new entry.
   let before = (await exists(entryDir)) ? await snapshot(ref, root) : null;
   if (!before?.entry) before = null;
+  // A skill that becomes a plugin (asPlugin), or back, keeps its id: the entry moves to the other directory and
+  // continues from the version and files it had there.
+  let moved;
+  const otherType = type === 'plugins' ? 'skills' : 'plugins';
+  const other = { type: otherType, id, dir: `${otherType}/${id}` };
+  if (!before && (await exists(path.join(root, other.dir)))) {
+    const old = await snapshot(other, root);
+    if (old.entry) {
+      before = old;
+      moved = other.dir;
+    }
+  }
 
   let detected = latest.license;
   let upstreamVersion = latest.version;
@@ -663,12 +719,17 @@ export async function syncEntry({ id, meta, latest, workDir, root = ROOT }) {
       format: upstream.format,
       id,
       overlay: upstream.overlay,
+      asPlugin: upstream.asPlugin,
       repoRoot: fetched.root,
     });
     ignored = converted.ignored;
     upstreamVersion = latest.version ?? converted.version;
     detected = converted.license;
     await mkdir(entryDir, { recursive: true });
+    if (moved) {
+      await carryKept(path.join(root, moved), entryDir, upstream.keep);
+      await rm(path.join(root, moved), { recursive: true, force: true });
+    }
     await replaceFiles(entryDir, staging, upstream.keep);
     patches = await applyPatches(id, root);
   }
@@ -693,6 +754,7 @@ export async function syncEntry({ id, meta, latest, workDir, root = ROOT }) {
 
   return {
     ref,
+    ...(moved && { moved }),
     from: { version: before?.entry.version, upstreamVersion: upstream.version, commit: upstream.commit },
     to: { version: after.entry.version, upstreamVersion, commit },
     risks: compareRisks(before, after, { before: upstream.license, after: detected }),
