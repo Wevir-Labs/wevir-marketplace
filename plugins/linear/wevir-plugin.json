@@ -1,0 +1,39 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "linear",
+  "name": "Linear",
+  "version": "1.0.0",
+  "description": "Find, create and update Linear issues, projects, cycles, documents and comments through Linear's hosted MCP server. Sign in with your Linear account.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://linear.app/docs/mcp",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "productivity",
+  "keywords": ["linear", "issues", "tickets", "project management", "sprint", "cycle", "bug tracker", "任务", "工单", "项目管理", "迭代", "缺陷跟踪"],
+  "examples": [
+    "List my open Linear issues in the current cycle, grouped by status.",
+    "Create a Linear issue in the Web team for the broken password reset link, priority high, and assign it to me.",
+    "Summarize the comments on the most recently updated issue in our Mobile project."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Linear",
+      "description": "通过 Linear 官方托管的 MCP 服务查找、创建和更新 Linear 的 Issue、项目、迭代、文档与评论。用 Linear 账号登录。",
+      "examples": [
+        "列出我在当前迭代里还没完成的 Linear Issue，按状态分组。",
+        "在 Web 团队里为“重置密码链接失效”建一个 Linear Issue，优先级设为高，分配给我。",
+        "概括 Mobile 项目里最近更新的那个 Issue 下面的评论。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://linear.app/privacy",
+  "termsOfService": "https://linear.app/terms",
+  "connectors": {
+    "linear": {
+      "transport": "http",
+      "url": "https://mcp.linear.app/mcp",
+      "auth": "oauth"
+    }
+  }
+}
