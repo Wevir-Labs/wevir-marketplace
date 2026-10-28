@@ -1,0 +1,40 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "deepwiki",
+  "name": "DeepWiki",
+  "version": "1.0.0",
+  "description": "Read the generated wiki of any public GitHub repository and ask questions about its code through DeepWiki's hosted MCP server, by Cognition. No sign-in; public repositories only.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://docs.devin.ai/work-with-devin/deepwiki-mcp",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "developer-tools",
+  "keywords": ["deepwiki", "github", "repository", "codebase", "open source", "wiki", "code search", "源码", "代码库", "开源项目", "仓库文档"],
+  "examples": [
+    "Use DeepWiki to explain how facebook/react schedules updates, and which files I should read first.",
+    "Ask DeepWiki where vercel/next.js handles middleware matching.",
+    "Show me the wiki outline for modelcontextprotocol/typescript-sdk and summarize the transport section."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "DeepWiki",
+      "description": "通过 Cognition 的 DeepWiki 官方托管 MCP 服务，阅读任意公开 GitHub 仓库自动生成的 Wiki，并就它的代码提问。无需登录；只覆盖公开仓库。",
+      "examples": [
+        "用 DeepWiki 解释 facebook/react 是怎么调度更新的，以及我应该先读哪些文件。",
+        "问问 DeepWiki：vercel/next.js 在哪里处理中间件的匹配？",
+        "列出 modelcontextprotocol/typescript-sdk 的 Wiki 目录，并概括传输层那一节。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://cognition.ai/privacy-policy",
+  "termsOfService": "https://cognition.ai/terms-of-service",
+  "connectors": {
+    "deepwiki": {
+      "transport": "http",
+      "url": "https://mcp.deepwiki.com/mcp",
+      "auth": "none",
+      "toolTimeoutSec": 180
+    }
+  }
+}
