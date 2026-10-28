@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schemas/catalog-entry.schema.json",
+  "category": "productivity",
+  "verification": {
+    "level": "official",
+    "since": "2026-10",
+    "note": {
+      "zh-CN": "由 Wevir 维护的连接设置，连接 Notion 官方托管的 MCP 服务",
+      "en": "Connection settings maintained by Wevir for Notion's own hosted MCP server"
+    }
+  }
+}
