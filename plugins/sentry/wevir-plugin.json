@@ -1,0 +1,40 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "sentry",
+  "name": "Sentry",
+  "version": "1.0.0",
+  "description": "Search and inspect Sentry issues, events, stack traces, traces, releases and logs, and ask Seer for a root-cause analysis, through Sentry's hosted MCP server. Sign in with your Sentry account; you choose on Sentry's consent page whether it may also triage issues or manage projects.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://mcp.sentry.dev",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "developer-tools",
+  "keywords": ["sentry", "errors", "exceptions", "stack trace", "monitoring", "crash", "tracing", "seer", "错误监控", "异常", "报错", "崩溃", "堆栈"],
+  "examples": [
+    "What are the top unresolved Sentry issues in my organization from the last 24 hours, by number of users affected?",
+    "Show the stack trace and the most recent event for the newest Sentry issue in my backend project, and point to the likely cause.",
+    "Search Sentry for errors mentioning \"timeout\" since yesterday's release and group them by project."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Sentry",
+      "description": "通过 Sentry 官方托管的 MCP 服务搜索和查看 Sentry 的 Issue、事件、堆栈、链路追踪、版本与日志，并让 Seer 做根因分析。用 Sentry 账号登录；是否允许它分派处理 Issue 或管理项目，在 Sentry 的授权页上由你勾选。",
+      "examples": [
+        "我组织里最近 24 小时还没解决的 Sentry Issue 有哪些？按受影响用户数排序。",
+        "给我看后端项目里最新那个 Sentry Issue 的堆栈和最近一次事件，并指出可能的原因。",
+        "在 Sentry 里搜索昨天发版以来提到 \"timeout\" 的错误，按项目分组。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://sentry.io/privacy/",
+  "termsOfService": "https://sentry.io/terms/",
+  "connectors": {
+    "sentry": {
+      "transport": "http",
+      "url": "https://mcp.sentry.dev/mcp",
+      "auth": "oauth",
+      "toolTimeoutSec": 300
+    }
+  }
+}
