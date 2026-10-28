@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "sheets",
+  "name": "Sheets",
+  "version": "1.0.0",
+  "description": "Make and revise Excel workbooks (.xlsx) and CSV files with live formulas, real dates and number formats, frozen headers, filters and conditional formatting, and read the spreadsheets you share so the agent can analyze, check or convert them. Runs offline with a bundled script; Chinese fonts and column widths included.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/sheets",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "productivity",
+  "keywords": ["spreadsheet", "excel", "xlsx", "csv", "workbook", "table", "formula", "budget", "tracker", "data", "表格", "电子表格", "Excel 表", "数据分析"],
+  "examples": [
+    "Turn this order list into an Excel file with totals per region and a filter on every column.",
+    "Here is our sales export as CSV. Which products grew most last quarter? Give me the summary as a workbook.",
+    "Check this budget spreadsheet for broken formulas and numbers stored as text."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "表格",
+      "description": "制作和修改 Excel 工作簿（.xlsx）与 CSV 文件：公式实时计算，日期和数字格式规范，冻结表头、筛选和条件格式一应俱全；也能读取你提供的表格，帮你分析、检查或转换。自带离线脚本，照顾中文字体和列宽。",
+      "examples": [
+        "把这份订单清单做成 Excel，按区域汇总合计，每列都能筛选。",
+        "这是我们导出的销售 CSV，上季度哪些产品增长最多？把汇总做成一个工作簿给我。",
+        "帮我检查这份预算表里有没有错误的公式和存成文本的数字。"
+      ]
+    }
+  },
+  "requires": { "runtimes": ["node>=22"] }
+}
