@@ -1,0 +1,39 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "stripe",
+  "name": "Stripe",
+  "version": "1.0.0",
+  "description": "Look up and manage customers, products, prices, invoices, payment links, subscriptions, refunds and disputes in Stripe, and search Stripe's docs, through Stripe's hosted MCP server. Sign in with your Stripe account. With write access it can create and void invoices, change and cancel subscriptions, issue refunds and, where enabled, send money: on Stripe's consent page grant a sandbox, or read-only access to live mode, unless you mean it.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://docs.stripe.com/mcp",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "business",
+  "keywords": ["stripe", "payments", "billing", "invoices", "subscriptions", "customers", "refunds", "payment links", "支付", "收款", "账单", "发票", "订阅", "退款"],
+  "examples": [
+    "List my 10 most recent Stripe payments and flag any that failed or were disputed.",
+    "In my Stripe sandbox, create a product \"Pro plan\" at $20 a month and give me a payment link for it.",
+    "Search the Stripe docs for how to handle failed subscription payments with webhooks."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Stripe",
+      "description": "通过 Stripe 官方托管的 MCP 服务查询和管理 Stripe 的客户、产品、价格、发票、支付链接、订阅、退款与争议，并搜索 Stripe 文档。用 Stripe 账号登录。有写权限时，它能创建和作废发票、修改和取消订阅、退款，在开通了的账户里还能转出资金：除非确有需要，请在 Stripe 授权页上只授予沙盒，或只给正式环境只读权限。",
+      "examples": [
+        "列出我最近 10 笔 Stripe 付款，标出失败或被争议的。",
+        "在我的 Stripe 沙盒里创建产品“Pro 套餐”，每月 20 美元，并给我一个支付链接。",
+        "搜索 Stripe 文档，看看怎么用 Webhook 处理订阅扣款失败。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://stripe.com/privacy",
+  "termsOfService": "https://stripe.com/legal/ssa",
+  "connectors": {
+    "stripe": {
+      "transport": "http",
+      "url": "https://mcp.stripe.com",
+      "auth": "oauth"
+    }
+  }
+}
