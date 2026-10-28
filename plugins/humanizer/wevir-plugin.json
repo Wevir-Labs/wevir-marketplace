@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "humanizer",
+  "name": "Humanizer",
+  "version": "3.1.0",
+  "description": "Rewrite AI-sounding text so it reads like the writer without changing what it says.",
+  "author": {
+    "name": "blader",
+    "url": "https://github.com/blader"
+  },
+  "homepage": "https://github.com/blader/humanizer",
+  "license": "MIT",
+  "keywords": [
+    "writing",
+    "editing",
+    "humanize",
+    "prose",
+    "style",
+    "ai writing",
+    "rewrite",
+    "proofread",
+    "去AI味",
+    "润色",
+    "改写"
+  ],
+  "icon": "./icon.svg",
+  "category": "writing",
+  "examples": [
+    "Humanize this blog post draft: keep every fact, but cut the AI tells and make it sound like me.",
+    "Review this cover letter for signs of AI writing and list each one with a plainer rewrite.",
+    "Rewrite this product announcement so it reads like a person wrote it, without the sales language."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Humanizer 英文去 AI 味",
+      "description": "改写读起来像 AI 写的英文文本，让它像作者本人写的，同时不改变原意。面向英文；中文文本请用 Humanizer-zh。",
+      "examples": [
+        "帮这篇英文博客草稿去掉 AI 味：事实一个不改，读起来要像我自己写的。",
+        "检查这封英文求职信里有哪些 AI 写作痕迹，逐条列出并给出更朴素的改法。",
+        "把这篇英文产品发布稿改得像真人写的，去掉推销腔。"
+      ]
+    }
+  }
+}
