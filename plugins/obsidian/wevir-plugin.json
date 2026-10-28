@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "id": "obsidian",
+  "name": "Obsidian",
+  "version": "1.0.1",
+  "description": "Work in an Obsidian vault: write Obsidian Flavored Markdown with wikilinks, embeds, callouts and properties, build Bases (.base) and JSON Canvas (.canvas) files, drive the running Obsidian app through the Obsidian CLI, save web pages as clean Markdown with Defuddle, and fill Markdown templates from JSON or CSV with Knap. The kepano/obsidian-skills collection by Steph Ango, unchanged.",
+  "author": {
+    "name": "Steph Ango",
+    "url": "https://stephango.com/"
+  },
+  "license": "MIT",
+  "keywords": [
+    "obsidian",
+    "markdown",
+    "bases",
+    "canvas",
+    "json-canvas",
+    "wikilink",
+    "pkm",
+    "notes",
+    "vault",
+    "defuddle",
+    "knap",
+    "笔记",
+    "知识库",
+    "双链",
+    "白板"
+  ],
+  "homepage": "https://github.com/kepano/obsidian-skills",
+  "icon": "./icon.svg",
+  "category": "productivity",
+  "examples": [
+    "Turn these meeting notes into an Obsidian note with properties, wikilinks to the people mentioned and a callout for the decisions.",
+    "Create a Base in my vault that shows every note tagged #book as cards, sorted by rating.",
+    "Draw a JSON Canvas mind map of the chapters in this outline and save it next to the outline note."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Obsidian",
+      "description": "在 Obsidian 库里工作：写带双链、嵌入、标注块和属性的 Obsidian 风格 Markdown，制作 Bases（.base）与 JSON Canvas 白板（.canvas），通过 Obsidian CLI 操作正在运行的 Obsidian，用 Defuddle 把网页存成干净的 Markdown，用 Knap 按模板把 JSON 或 CSV 数据生成笔记。原样收录 Steph Ango 的 kepano/obsidian-skills。",
+      "examples": [
+        "把这份会议纪要整理成一篇 Obsidian 笔记：加上属性，给提到的人加双链，决定事项放进标注块。",
+        "在我的库里建一个 Base，用卡片视图列出所有带 #book 标签的笔记，按评分排序。",
+        "把这份大纲的各章画成 JSON Canvas 思维导图，保存在大纲笔记旁边。"
+      ]
+    }
+  },
+  "requires": {
+    "runtimes": [
+      "obsidian",
+      "node>=20",
+      "defuddle",
+      "knap"
+    ]
+  }
+}
