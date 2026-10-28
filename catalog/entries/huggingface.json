@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schemas/catalog-entry.schema.json",
+  "category": "research",
+  "verification": {
+    "level": "official",
+    "since": "2026-10",
+    "note": {
+      "zh-CN": "由 Wevir 维护的连接设置，连接 Hugging Face 官方托管的 MCP 服务",
+      "en": "Connection settings maintained by Wevir for Hugging Face's own hosted MCP server"
+    }
+  }
+}

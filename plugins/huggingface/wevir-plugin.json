@@ -1,0 +1,43 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "huggingface",
+  "name": "Hugging Face",
+  "version": "1.0.0",
+  "description": "Search and explore models, datasets, Spaces, papers and docs on the Hugging Face Hub, and use the Spaces you enable in your Hugging Face MCP settings, through Hugging Face's hosted MCP server. Sign in with your Hugging Face account.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://huggingface.co/docs/hub/hf-mcp-server",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "research",
+  "keywords": ["hugging face", "huggingface", "models", "datasets", "spaces", "papers", "machine learning", "llm", "模型", "数据集", "论文", "机器学习", "开源模型"],
+  "examples": [
+    "Search Hugging Face for the most downloaded Qwen 3 quantized models and compare their sizes and licenses.",
+    "Find datasets on Hugging Face about weather time series and tell me which ones have a permissive license.",
+    "What are today's trending papers on Hugging Face? Summarize the top three."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Hugging Face",
+      "description": "通过 Hugging Face 官方托管的 MCP 服务搜索和浏览 Hugging Face Hub 上的模型、数据集、Space、论文与文档，并使用你在 Hugging Face MCP 设置里启用的 Space。用 Hugging Face 账号登录。",
+      "examples": [
+        "在 Hugging Face 上搜索下载量最高的 Qwen 3 量化模型，比较它们的大小和许可证。",
+        "在 Hugging Face 上找天气时间序列相关的数据集，告诉我哪些许可证比较宽松。",
+        "Hugging Face 今天的热门论文有哪些？概括排名前三的。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://huggingface.co/privacy",
+  "termsOfService": "https://huggingface.co/terms-of-service",
+  "connectors": {
+    "huggingface": {
+      "transport": "http",
+      "url": "https://huggingface.co/mcp",
+      "auth": "oauth",
+      "oauth": {
+        "scopes": ["openid", "profile", "read-mcp"]
+      },
+      "toolTimeoutSec": 180
+    }
+  }
+}
