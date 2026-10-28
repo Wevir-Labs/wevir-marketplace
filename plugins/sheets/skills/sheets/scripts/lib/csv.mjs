@@ -6,7 +6,7 @@ export function decodeText(buf) {
   if (buf[0] === 0xff && buf[1] === 0xfe) return new TextDecoder('utf-16le').decode(buf.subarray(2));
   if (buf[0] === 0xfe && buf[1] === 0xff) return new TextDecoder('utf-16be').decode(buf.subarray(2));
   try {
-    return new TextDecoder('utf-8', { fatal: true }).decode(buf).replace(/^﻿/, '');
+    return new TextDecoder('utf-8', { fatal: true }).decode(buf).replace(/^\uFEFF/, '');
   } catch {
     try {
       return new TextDecoder('gb18030').decode(buf);
@@ -81,5 +81,5 @@ export function toCsv(rows, { delimiter = ',', bom = true } = {}) {
       })
       .join(delimiter),
   );
-  return (bom ? '﻿' : '') + lines.join('\r\n') + (lines.length ? '\r\n' : '');
+  return (bom ? '\uFEFF' : '') + lines.join('\r\n') + (lines.length ? '\r\n' : '');
 }

@@ -189,12 +189,26 @@ function pickSheets(book, which) {
 
 const headerRowOf = guessHeader;
 
-function describeColumn(sheet, c, first, date1904) {
+const TOTAL_LABEL = /^(total|totals|grand total|sum|合计|总计|小计)$/i;
+
+/** The last row when it is a totals row: a total label in its first filled cell and numbers after it. */
+function totalsRowOf(sheet, first) {
+  const r = sheet.maxRow;
+  if (r <= first) return null;
+  const cells = [];
+  for (let c = 1; c <= sheet.maxCol; c++) {
+    const cell = sheet.cells.get(cellKey(r, c));
+    if (cell && cell.t !== 'blank' && (cell.f !== undefined || (cell.v !== null && cell.v !== ''))) cells.push(cell);
+  }
+  return cells[0]?.t === 's' && TOTAL_LABEL.test(String(cells[0].v).trim()) && cells.length > 1 ? r : null;
+}
+
+function describeColumn(sheet, c, first, last, date1904) {
   const counts = { number: 0, date: 0, text: 0, boolean: 0, error: 0, empty: 0, formula: 0 };
   const nums = [];
   const dates = [];
   const texts = new Map();
-  for (let r = first; r <= sheet.maxRow; r++) {
+  for (let r = first; r <= last; r++) {
     const cell = sheet.cells.get(cellKey(r, c));
     if (cell?.f !== undefined) counts.formula++;
     const v = plainValue(cell, date1904);
@@ -239,10 +253,12 @@ function describe(book, sheet, rowsToShow) {
   const date1904 = !!book.date1904;
   const header = headerRowOf(sheet);
   const first = header ? header + 1 : 1;
+  const totalsRow = totalsRowOf(sheet, first);
+  const last = totalsRow ? totalsRow - 1 : sheet.maxRow;
   const columns = [];
   for (let c = 1; c <= sheet.maxCol; c++) {
     const head = header ? plainValue(sheet.cells.get(cellKey(header, c)), date1904) : null;
-    columns.push({ column: colName(c), header: head, ...describeColumn(sheet, c, first, date1904) });
+    columns.push({ column: colName(c), header: head, ...describeColumn(sheet, c, first, last, date1904) });
   }
   const sample = gridOf(sheet, sheet.maxRow ? { r1: first, c1: 1, r2: Math.min(sheet.maxRow, first + rowsToShow - 1), c2: sheet.maxCol } : null, { date1904, formulasAsText: true });
   return {
@@ -251,7 +267,8 @@ function describe(book, sheet, rowsToShow) {
     ...(sheet.kind && sheet.kind !== 'worksheet' && { kind: sheet.kind }),
     range: sheet.maxRow ? rangeName({ r1: 1, c1: 1, r2: sheet.maxRow, c2: sheet.maxCol }) : null,
     headerRow: header,
-    dataRows: sheet.maxRow ? sheet.maxRow - first + 1 : 0,
+    dataRows: sheet.maxRow ? last - first + 1 : 0,
+    ...(totalsRow && { totalsRow }),
     ...(sheet.freeze && { frozenAt: cellName(sheet.freeze.r, sheet.freeze.c) }),
     ...(sheet.filter && { filter: rangeName(sheet.filter) }),
     ...(sheet.merges?.length && { merged: sheet.merges.map(rangeName) }),
@@ -263,7 +280,7 @@ function describe(book, sheet, rowsToShow) {
 function printInfo(file, book, sheets) {
   console.log(`${path.basename(file)}: ${summary(book)}${book.date1904 ? ' (1904 date system)' : ''}`);
   for (const s of sheets) {
-    console.log(`\nSheet "${s.name}"${s.hidden ? ' (hidden)' : ''}${s.kind ? ` (${s.kind}, no cells)` : ''}: ${s.range ?? 'empty'}, ${s.headerRow ? `header in row ${s.headerRow}, ` : 'no header row found, '}${s.dataRows} data row${s.dataRows === 1 ? '' : 's'}${s.frozenAt ? `, frozen at ${s.frozenAt}` : ''}${s.filter ? `, filter ${s.filter}` : ''}${s.merged ? `, merged ${s.merged.slice(0, 4).join(' ')}${s.merged.length > 4 ? ' …' : ''}` : ''}`);
+    console.log(`\nSheet "${s.name}"${s.hidden ? ' (hidden)' : ''}${s.kind ? ` (${s.kind}, no cells)` : ''}: ${s.range ?? 'empty'}, ${s.headerRow ? `header in row ${s.headerRow}, ` : 'no header row found, '}${s.dataRows} data row${s.dataRows === 1 ? '' : 's'}${s.totalsRow ? `, totals in row ${s.totalsRow}` : ''}${s.frozenAt ? `, frozen at ${s.frozenAt}` : ''}${s.filter ? `, filter ${s.filter}` : ''}${s.merged ? `, merged ${s.merged.slice(0, 4).join(' ')}${s.merged.length > 4 ? ' …' : ''}` : ''}`);
     for (const col of s.columns) {
       const extra = [];
       if (col.min !== undefined) extra.push(`min ${col.min}, max ${col.max}, sum ${col.sum}`);

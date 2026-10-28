@@ -45,21 +45,28 @@ function list(refs, max = 4) {
 }
 
 /**
- * Guesses the header row of a sheet read from a file: the first row of two or more filled cells, all text,
- * with something below it. Title and note lines above a table (one filled cell) are skipped.
+ * Guesses the header row of a sheet read from a file: the first row of two or more filled cells, all text, about
+ * as wide as the rows below it. Title and note lines above a table are skipped.
  */
 export function guessHeader(sheet) {
   if (sheet.table?.headerRow) return sheet.table.headerRow;
-  for (let r = 1; r <= Math.min(sheet.maxRow - 1, 30); r++) {
+  const filled = (r) => {
     const cells = [];
     for (let c = 1; c <= sheet.maxCol; c++) {
       const cell = sheet.cells.get(cellKey(r, c));
       if (!isBlank(cell)) cells.push(cell);
     }
-    if (!cells.length || (cells.length === 1 && sheet.maxCol > 1)) continue;
-    return cells.every((cell) => cell.f === undefined && cell.t === 's') ? r : null;
+    return cells;
+  };
+  for (let r = 1; r <= Math.min(sheet.maxRow - 1, 30); r++) {
+    const cells = filled(r);
+    if (cells.length < 2 && !(sheet.maxCol === 1 && cells.length === 1)) continue;
+    if (!cells.every((cell) => cell.f === undefined && cell.t === 's')) return null;
+    let below = 0;
+    for (let k = r + 1; k <= Math.min(sheet.maxRow, r + 5); k++) below = Math.max(below, filled(k).length);
+    if (below && cells.length >= below * 0.6) return r;
   }
-  return sheet.maxCol === 1 && sheet.maxRow > 1 && sheet.cells.get(cellKey(1, 1))?.t === 's' ? 1 : null;
+  return null;
 }
 
 /**

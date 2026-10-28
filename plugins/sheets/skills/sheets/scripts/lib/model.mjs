@@ -19,7 +19,7 @@ export const STYLE_PRESETS = {
 };
 const DEFAULT_HEADER = { bold: true, fill: 'E8EEF4', color: '1F2933', border: 'header' };
 
-const CJK = /[ᄀ-ᅟ⺀-꓏가-힣豈-﫿︰-﹏＀-｠￠-￦]/;
+const CJK = /[\u1100-\u115f\u2e80-\ua4cf\uac00-\ud7a3\uf900-\ufaff\ufe30-\ufe4f\uff00-\uff60\uffe0-\uffe6]/;
 export const isZh = (lang) => /^zh/i.test(lang ?? '');
 
 /** Display width of text in Excel column units: CJK and full-width characters count two. */
@@ -169,10 +169,21 @@ function styleFrom(src, problems, where) {
 function unknownKeys(obj, allowed, where, problems) {
   for (const k of Object.keys(obj)) {
     if (!allowed.includes(k)) {
-      const near = allowed.find((a) => a.toLowerCase() === k.toLowerCase() || (Math.abs(a.length - k.length) <= 1 && [...a].filter((ch, i) => k[i] === ch).length >= a.length - 1));
+      const near = allowed.find((a) => distance(a.toLowerCase(), k.toLowerCase()) <= Math.min(2, Math.floor(a.length / 3)));
       problems.push({ level: 'warning', where, message: `unknown key "${k}" ignored${near ? `; did you mean "${near}"?` : ''}` });
     }
   }
+}
+
+/** Edit distance, for suggesting the key a typo meant. */
+function distance(a, b) {
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const row = [i];
+    for (let j = 1; j <= b.length; j++) row.push(Math.min(prev[j] + 1, row[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)));
+    prev = row;
+  }
+  return prev[b.length];
 }
 
 const SHEET_NAME_BAD = /[:\\/?*[\]]/;
@@ -387,7 +398,7 @@ export function fromSpec(input) {
     else
       for (const [name, target] of Object.entries(spec.names)) {
         const where = `names.${name}`;
-        if (!/^[A-Za-z_\\À-￿][\w.À-￿]*$/.test(name) || parseCell(name) || /^[RC]\d*$/i.test(name) || /^(TRUE|FALSE)$/i.test(name)) {
+        if (!/^[A-Za-z_\\\u00c0-\uffff][\w.\u00c0-\uffff]*$/.test(name) || parseCell(name) || /^[RC]\d*$/i.test(name) || /^(TRUE|FALSE)$/i.test(name)) {
           problems.push({ level: 'error', where, message: `"${name}" cannot be a name: start with a letter, no spaces, and not a cell address` });
           continue;
         }

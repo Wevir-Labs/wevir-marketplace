@@ -94,7 +94,7 @@ const CURRENCY = '¥￥$€£₩₹';
  * @returns {{ value: number, kind: 'number'|'percent'|'currency', symbol?: string } | null}
  */
 export function parseNumberText(text) {
-  let s = String(text).trim().replace(/[−－]/g, '-');
+  let s = String(text).trim().replace(/[\u2212\uff0d]/g, '-');
   if (!s || s.length > 40) return null;
   let negative = false;
   let kind = 'number';
@@ -270,13 +270,14 @@ function group(int) {
 function renderNumber(section, v, signed) {
   const tokens = lex(section);
   const pattern = tokens.map((t) => (t.raw ? t.lit : '\u0000')).join('');
-  const m = /[0#?][0#?,]*(?:\.[0#?]*)?|\.[0#?]+/.exec(pattern);
+  const m = /(?:[0#?][0#?,]*(?:\.[0#?]*)?|\.[0#?]+),*/.exec(pattern);
   if (!m) return tokens.map((t) => t.lit ?? '').join('') || (signed && v < 0 ? '-' : '') + general(Math.abs(v));
   const percents = (pattern.match(/%/g) ?? []).length;
   let x = Math.abs(v) * 100 ** percents;
   let num = m[0];
-  const scale = /,+$/.exec(num.split('.')[0]);
-  if (scale && !num.includes('.')) {
+  // Commas right after the digits scale by a thousand each (#,##0, shows thousands).
+  const scale = /,+$/.exec(num);
+  if (scale) {
     x /= 1000 ** scale[0].length;
     num = num.slice(0, -scale[0].length);
   }

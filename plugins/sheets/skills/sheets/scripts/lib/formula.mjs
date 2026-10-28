@@ -59,16 +59,16 @@ export const rangeName = ({ r1, c1, r2, c2 }) =>
 
 /** A sheet name as a formula prefix: quoted when Excel would quote it. */
 export function sheetPrefix(name) {
-  return /^[A-Za-z_À-￿][\w.À-￿]*$/.test(name) && !parseCell(name) && !/^(TRUE|FALSE)$/i.test(name)
+  return /^[A-Za-z_\u00c0-\uffff][\w.\u00c0-\uffff]*$/.test(name) && !parseCell(name) && !/^(TRUE|FALSE)$/i.test(name)
     ? `${name}!`
     : `'${name.replace(/'/g, "''")}'!`;
 }
 
 const ERRORS = ['#NULL!', '#DIV/0!', '#VALUE!', '#REF!', '#NAME?', '#NUM!', '#N/A', '#GETTING_DATA', '#SPILL!', '#CALC!'];
-const SHEET_RE = /^(?:'((?:[^']|'')+)'|([A-Za-z_À-￿][\w.À-￿]*))!/;
+const SHEET_RE = /^(?:'((?:[^']|'')+)'|([A-Za-z_\u00c0-\uffff][\w.\u00c0-\uffff]*))!/;
 const AREA_RE = /^(?:\$?[A-Za-z]{1,3}\$?\d+(?::\$?[A-Za-z]{1,3}\$?\d+)?|\$?[A-Za-z]{1,3}:\$?[A-Za-z]{1,3}|\$?\d+:\$?\d+)(?![\w(.])/;
 const NUMBER_RE = /^(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/;
-const IDENT_RE = /^[A-Za-z_\\À-￿][\w.À-￿]*/;
+const IDENT_RE = /^[A-Za-z_\\\u00c0-\uffff][\w.\u00c0-\uffff]*/;
 const OPS = ['<>', '<=', '>=', '+', '-', '*', '/', '^', '&', '=', '<', '>', '%', '(', ')', ',', ':', '{', '}', ';'];
 
 /**
