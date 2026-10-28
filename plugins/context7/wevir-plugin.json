@@ -1,0 +1,48 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "context7",
+  "name": "Context7",
+  "version": "1.0.0",
+  "description": "Look up current documentation and code examples for libraries and frameworks through Context7's hosted MCP server, so the agent writes code against today's APIs instead of what it remembers. Works without an account; an optional API key raises the rate limits.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://github.com/upstash/context7",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "developer-tools",
+  "keywords": ["context7", "documentation", "docs", "api reference", "library", "framework", "code examples", "文档", "接口文档", "开发文档", "代码示例"],
+  "examples": [
+    "Use Context7 to show how routing middleware works in the current Next.js App Router, with a code example.",
+    "Look up the latest Tailwind CSS docs and tell me how to set up dark mode in v4.",
+    "Check Context7 for how to define a Prisma schema with a many-to-many relation."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Context7",
+      "description": "通过 Context7 官方托管的 MCP 服务查询各类库与框架的最新文档和代码示例，让智能体按现在的接口写代码，而不是凭记忆。不登录也能用；可选填 API Key 放宽限额。",
+      "examples": [
+        "用 Context7 查一下当前 Next.js App Router 里中间件怎么做路由，给个代码示例。",
+        "查最新的 Tailwind CSS 文档，告诉我 v4 怎么配置暗色模式。",
+        "在 Context7 里查 Prisma 怎么定义多对多关系的 schema。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://context7.com/privacy",
+  "termsOfService": "https://context7.com/terms",
+  "inputs": [
+    {
+      "key": "CONTEXT7_API_KEY",
+      "label": "API key (optional)",
+      "description": "Leave empty to use Context7 anonymously. For higher rate limits, create a free key at https://context7.com/dashboard and paste it here.",
+      "secret": true
+    }
+  ],
+  "connectors": {
+    "context7": {
+      "transport": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "auth": "none",
+      "headers": { "Authorization": "Bearer ${input:CONTEXT7_API_KEY}" }
+    }
+  }
+}
