@@ -1,0 +1,40 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "supabase",
+  "name": "Supabase",
+  "version": "1.0.0",
+  "description": "Explore your Supabase projects read-only through Supabase's hosted MCP server: list tables and migrations, run read-only SQL, read logs and security and performance advisors, generate TypeScript types, and search Supabase's docs. Sign in with your Supabase account.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://supabase.com/docs/guides/getting-started/mcp",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "developer-tools",
+  "keywords": ["supabase", "postgres", "database", "sql", "backend", "edge functions", "auth", "数据库", "后端", "数据表", "查询"],
+  "examples": [
+    "List the tables in my Supabase project with their row counts, and describe how they relate.",
+    "Run the Supabase security and performance advisors on my project and explain what to fix first.",
+    "Generate TypeScript types for my Supabase database schema."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Supabase",
+      "description": "通过 Supabase 官方托管的 MCP 服务以只读方式查看你的 Supabase 项目：列出数据表与迁移、执行只读 SQL、查看日志以及安全与性能建议、生成 TypeScript 类型、搜索 Supabase 文档。用 Supabase 账号登录。",
+      "examples": [
+        "列出我 Supabase 项目里的数据表和各自的行数，说明它们之间的关系。",
+        "对我的项目运行 Supabase 的安全与性能检查，告诉我先修哪一项。",
+        "为我的 Supabase 数据库结构生成 TypeScript 类型。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://supabase.com/privacy",
+  "termsOfService": "https://supabase.com/terms",
+  "connectors": {
+    "supabase": {
+      "transport": "http",
+      "url": "https://mcp.supabase.com/mcp?read_only=true",
+      "auth": "oauth",
+      "toolTimeoutSec": 120
+    }
+  }
+}
