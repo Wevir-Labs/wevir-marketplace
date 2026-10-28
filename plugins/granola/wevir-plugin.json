@@ -1,0 +1,39 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "granola",
+  "name": "Granola",
+  "version": "1.0.0",
+  "description": "Ask questions about your meetings and read your Granola notes, attendees and transcripts through Granola's hosted MCP server. Sign in with your Granola account.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://docs.granola.ai/help-center/sharing/integrations/mcp",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "productivity",
+  "keywords": ["granola", "meetings", "meeting notes", "transcripts", "action items", "会议", "会议纪要", "会议记录", "待办"],
+  "examples": [
+    "Summarize my meetings from this week and list the action items assigned to me.",
+    "What did we decide about pricing in my most recent meeting with Acme?",
+    "List yesterday's meetings with their attendees and a one-line summary of each."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Granola",
+      "description": "通过 Granola 官方托管的 MCP 服务询问你的会议情况，读取 Granola 笔记、参会人与转写稿。用 Granola 账号登录。",
+      "examples": [
+        "概括我这周的会议，并列出分配给我的待办事项。",
+        "我最近一次和 Acme 开会时，定价方面做了什么决定？",
+        "列出昨天的会议、参会人，并各用一句话概括。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://docs.granola.ai/help-center/policies/privacy-policy",
+  "termsOfService": "https://docs.granola.ai/help-center/policies/terms-of-service/application-terms-of-service",
+  "connectors": {
+    "granola": {
+      "transport": "http",
+      "url": "https://mcp.granola.ai/mcp",
+      "auth": "oauth"
+    }
+  }
+}
