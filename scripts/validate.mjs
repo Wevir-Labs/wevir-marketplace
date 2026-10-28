@@ -7,7 +7,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 import semver from 'semver';
-import { checkRepository, ENTRY_ID, MANIFEST, parseSkill, ROOT } from './lib.mjs';
+import { checkRepository, ENTRY_ID, ROOT, versionAt } from './lib.mjs';
 
 const { values: args } = parseArgs({
   options: { base: { type: 'string' }, author: { type: 'string' }, 'sync-bot': { type: 'string' } },
@@ -18,27 +18,6 @@ const git = (...argv) => execFileSync('git', argv, { cwd: ROOT, encoding: 'utf8'
 
 const { ids, problems: found } = await checkRepository();
 problems.push(...found);
-
-/** Version an entry had at `ref`, or null when it did not exist there. */
-function versionAt(ref, dir) {
-  const [type] = dir.split('/');
-  const file = type === 'plugins' ? `${dir}/${MANIFEST}` : `${dir}/SKILL.md`;
-  let text;
-  try {
-    text = git('show', `${ref}:${file}`);
-  } catch {
-    return null;
-  }
-  if (type === 'plugins') {
-    try {
-      return JSON.parse(text).version ?? null;
-    } catch {
-      return null;
-    }
-  }
-  const skill = parseSkill(text);
-  return typeof skill === 'string' ? null : (skill.metadata.version ?? '1.0.0');
-}
 
 function maintainers() {
   return readFile(path.join(ROOT, '.github/CODEOWNERS'), 'utf8').then((text) => {

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -19,6 +19,7 @@ import {
   unpinnedPackage,
   upstreamUrl,
   validateIndex,
+  versionAt,
 } from './lib.mjs';
 import {
   compareRisks,
@@ -345,6 +346,30 @@ describe('catalog', () => {
         { id: 'new', name: { en: 'New' }, entries: ['b', 'c', 'd'] },
       ],
     );
+  });
+});
+
+describe('versionAt', () => {
+  it('reads versions at a ref and stays quiet about entries that are new', async () => {
+    const m = await market();
+    gitIn(m.dir, 'init', '-q', '-b', 'main');
+    for (const [rel, content] of Object.entries(plugin('old'))) await m.write(rel, content);
+    await m.write('skills/plain/SKILL.md', skill('plain'));
+    gitIn(m.dir, 'add', '-A');
+    gitIn(m.dir, 'commit', '-q', '-m', 'base');
+    assert.equal(versionAt('HEAD', 'plugins/old', m.dir), '1.0.0');
+    assert.equal(versionAt('HEAD', 'skills/plain', m.dir), '1.0.0');
+    assert.equal(versionAt('HEAD', 'plugins/new', m.dir), null);
+    // git prints "fatal: path … does not exist in 'HEAD'" for the missing file unless versionAt silences it.
+    const lib = path.join(ROOT, 'scripts/lib.mjs');
+    const run = spawnSync(
+      process.execPath,
+      ['--input-type=module', '-e', `import { versionAt } from ${JSON.stringify(lib)}; console.log(versionAt('HEAD', 'plugins/new', ${JSON.stringify(m.dir)}));`],
+      { encoding: 'utf8' },
+    );
+    assert.equal(run.stdout, 'null\n');
+    assert.equal(run.stderr, '');
+    await rm(m.dir, { recursive: true, force: true });
   });
 });
 

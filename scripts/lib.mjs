@@ -348,6 +348,34 @@ export async function readCatalog(root = ROOT) {
 export const resolveCategory = (catalog, suggested) => catalog?.category ?? suggested ?? 'other';
 
 /**
+ * Version the entry directory `dir` had at the git `ref`, or null when it did not exist there. A missing file is
+ * the normal case for new entries, so git's complaint about it is not printed.
+ */
+export function versionAt(ref, dir, root = ROOT) {
+  const [type] = dir.split('/');
+  const file = type === 'plugins' ? `${dir}/${MANIFEST}` : `${dir}/SKILL.md`;
+  let text;
+  try {
+    text = execFileSync('git', ['show', `${ref}:${file}`], {
+      cwd: root,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+  } catch {
+    return null;
+  }
+  if (type === 'plugins') {
+    try {
+      return JSON.parse(text).version ?? null;
+    } catch {
+      return null;
+    }
+  }
+  const skill = parseSkill(text);
+  return typeof skill === 'string' ? null : (skill.metadata.version ?? '1.0.0');
+}
+
+/**
  * When each entry directory first appeared on the first-parent history of `commit`, as UTC `…Z` times without
  * fractions. Directories that are not committed yet are missing from the map.
  */
