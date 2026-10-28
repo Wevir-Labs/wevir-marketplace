@@ -1,0 +1,2175 @@
+{
+  "schemaVersion": 1,
+  "name": "Wevir",
+  "generatedAt": "2026-10-28T06:15:15Z",
+  "sequence": 8,
+  "commit": "e2904cf684bdcfb958cb04d64cd64655199bd962",
+  "categories": [
+    {
+      "id": "productivity",
+      "name": {
+        "zh-CN": "效率",
+        "en": "Productivity"
+      }
+    },
+    {
+      "id": "communication",
+      "name": {
+        "zh-CN": "沟通",
+        "en": "Communication"
+      }
+    },
+    {
+      "id": "creative",
+      "name": {
+        "zh-CN": "创意与设计",
+        "en": "Creative & design"
+      }
+    },
+    {
+      "id": "developer-tools",
+      "name": {
+        "zh-CN": "开发者工具",
+        "en": "Developer tools"
+      }
+    },
+    {
+      "id": "data",
+      "name": {
+        "zh-CN": "数据与分析",
+        "en": "Data & analytics"
+      }
+    },
+    {
+      "id": "writing",
+      "name": {
+        "zh-CN": "写作",
+        "en": "Writing"
+      }
+    },
+    {
+      "id": "research",
+      "name": {
+        "zh-CN": "搜索与研究",
+        "en": "Search & research"
+      }
+    },
+    {
+      "id": "education",
+      "name": {
+        "zh-CN": "教育",
+        "en": "Education"
+      }
+    },
+    {
+      "id": "business",
+      "name": {
+        "zh-CN": "业务与运营",
+        "en": "Business & operations"
+      }
+    },
+    {
+      "id": "finance",
+      "name": {
+        "zh-CN": "金融",
+        "en": "Finance"
+      }
+    },
+    {
+      "id": "health",
+      "name": {
+        "zh-CN": "健康",
+        "en": "Health"
+      }
+    },
+    {
+      "id": "travel",
+      "name": {
+        "zh-CN": "旅行",
+        "en": "Travel"
+      }
+    },
+    {
+      "id": "entertainment",
+      "name": {
+        "zh-CN": "娱乐",
+        "en": "Entertainment"
+      }
+    },
+    {
+      "id": "security",
+      "name": {
+        "zh-CN": "安全",
+        "en": "Security"
+      }
+    },
+    {
+      "id": "other",
+      "name": {
+        "zh-CN": "其他",
+        "en": "Other"
+      }
+    }
+  ],
+  "featured": [
+    {
+      "id": "new",
+      "name": {
+        "zh-CN": "新品推荐",
+        "en": "New"
+      },
+      "entries": [
+        "humanizer-zh",
+        "atlassian",
+        "context7",
+        "deepwiki",
+        "granola",
+        "huggingface"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "id": "atlassian",
+      "kind": "mcp",
+      "path": "plugins/atlassian",
+      "name": "Atlassian (Jira and Confluence)",
+      "i18n": {
+        "zh-CN": {
+          "name": "Atlassian（Jira 与 Confluence）",
+          "description": "通过 Atlassian 官方托管的 Rovo MCP 服务搜索、阅读、创建和更新 Jira 工作项与 Confluence 页面。用 Atlassian 账号登录。",
+          "examples": [
+            "列出分配给我的未完成 Jira 工作项，按项目分组并带上状态。",
+            "找到 Confluence 上讲发布流程的页面，概括其中的步骤。",
+            "在 WEB 项目里起草一个标题为“移动端登录按钮错位”的 Jira 缺陷，我确认后再创建。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Search, read, create and update Jira work items and Confluence pages through Atlassian's hosted Rovo MCP server. Sign in with your Atlassian account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/",
+      "license": "MIT",
+      "icon": "plugins/atlassian/icon.svg",
+      "category": "productivity",
+      "keywords": [
+        "atlassian",
+        "jira",
+        "confluence",
+        "rovo",
+        "issues",
+        "wiki",
+        "工单",
+        "项目管理",
+        "知识库",
+        "需求"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 Atlassian 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for Atlassian's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "List the open Jira work items assigned to me, grouped by project, with their status.",
+        "Find the Confluence page about our release process and summarize the steps.",
+        "Draft a Jira bug in project WEB titled \"Login button misaligned on mobile\" and create it after I confirm."
+      ],
+      "links": {
+        "privacy": "https://www.atlassian.com/legal/privacy-policy",
+        "terms": "https://www.atlassian.com/legal/atlassian-customer-agreement"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "atlassian",
+            "transport": "http",
+            "url": "https://mcp.atlassian.com/v2/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 4526,
+          "sha256": "6f3581878609a246bc40beab1ae851fe01825283ac1741a37e1330417f124995"
+        },
+        {
+          "path": "icon.svg",
+          "size": 491,
+          "sha256": "874c4f14afc4b0101d4aa7bce5e264ce14c992e47b5e7f3ae4c42bee049e4db5"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 2365,
+          "sha256": "f023b274d4c336977595ad1f2350673380a285647e8126c0e695c6fe504c2791"
+        }
+      ],
+      "digest": "b7e1b18355348ad2b96175ded824e4355e9ad5682a42735acebaac36ed8c7303"
+    },
+    {
+      "id": "context7",
+      "kind": "mcp",
+      "path": "plugins/context7",
+      "name": "Context7",
+      "i18n": {
+        "zh-CN": {
+          "name": "Context7",
+          "description": "通过 Context7 官方托管的 MCP 服务查询各类库与框架的最新文档和代码示例，让智能体按现在的接口写代码，而不是凭记忆。不登录也能用；可选填 API Key 放宽限额。",
+          "examples": [
+            "用 Context7 查一下当前 Next.js App Router 里中间件怎么做路由，给个代码示例。",
+            "查最新的 Tailwind CSS 文档，告诉我 v4 怎么配置暗色模式。",
+            "在 Context7 里查 Prisma 怎么定义多对多关系的 schema。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Look up current documentation and code examples for libraries and frameworks through Context7's hosted MCP server, so the agent writes code against today's APIs instead of what it remembers. Works without an account; an optional API key raises the rate limits.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://github.com/upstash/context7",
+      "license": "MIT",
+      "icon": "plugins/context7/icon.svg",
+      "category": "developer-tools",
+      "keywords": [
+        "context7",
+        "documentation",
+        "docs",
+        "api reference",
+        "library",
+        "framework",
+        "code examples",
+        "文档",
+        "接口文档",
+        "开发文档",
+        "代码示例"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 Context7 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for Context7's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "Use Context7 to show how routing middleware works in the current Next.js App Router, with a code example.",
+        "Look up the latest Tailwind CSS docs and tell me how to set up dark mode in v4.",
+        "Check Context7 for how to define a Prisma schema with a many-to-many relation."
+      ],
+      "links": {
+        "privacy": "https://context7.com/privacy",
+        "terms": "https://context7.com/terms"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "context7",
+            "transport": "http",
+            "url": "https://mcp.context7.com/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": [
+          {
+            "key": "CONTEXT7_API_KEY",
+            "label": "API key (optional)",
+            "description": "Leave empty to use Context7 anonymously. For higher rate limits, create a free key at https://context7.com/dashboard and paste it here.",
+            "secret": true
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2005,
+          "sha256": "e3599f473379e6a007fa1a209b3472ddffc61cc3424f34ab08f43b4ce44c32a5"
+        },
+        {
+          "path": "icon.svg",
+          "size": 410,
+          "sha256": "d7e9daed7320d13cc5120aff93e332f19384ef2bdebc454049e1522607bcead4"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 2300,
+          "sha256": "6ff8728f000e01011380879ef0e3bebd1100763a3ccd9feae480a48c557d4353"
+        }
+      ],
+      "digest": "ea34d8bfdec4026bd11d583ea0c7ce15e5109a3e856759a2091c926de6b1c513"
+    },
+    {
+      "id": "deepwiki",
+      "kind": "mcp",
+      "path": "plugins/deepwiki",
+      "name": "DeepWiki",
+      "i18n": {
+        "zh-CN": {
+          "name": "DeepWiki",
+          "description": "通过 Cognition 的 DeepWiki 官方托管 MCP 服务，阅读任意公开 GitHub 仓库自动生成的 Wiki，并就它的代码提问。无需登录；只覆盖公开仓库。",
+          "examples": [
+            "用 DeepWiki 解释 facebook/react 是怎么调度更新的，以及我应该先读哪些文件。",
+            "问问 DeepWiki：vercel/next.js 在哪里处理中间件的匹配？",
+            "列出 modelcontextprotocol/typescript-sdk 的 Wiki 目录，并概括传输层那一节。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Read the generated wiki of any public GitHub repository and ask questions about its code through DeepWiki's hosted MCP server, by Cognition. No sign-in; public repositories only.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://docs.devin.ai/work-with-devin/deepwiki-mcp",
+      "license": "MIT",
+      "icon": "plugins/deepwiki/icon.svg",
+      "category": "developer-tools",
+      "keywords": [
+        "deepwiki",
+        "github",
+        "repository",
+        "codebase",
+        "open source",
+        "wiki",
+        "code search",
+        "源码",
+        "代码库",
+        "开源项目",
+        "仓库文档"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 DeepWiki 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for DeepWiki's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "Use DeepWiki to explain how facebook/react schedules updates, and which files I should read first.",
+        "Ask DeepWiki where vercel/next.js handles middleware matching.",
+        "Show me the wiki outline for modelcontextprotocol/typescript-sdk and summarize the transport section."
+      ],
+      "links": {
+        "privacy": "https://cognition.ai/privacy-policy",
+        "terms": "https://cognition.ai/terms-of-service"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "deepwiki",
+            "transport": "http",
+            "url": "https://mcp.deepwiki.com/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 1676,
+          "sha256": "64d43df6271eac2278807b37869e7a1ebb02807673561284239a6cd36ca6131a"
+        },
+        {
+          "path": "icon.svg",
+          "size": 524,
+          "sha256": "f92f1860b2d3f708c005f9e22cfee59f31da688b657667264e0c8daceb706b06"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1889,
+          "sha256": "46338a61b0f2a3dd0d64bca8dc389737131996c1ffe411e1f8bf6342b0fa49ce"
+        }
+      ],
+      "digest": "dab7009d5f89ec4de9ff8a975f5317a8a073db15cdcdb50e8d7697ad0c2648da"
+    },
+    {
+      "id": "docs",
+      "kind": "skill",
+      "path": "plugins/docs",
+      "name": "Docs",
+      "i18n": {
+        "zh-CN": {
+          "name": "文档",
+          "description": "撰写和修改报告、备忘录、方案、需求文档、会议纪要与信函，并导出为 Word（.docx）、PDF 或单个网页文件。自带离线转换器，照顾中文排版。",
+          "examples": [
+            "把这份会议记录整理成会议纪要，列出决定和待办表格，导出 Word。",
+            "写一份两页的方案，建议把客服合并成一个队列，给我 PDF。",
+            "把这份报告压缩到一半篇幅、保留所有数字，再导出 Word。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Write and revise reports, memos, proposals, PRDs, meeting notes and letters, then export them to Word (.docx), PDF or a self-contained web page. Works offline with a bundled converter; Chinese typography included.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/docs",
+      "license": "MIT",
+      "icon": "plugins/docs/icon.svg",
+      "category": "writing",
+      "keywords": [
+        "document",
+        "word",
+        "docx",
+        "pdf",
+        "report",
+        "memo",
+        "proposal",
+        "prd",
+        "meeting notes",
+        "markdown"
+      ],
+      "listedAt": "2026-10-22T05:08:54Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 编写与维护，全部在本机运行",
+          "en": "Written and maintained by Wevir; runs entirely on your computer"
+        }
+      },
+      "examples": [
+        "Turn these meeting notes into minutes with decisions and an action table, as a Word file.",
+        "Write a two-page proposal for moving our support team to one queue, and give me a PDF.",
+        "Tighten this report to half its length without losing the numbers, then export it to Word."
+      ],
+      "requires": {
+        "runtimes": [
+          "node>=22"
+        ]
+      },
+      "contents": {
+        "connectors": [],
+        "skills": [
+          {
+            "name": "docs",
+            "description": "Write and revise documents (reports, memos, proposals, PRDs, specs and design docs, meeting notes, one-pagers, briefs, weekly updates, letters) as Markdown in the session folder, and export them to Word (.docx), PDF or a self-contained HTML page with the bundled converter. Use when the user asks for a document, a write-up, a report, or a Word or PDF file; when they want an existing document edited, restructured, shortened or polished; or when notes, transcripts or data should become a finished document. Not for slide decks (use the slides skill) or for docs that belong in a code repository (README, API reference)."
+          }
+        ],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 1734,
+          "sha256": "546cb24439747610b96155b0769adbd6d83815e4f299cd8d58d303d165d88bdf"
+        },
+        {
+          "path": "icon.svg",
+          "size": 515,
+          "sha256": "33f0152cbeab6f7c4e7f16d9caca1cd64ea0cf81d91a6107ad8eec2cc63b5482"
+        },
+        {
+          "path": "skills/docs/SKILL.md",
+          "size": 10858,
+          "sha256": "7cee5d94e542dc9dbab18a7d1dfd60398d5eee2afa56c5198672db0b53497194"
+        },
+        {
+          "path": "skills/docs/references/format.md",
+          "size": 5708,
+          "sha256": "877fd5c2d794a36c66123e2ff2ff1bad8d1ad19e124408c3d1e2dce66052fae4"
+        },
+        {
+          "path": "skills/docs/references/kinds.md",
+          "size": 4525,
+          "sha256": "c1b92a0098bb60c64b7ee19c226b73321f59990b9c27349804066b07beb20135"
+        },
+        {
+          "path": "skills/docs/references/style.md",
+          "size": 3234,
+          "sha256": "b4b9284efbea01a8eda5977ef158f0f62c0b3455b4afa59844b7b955ade79765"
+        },
+        {
+          "path": "skills/docs/scripts/doc.mjs",
+          "size": 9044,
+          "sha256": "1a7c5bf67191d8cb3d34795973269524cce26c5b6c7697e847c293e0654eb7c9"
+        },
+        {
+          "path": "skills/docs/scripts/lib/chrome.mjs",
+          "size": 8474,
+          "sha256": "a0760d3593890a466d90734ab196fea08e798075d4a25f8ec43501675aad9f32"
+        },
+        {
+          "path": "skills/docs/scripts/lib/docx.mjs",
+          "size": 35734,
+          "sha256": "23245d1c9def1ab5e8a73e6a10b746020635ae259d9fa11e465730c6d2c3ed6f"
+        },
+        {
+          "path": "skills/docs/scripts/lib/html.mjs",
+          "size": 11899,
+          "sha256": "da2f7c33f5b874059d049aa09712057303b847d3e0cac038d639a2b914cd3576"
+        },
+        {
+          "path": "skills/docs/scripts/lib/images.mjs",
+          "size": 4265,
+          "sha256": "5fbbec4f4f70807d84506b9214e3a71e5dbe43c19f876086b7ebf77c722c240f"
+        },
+        {
+          "path": "skills/docs/scripts/lib/markdown.mjs",
+          "size": 29184,
+          "sha256": "4fb207640bef6d8cb66d876b108524b6f0158d5a5cf174f884112942a9831a83"
+        },
+        {
+          "path": "skills/docs/scripts/lib/themes.mjs",
+          "size": 2959,
+          "sha256": "07998ca411c1f648c1978740ccf6afb5beccf74ff637f83e7f049e2f6534672b"
+        },
+        {
+          "path": "skills/docs/scripts/lib/zip.mjs",
+          "size": 3268,
+          "sha256": "f2a1e7609ed3fc853fef86675d0762c712dc27d4ff35abd5eedadc7f6bd210f9"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1644,
+          "sha256": "1fd8fc596956abd697722bcace6b86635d9c1c3435db1246ff32f49e961b9a9c"
+        }
+      ],
+      "digest": "3238c268833f222f1cfe268d0556c97e0f8c8a6d632f6cba5cf445b9a910fa5e"
+    },
+    {
+      "id": "github",
+      "kind": "mcp",
+      "path": "plugins/github",
+      "name": "GitHub",
+      "i18n": {
+        "zh-CN": {
+          "name": "GitHub",
+          "description": "通过 GitHub 官方托管的 MCP 服务读取并处理仓库、Issue、Pull Request、Actions 运行与代码。用 GitHub 账号登录。",
+          "examples": [
+            "列出分配给我的未合并 Pull Request，并概括每个改了什么。",
+            "找出这个仓库里重试逻辑在哪，并为缺少退避提一个 Issue。",
+            "main 上最近一次 CI 为什么失败？给我看失败任务的日志。"
+          ]
+        }
+      },
+      "version": "1.0.2",
+      "description": "Read and work with repositories, issues, pull requests, Actions runs and code on GitHub through GitHub's hosted MCP server. Sign in with your GitHub account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://github.com/github/github-mcp-server",
+      "license": "MIT",
+      "icon": "plugins/github/icon.svg",
+      "category": "developer-tools",
+      "keywords": [
+        "github",
+        "git",
+        "pull request",
+        "issues",
+        "actions",
+        "code search"
+      ],
+      "listedAt": "2026-10-22T03:27:00Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的登录设置，连接 GitHub 官方托管的 MCP 服务",
+          "en": "Sign-in settings maintained by Wevir for GitHub's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "List the open pull requests assigned to me and summarize what each one changes.",
+        "Find where the retry logic lives in this repository and open an issue for the missing backoff.",
+        "Why did the last CI run on main fail? Show the failing job's log."
+      ],
+      "links": {
+        "privacy": "https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement",
+        "terms": "https://docs.github.com/site-policy/github-terms/github-terms-of-service"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "github",
+            "transport": "http",
+            "url": "https://api.githubcopilot.com/mcp/"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2268,
+          "sha256": "997fb895c7ba929af916f08c6241bff284dfe9bfdb4799c1776e87f66d19a67b"
+        },
+        {
+          "path": "icon.svg",
+          "size": 1387,
+          "sha256": "6ea0c28127927e0776680d3320a2ff96c9c3ffb2a83dcb7501e9125da24c488d"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1983,
+          "sha256": "49838edaed8847c50bba808498396c43b69895fdb69e50badbd49a1eb9a747ba"
+        }
+      ],
+      "digest": "6614cec4b3c6d10099dce4268ceaa7c57104b6bbee39ca550ff2e221f5cab4ab",
+      "history": [
+        {
+          "version": "1.0.1",
+          "commit": "4e9d1d40ff718c86a89cf1a61648e260917e07ab"
+        },
+        {
+          "version": "1.0.0",
+          "commit": "3587cb45e3db3bc984167ae385fa47ebd926b08f"
+        }
+      ]
+    },
+    {
+      "id": "granola",
+      "kind": "mcp",
+      "path": "plugins/granola",
+      "name": "Granola",
+      "i18n": {
+        "zh-CN": {
+          "name": "Granola",
+          "description": "通过 Granola 官方托管的 MCP 服务询问你的会议情况，读取 Granola 笔记、参会人与转写稿。用 Granola 账号登录。",
+          "examples": [
+            "概括我这周的会议，并列出分配给我的待办事项。",
+            "我最近一次和 Acme 开会时，定价方面做了什么决定？",
+            "列出昨天的会议、参会人，并各用一句话概括。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Ask questions about your meetings and read your Granola notes, attendees and transcripts through Granola's hosted MCP server. Sign in with your Granola account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://docs.granola.ai/help-center/sharing/integrations/mcp",
+      "license": "MIT",
+      "icon": "plugins/granola/icon.svg",
+      "category": "productivity",
+      "keywords": [
+        "granola",
+        "meetings",
+        "meeting notes",
+        "transcripts",
+        "action items",
+        "会议",
+        "会议纪要",
+        "会议记录",
+        "待办"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 Granola 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for Granola's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "Summarize my meetings from this week and list the action items assigned to me.",
+        "What did we decide about pricing in my most recent meeting with Acme?",
+        "List yesterday's meetings with their attendees and a one-line summary of each."
+      ],
+      "links": {
+        "privacy": "https://docs.granola.ai/help-center/policies/privacy-policy",
+        "terms": "https://docs.granola.ai/help-center/policies/terms-of-service/application-terms-of-service"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "granola",
+            "transport": "http",
+            "url": "https://mcp.granola.ai/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2958,
+          "sha256": "ee1c9dba0a1b79c0fc3716c23fc2afd95121197b1397209fa7729755156c1775"
+        },
+        {
+          "path": "icon.svg",
+          "size": 317,
+          "sha256": "5efe0f56cf7b5bf77daab131806b8cd24fc54792bbaf909bac83aa0b5a85a573"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1773,
+          "sha256": "534864d371d16bd48aaaf6dc7f5dbdd6d612e8aa419486e66d693cd634bcaf17"
+        }
+      ],
+      "digest": "4b17ebafbcdb5295d731747e874087a84864fa9120674839f46fc40cf8d99be7"
+    },
+    {
+      "id": "huggingface",
+      "kind": "mcp",
+      "path": "plugins/huggingface",
+      "name": "Hugging Face",
+      "i18n": {
+        "zh-CN": {
+          "name": "Hugging Face",
+          "description": "通过 Hugging Face 官方托管的 MCP 服务搜索和浏览 Hugging Face Hub 上的模型、数据集、Space、论文与文档，并使用你在 Hugging Face MCP 设置里启用的 Space。用 Hugging Face 账号登录。",
+          "examples": [
+            "在 Hugging Face 上搜索下载量最高的 Qwen 3 量化模型，比较它们的大小和许可证。",
+            "在 Hugging Face 上找天气时间序列相关的数据集，告诉我哪些许可证比较宽松。",
+            "Hugging Face 今天的热门论文有哪些？概括排名前三的。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Search and explore models, datasets, Spaces, papers and docs on the Hugging Face Hub, and use the Spaces you enable in your Hugging Face MCP settings, through Hugging Face's hosted MCP server. Sign in with your Hugging Face account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://huggingface.co/docs/hub/hf-mcp-server",
+      "license": "MIT",
+      "icon": "plugins/huggingface/icon.svg",
+      "category": "research",
+      "keywords": [
+        "hugging face",
+        "huggingface",
+        "models",
+        "datasets",
+        "spaces",
+        "papers",
+        "machine learning",
+        "llm",
+        "模型",
+        "数据集",
+        "论文",
+        "机器学习",
+        "开源模型"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 Hugging Face 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for Hugging Face's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "Search Hugging Face for the most downloaded Qwen 3 quantized models and compare their sizes and licenses.",
+        "Find datasets on Hugging Face about weather time series and tell me which ones have a permissive license.",
+        "What are today's trending papers on Hugging Face? Summarize the top three."
+      ],
+      "links": {
+        "privacy": "https://huggingface.co/privacy",
+        "terms": "https://huggingface.co/terms-of-service"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "huggingface",
+            "transport": "http",
+            "url": "https://huggingface.co/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2880,
+          "sha256": "dde1e9a1bbba901f72482fd2c206e13adcd191ae02fce2fed5039bb105a3da37"
+        },
+        {
+          "path": "icon.svg",
+          "size": 3136,
+          "sha256": "c845fb8174f99effc94aa67e15bfc7076ea7673582712c1dc70c649bb00e85fe"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 2129,
+          "sha256": "13f5f66c568b39bc112c5774c3f32514498cc955a7aaa9605614308b4587940e"
+        }
+      ],
+      "digest": "d3fc1781fbeabeaceff72485a6bb5bb8b745cc2528d9cedd34f089a1f3b0722f"
+    },
+    {
+      "id": "humanizer",
+      "kind": "skill",
+      "path": "plugins/humanizer",
+      "name": "Humanizer",
+      "i18n": {
+        "zh-CN": {
+          "name": "Humanizer 英文去 AI 味",
+          "description": "改写读起来像 AI 写的英文文本，让它像作者本人写的，同时不改变原意。面向英文；中文文本请用 Humanizer-zh。",
+          "examples": [
+            "帮这篇英文博客草稿去掉 AI 味：事实一个不改，读起来要像我自己写的。",
+            "检查这封英文求职信里有哪些 AI 写作痕迹，逐条列出并给出更朴素的改法。",
+            "把这篇英文产品发布稿改得像真人写的，去掉推销腔。"
+          ]
+        }
+      },
+      "version": "3.1.1",
+      "description": "Rewrite AI-sounding text so it reads like the writer without changing what it says.",
+      "author": {
+        "name": "blader",
+        "url": "https://github.com/blader"
+      },
+      "homepage": "https://github.com/blader/humanizer",
+      "license": "MIT",
+      "icon": "plugins/humanizer/icon.svg",
+      "category": "writing",
+      "keywords": [
+        "writing",
+        "editing",
+        "humanize",
+        "prose",
+        "style",
+        "ai writing",
+        "rewrite",
+        "proofread",
+        "去AI味",
+        "润色",
+        "改写"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "upstream": {
+        "url": "https://github.com/blader/humanizer",
+        "version": "3.1.0",
+        "commit": "225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8",
+        "license": "MIT"
+      },
+      "examples": [
+        "Humanize this blog post draft: keep every fact, but cut the AI tells and make it sound like me.",
+        "Review this cover letter for signs of AI writing and list each one with a plainer rewrite.",
+        "Rewrite this product announcement so it reads like a person wrote it, without the sales language."
+      ],
+      "contents": {
+        "connectors": [],
+        "skills": [
+          {
+            "name": "humanizer",
+            "description": "Rewrite AI-sounding text so it reads like the writer without changing what it says.\nUse when editing or reviewing prose for AI tells: not-X-but-Y contrasts, one-line\nclosers, staged openers, forced triads, dashes everywhere, inflated claims, sales\nlanguage, stock AI words, bold labels, or filler. Based on Wikipedia's \"Signs of AI writing.\"\n"
+          }
+        ],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": ".cursor-plugin/plugin.json",
+          "size": 388,
+          "sha256": "d1e0b50594cf4bbe57fd164b771b401713a91b76b5a213ebe8f4558bb2036546"
+        },
+        {
+          "path": "AGENTS.md",
+          "size": 3439,
+          "sha256": "de84a449da400454df1225ddb1ced728c35bf0be7811b239e3370c7dbe1f4e69"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "size": 5922,
+          "sha256": "b3591fe203429f1a6bd2f713c79272e9a8e58a487843d0908d2bbe0700722afa"
+        },
+        {
+          "path": "LICENSE",
+          "size": 1066,
+          "sha256": "4ac4810254ab36d45419141aeb8e69bf50652cfafe5b2dab947d06d44e5cbf96"
+        },
+        {
+          "path": "README.md",
+          "size": 2055,
+          "sha256": "7bda3479f4df8a926d50f9efb02ececf63087c6f33bc2e396946639b579f1997"
+        },
+        {
+          "path": "icon.svg",
+          "size": 374,
+          "sha256": "447182c59ef9b24010b8e7a522cf3e3790e3c18542757030f0dd20d304d98f76"
+        },
+        {
+          "path": "scripts/validate-package.py",
+          "size": 5418,
+          "sha256": "941bd99e52b2ba21449719bb7969607ac8117e3dc173d0c9dfe64fd274c65938"
+        },
+        {
+          "path": "skills/humanizer/SKILL.md",
+          "size": 32348,
+          "sha256": "0612f1dfb1672b0ea9b97e139bf1f06cabe98d8b27424fe8ff01e1fb4cc99cad"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1494,
+          "sha256": "aa9000a52e210b9d154c7bcb6823aec0181a1900e7b6f0f32f47ec925566e160"
+        }
+      ],
+      "digest": "6f4e427fce2b2727d5804569524d0057e06b231047db5bc67c4222a2fd0ac9c0",
+      "history": [
+        {
+          "version": "3.1.0",
+          "commit": "f6008541e11627d9c7707b70a840aa248d02f744"
+        }
+      ]
+    },
+    {
+      "id": "humanizer-zh",
+      "kind": "skill",
+      "path": "plugins/humanizer-zh",
+      "name": "Humanizer-zh",
+      "i18n": {
+        "zh-CN": {
+          "name": "Humanizer-zh 中文去 AI 味",
+          "description": "编辑中文文章、评论和文档中的空话、重复及模板化表达，让文字更自然，同时保留事实、确定程度和作者声音。面向中文；英文文本请用 Humanizer。",
+          "examples": [
+            "帮这篇中文博客去掉空话和重复，事实一个不改，读起来要像我自己写的。",
+            "检查这篇中文产品公告里的模板化表达，逐条列出并给出更自然的改法。",
+            "把这段给客户的中文回复改得更简洁，不改变承诺的内容，也不改变语气的确定程度。"
+          ]
+        }
+      },
+      "version": "1.0.1",
+      "description": "Edit Chinese articles, comments and documents to cut empty phrases, repetition and template wording so they read naturally, keeping the facts, the degree of certainty and the writer's voice. For Chinese text; use Humanizer for English.",
+      "author": {
+        "name": "op7418",
+        "url": "https://github.com/op7418"
+      },
+      "homepage": "https://github.com/op7418/Humanizer-zh",
+      "license": "MIT",
+      "icon": "plugins/humanizer-zh/icon.svg",
+      "category": "writing",
+      "keywords": [
+        "writing",
+        "editing",
+        "chinese",
+        "humanize",
+        "prose",
+        "style",
+        "ai writing",
+        "rewrite",
+        "proofread",
+        "中文",
+        "去AI味",
+        "润色",
+        "改写"
+      ],
+      "listedAt": "2026-10-28T06:02:30Z",
+      "upstream": {
+        "url": "https://github.com/op7418/Humanizer-zh",
+        "commit": "f4518a8eab97b8bfebc66a89d34320a89bef6930",
+        "license": "MIT"
+      },
+      "examples": [
+        "Edit this Chinese blog post so it reads naturally: cut the empty phrases and repetition, but keep every fact and my voice.",
+        "Review this Chinese product announcement for template wording and list each problem with a plainer rewrite.",
+        "Tighten this Chinese reply to a customer without changing what it promises or how sure it sounds."
+      ],
+      "contents": {
+        "connectors": [],
+        "skills": [
+          {
+            "name": "humanizer-zh",
+            "description": "编辑中文文章、评论和文档中的空话、重复及模板化表达，让文字更自然，同时保留事实、确定程度和作者声音。适用于润色已有文本，不用于判断作者身份或保证通过 AI 检测器。"
+          }
+        ],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "CHANGELOG.md",
+          "size": 1482,
+          "sha256": "254ac282ea3a224237d7778d1704165f5dd51db29839de6431569435561fd0fe"
+        },
+        {
+          "path": "LICENSE",
+          "size": 1063,
+          "sha256": "aa00e74769e1b9d8e7fa7094dbfcca9b129a0ded6dce1cf4da050b99146d2fa7"
+        },
+        {
+          "path": "README.md",
+          "size": 2174,
+          "sha256": "c30e4b4251b5e5a26b3b388a30e023182c7c45b8518c7a0d0ea8e3cda842f0d1"
+        },
+        {
+          "path": "icon.svg",
+          "size": 378,
+          "sha256": "4e42aac786b799fb58b1adcbbf634c71e445a262cbf769883ec5603e66eb2fe0"
+        },
+        {
+          "path": "skills/humanizer-zh/SKILL.md",
+          "size": 20527,
+          "sha256": "95627fd4437d886f98032ccc62d79136e6310f1fc04e354bb86431795ff206df"
+        },
+        {
+          "path": "tests/README.md",
+          "size": 2292,
+          "sha256": "ece3c1f808c4ef2ad8ac7ccb0977138cbc6f842455c725703b5bf780ae3cc36c"
+        },
+        {
+          "path": "tests/check_structure.py",
+          "size": 1373,
+          "sha256": "82ba1f91aab7a70abf039e79009fb1b77c036aa892925e5e3df5c2550d20230a"
+        },
+        {
+          "path": "tests/fixtures/cases.json",
+          "size": 5297,
+          "sha256": "6a62586ee93dd9695976cd45271036f2a92be4f74e1b3b9b6c21a411c8497c0e"
+        },
+        {
+          "path": "tests/fixtures/structure.md",
+          "size": 852,
+          "sha256": "d2d0c2740d28c44b7aac88e81aed8d50dc6ad90cc08f93a5a00c6ada1d6368e2"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1821,
+          "sha256": "16e399951f9aab407020fe5cae03eece7f7d61b0f125d0a535953c4c1a2e207a"
+        }
+      ],
+      "digest": "85011ab9e969342aac143ceb3449e5815092470e1f6b729c0a5e07902196ad0f",
+      "history": [
+        {
+          "version": "1.0.0",
+          "commit": "f6008541e11627d9c7707b70a840aa248d02f744"
+        }
+      ]
+    },
+    {
+      "id": "linear",
+      "kind": "mcp",
+      "path": "plugins/linear",
+      "name": "Linear",
+      "i18n": {
+        "zh-CN": {
+          "name": "Linear",
+          "description": "通过 Linear 官方托管的 MCP 服务查找、创建和更新 Linear 的 Issue、项目、迭代、文档与评论。用 Linear 账号登录。",
+          "examples": [
+            "列出我在当前迭代里还没完成的 Linear Issue，按状态分组。",
+            "在 Web 团队里为“重置密码链接失效”建一个 Linear Issue，优先级设为高，分配给我。",
+            "概括 Mobile 项目里最近更新的那个 Issue 下面的评论。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Find, create and update Linear issues, projects, cycles, documents and comments through Linear's hosted MCP server. Sign in with your Linear account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://linear.app/docs/mcp",
+      "license": "MIT",
+      "icon": "plugins/linear/icon.svg",
+      "category": "productivity",
+      "keywords": [
+        "linear",
+        "issues",
+        "tickets",
+        "project management",
+        "sprint",
+        "cycle",
+        "bug tracker",
+        "任务",
+        "工单",
+        "项目管理",
+        "迭代",
+        "缺陷跟踪"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 Linear 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for Linear's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "List my open Linear issues in the current cycle, grouped by status.",
+        "Create a Linear issue in the Web team for the broken password reset link, priority high, and assign it to me.",
+        "Summarize the comments on the most recently updated issue in our Mobile project."
+      ],
+      "links": {
+        "privacy": "https://linear.app/privacy",
+        "terms": "https://linear.app/terms"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "linear",
+            "transport": "http",
+            "url": "https://mcp.linear.app/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2020,
+          "sha256": "39f065b954f06a81d1d0adef24c06d78f36113daf9b12b73fb58a5cdc48e8f94"
+        },
+        {
+          "path": "icon.svg",
+          "size": 568,
+          "sha256": "55623642a9ed30f88a5313139b93b1818dbd170a9845e2f6276aa4832795d45b"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1744,
+          "sha256": "7c03eab12d6918ed9270e56225741182e44ee3ef13b4af5c9e73616f62f4bd0d"
+        }
+      ],
+      "digest": "d7b0ec84c362bbb08f35a93115128c6019de011f046161d03f7e271680c1b323"
+    },
+    {
+      "id": "monday",
+      "kind": "mcp",
+      "path": "plugins/monday",
+      "name": "monday.com",
+      "i18n": {
+        "zh-CN": {
+          "name": "monday.com",
+          "description": "通过 monday.com 官方托管的 MCP 服务读取看板与条目、创建和更新条目、发布动态并搭建看板。用 monday.com 账号登录。",
+          "examples": [
+            "列出“Product roadmap”看板上状态为 Stuck 的条目，以及各自的负责人。",
+            "在 Marketing 看板的“This week”分组里新增条目“更新定价页”。",
+            "把 Roadmap 看板上“Q4 launch”的状态改为 Done，并发一条动态说明已上线。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Read boards and items, create and update items, post updates and build boards in monday.com through monday.com's hosted MCP server. Sign in with your monday.com account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://github.com/mondaycom/mcp",
+      "license": "MIT",
+      "icon": "plugins/monday/icon.svg",
+      "category": "productivity",
+      "keywords": [
+        "monday",
+        "monday.com",
+        "boards",
+        "project management",
+        "tasks",
+        "work management",
+        "项目管理",
+        "任务",
+        "看板",
+        "协作"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 monday.com 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for monday.com's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "Show the items on my \"Product roadmap\" board whose status is Stuck, with their owners.",
+        "Add an item \"Update pricing page\" to the \"This week\" group of the Marketing board.",
+        "Set the status of \"Q4 launch\" on the Roadmap board to Done and post an update saying it shipped."
+      ],
+      "links": {
+        "privacy": "https://monday.com/l/privacy/privacy-policy/",
+        "terms": "https://monday.com/l/legal/tos/"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "monday",
+            "transport": "http",
+            "url": "https://mcp.monday.com/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2915,
+          "sha256": "8582d05610fba8c15adbec763c03f1d141dee5397c8ebb98088ceb80848f0993"
+        },
+        {
+          "path": "icon.svg",
+          "size": 373,
+          "sha256": "2f4de2d7b43a917501902ec73ad5552275447743f2bb426aa4ec086eb78a28d8"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1818,
+          "sha256": "379bf4177f90198f91577daee4b80ab9c3d8efce296eebc116a45aa68d192ccc"
+        }
+      ],
+      "digest": "0fdbfb2de570aad70e79f9f62992213800406bcc33a088acd8a0c682a2839d85"
+    },
+    {
+      "id": "notion",
+      "kind": "mcp",
+      "path": "plugins/notion",
+      "name": "Notion",
+      "i18n": {
+        "zh-CN": {
+          "name": "Notion",
+          "description": "通过 Notion 官方托管的 MCP 服务搜索、阅读和编写工作区里的页面与数据库。用 Notion 账号登录。",
+          "examples": [
+            "在 Notion 里找到第三季度规划页面，概括其中还没定下来的决定。",
+            "新建一个名为“每周同步”的 Notion 页面，写上今天的议程：招聘进展、上线清单、预算。",
+            "在 Notion 里找到入职清单，并在上面加一条评论，问最后一步由谁负责。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Search, read and write pages and databases in your Notion workspace through Notion's hosted MCP server. Sign in with your Notion account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://developers.notion.com/guides/mcp/overview",
+      "license": "MIT",
+      "icon": "plugins/notion/icon.svg",
+      "category": "productivity",
+      "keywords": [
+        "notion",
+        "notes",
+        "wiki",
+        "docs",
+        "database",
+        "pages",
+        "笔记",
+        "知识库",
+        "文档",
+        "数据库"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 Notion 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for Notion's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "Search my Notion for the Q3 planning page and summarize the decisions that are still open.",
+        "Create a Notion page called \"Weekly sync\" with today's agenda: hiring update, launch checklist, budget.",
+        "Find the onboarding checklist in Notion and add a comment asking who owns the last step."
+      ],
+      "links": {
+        "privacy": "https://www.notion.so/notion/Privacy-Policy-3468d120cf614d4c9014c09f6adc9091",
+        "terms": "https://www.notion.com/terms"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "notion",
+            "transport": "http",
+            "url": "https://mcp.notion.com/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2689,
+          "sha256": "7ca726a949974976d2570d51efd82bf90401adf67bc80e78910eede2660f4bf4"
+        },
+        {
+          "path": "icon.svg",
+          "size": 1152,
+          "sha256": "ad616a0f47c6addb2a0ec61a45a4c85bf20ddaf70831507cd36d35319e5e45ac"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1812,
+          "sha256": "b4168829edff27c1732b113842e47b1e47c75d4ee811212c10ace6ce923d4f4f"
+        }
+      ],
+      "digest": "0b149a69f987c6466394fc5bc488560e4ed5b2e840cc3ef28f2579c2a3504384"
+    },
+    {
+      "id": "obsidian",
+      "kind": "plugin",
+      "path": "plugins/obsidian",
+      "name": "Obsidian",
+      "i18n": {
+        "zh-CN": {
+          "name": "Obsidian",
+          "description": "在 Obsidian 库里工作：写带双链、嵌入、标注块和属性的 Obsidian 风格 Markdown，制作 Bases（.base）与 JSON Canvas 白板（.canvas），通过 Obsidian CLI 操作正在运行的 Obsidian，用 Defuddle 把网页存成干净的 Markdown，用 Knap 按模板把 JSON 或 CSV 数据生成笔记。原样收录 Steph Ango 的 kepano/obsidian-skills。",
+          "examples": [
+            "把这份会议纪要整理成一篇 Obsidian 笔记：加上属性，给提到的人加双链，决定事项放进标注块。",
+            "在我的库里建一个 Base，用卡片视图列出所有带 #book 标签的笔记，按评分排序。",
+            "把这份大纲的各章画成 JSON Canvas 思维导图，保存在大纲笔记旁边。"
+          ]
+        }
+      },
+      "version": "1.0.1",
+      "description": "Work in an Obsidian vault: write Obsidian Flavored Markdown with wikilinks, embeds, callouts and properties, build Bases (.base) and JSON Canvas (.canvas) files, drive the running Obsidian app through the Obsidian CLI, save web pages as clean Markdown with Defuddle, and fill Markdown templates from JSON or CSV with Knap. The kepano/obsidian-skills collection by Steph Ango, unchanged.",
+      "author": {
+        "name": "Steph Ango",
+        "url": "https://stephango.com/"
+      },
+      "homepage": "https://github.com/kepano/obsidian-skills",
+      "license": "MIT",
+      "icon": "plugins/obsidian/icon.svg",
+      "category": "productivity",
+      "keywords": [
+        "obsidian",
+        "markdown",
+        "bases",
+        "canvas",
+        "json-canvas",
+        "wikilink",
+        "pkm",
+        "notes",
+        "vault",
+        "defuddle",
+        "knap",
+        "笔记",
+        "知识库",
+        "双链",
+        "白板"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "upstream": {
+        "url": "https://github.com/kepano/obsidian-skills",
+        "version": "1.0.1",
+        "commit": "3ccff5338ea700537839b21900aa5358a0402c98",
+        "license": "MIT"
+      },
+      "examples": [
+        "Turn these meeting notes into an Obsidian note with properties, wikilinks to the people mentioned and a callout for the decisions.",
+        "Create a Base in my vault that shows every note tagged #book as cards, sorted by rating.",
+        "Draw a JSON Canvas mind map of the chapters in this outline and save it next to the outline note."
+      ],
+      "requires": {
+        "runtimes": [
+          "obsidian",
+          "node>=20",
+          "defuddle",
+          "knap"
+        ]
+      },
+      "contents": {
+        "connectors": [],
+        "skills": [
+          {
+            "name": "defuddle",
+            "description": "Extract clean Markdown from HTML pages with Defuddle CLI."
+          },
+          {
+            "name": "json-canvas",
+            "description": "Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections. Use when working with .canvas files, creating visual canvases, mind maps, flowcharts, or when the user mentions Canvas files in Obsidian."
+          },
+          {
+            "name": "knap",
+            "description": "Render Markdown from templates and structured data using Knap CLI. Use when the user asks to apply a Knap template, turn JSON or CSV data into notes, batch-generate Markdown files, or format Defuddle output into a note."
+          },
+          {
+            "name": "obsidian-bases",
+            "description": "Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian."
+          },
+          {
+            "name": "obsidian-cli",
+            "description": "Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more. Also supports plugin and theme development with commands to reload plugins, run JavaScript, capture errors, take screenshots, and inspect the DOM. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, perform vault operations from the command line, or develop and debug Obsidian plugins and themes."
+          },
+          {
+            "name": "obsidian-markdown",
+            "description": "Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes."
+          }
+        ],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "LICENSE",
+          "size": 1077,
+          "sha256": "64c64d48361edfe8610016441bf593256ea9b67f133b00f47c55aa29ee878567"
+        },
+        {
+          "path": "README.md",
+          "size": 2473,
+          "sha256": "c3ddd5b6603b2ae280802940492c935c60a59245a60c9eb6f7a27e669d247753"
+        },
+        {
+          "path": "icon.svg",
+          "size": 1434,
+          "sha256": "d36f09242b713a2be1a24db7f86852ce52d2dfa37b78b9fbd187712dd4d19d35"
+        },
+        {
+          "path": "skills/defuddle/SKILL.md",
+          "size": 831,
+          "sha256": "8669cdcc9f7b4679a49753d2d7f8ee4d90c3119305d866d6c439aa1cbacb83f3"
+        },
+        {
+          "path": "skills/json-canvas/SKILL.md",
+          "size": 7624,
+          "sha256": "97d1ae0728955c4203922753d5656890e5e4dd371b8306ea11884f9b510f1b85"
+        },
+        {
+          "path": "skills/json-canvas/references/EXAMPLES.md",
+          "size": 6476,
+          "sha256": "f5ce15a4b74643122396265e8c37c828874a4005794de2aee7030662968768eb"
+        },
+        {
+          "path": "skills/knap/SKILL.md",
+          "size": 3942,
+          "sha256": "ef5666573358cd7d18e04195f3e7c473b88d3e3140c41ab59bbee01c81e9989f"
+        },
+        {
+          "path": "skills/obsidian-bases/SKILL.md",
+          "size": 13027,
+          "sha256": "c0037f20926c7d8591cdd040365e4c0e4c0c4146386a506f28f241faee9a27d9"
+        },
+        {
+          "path": "skills/obsidian-bases/references/FUNCTIONS_REFERENCE.md",
+          "size": 7538,
+          "sha256": "208fd63aead9bca1975626fea52605e6ab9434dc0529d923feb36b18b8877d3b"
+        },
+        {
+          "path": "skills/obsidian-cli/SKILL.md",
+          "size": 3183,
+          "sha256": "b54257cdc0e5d04488b35b0c797bfe427b24359f0848d3c73924dcacf8da6358"
+        },
+        {
+          "path": "skills/obsidian-markdown/SKILL.md",
+          "size": 5367,
+          "sha256": "7ad72e1f0a9081ed325e76b6402ad5de50a00e63e2341fd403a92f147234a007"
+        },
+        {
+          "path": "skills/obsidian-markdown/references/CALLOUTS.md",
+          "size": 1238,
+          "sha256": "9912ec2e3f8711f65b8ceb82cc19cbffc5e6f8ccf2ab627e18926c522c383d8b"
+        },
+        {
+          "path": "skills/obsidian-markdown/references/EMBEDS.md",
+          "size": 861,
+          "sha256": "63b6205507e28fb58cf200bc348a2b139e50ae739743e2e6316732148973cb7a"
+        },
+        {
+          "path": "skills/obsidian-markdown/references/PROPERTIES.md",
+          "size": 1149,
+          "sha256": "392953b5838c3ab3df135b5a914f100ae7b95e4501b6a2e5c8dc63da3ac7558b"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 2264,
+          "sha256": "b9ced1109cddaa9863d40b0d16016422b985836de7f91c9b2e38f5ea619ef458"
+        }
+      ],
+      "digest": "a5ba22605f221c4f91590d074e22493122ba3ec64f96268bfc28eb7c8f391f47"
+    },
+    {
+      "id": "sentry",
+      "kind": "mcp",
+      "path": "plugins/sentry",
+      "name": "Sentry",
+      "i18n": {
+        "zh-CN": {
+          "name": "Sentry",
+          "description": "通过 Sentry 官方托管的 MCP 服务搜索和查看 Sentry 的 Issue、事件、堆栈、链路追踪、版本与日志，并让 Seer 做根因分析。用 Sentry 账号登录；是否允许它分派处理 Issue 或管理项目，在 Sentry 的授权页上由你勾选。",
+          "examples": [
+            "我组织里最近 24 小时还没解决的 Sentry Issue 有哪些？按受影响用户数排序。",
+            "给我看后端项目里最新那个 Sentry Issue 的堆栈和最近一次事件，并指出可能的原因。",
+            "在 Sentry 里搜索昨天发版以来提到 \"timeout\" 的错误，按项目分组。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Search and inspect Sentry issues, events, stack traces, traces, releases and logs, and ask Seer for a root-cause analysis, through Sentry's hosted MCP server. Sign in with your Sentry account; you choose on Sentry's consent page whether it may also triage issues or manage projects.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://mcp.sentry.dev",
+      "license": "MIT",
+      "icon": "plugins/sentry/icon.svg",
+      "category": "developer-tools",
+      "keywords": [
+        "sentry",
+        "errors",
+        "exceptions",
+        "stack trace",
+        "monitoring",
+        "crash",
+        "tracing",
+        "seer",
+        "错误监控",
+        "异常",
+        "报错",
+        "崩溃",
+        "堆栈"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 Sentry 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for Sentry's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "What are the top unresolved Sentry issues in my organization from the last 24 hours, by number of users affected?",
+        "Show the stack trace and the most recent event for the newest Sentry issue in my backend project, and point to the likely cause.",
+        "Search Sentry for errors mentioning \"timeout\" since yesterday's release and group them by project."
+      ],
+      "links": {
+        "privacy": "https://sentry.io/privacy/",
+        "terms": "https://sentry.io/terms/"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "sentry",
+            "transport": "http",
+            "url": "https://mcp.sentry.dev/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2858,
+          "sha256": "343f60310818e558a22f45aef0e7e4bcc386c35a9b6e535f79f8706bce943b08"
+        },
+        {
+          "path": "icon.svg",
+          "size": 801,
+          "sha256": "f73dc8fe0dcc8bf3ae0993eda2fe607a1b007b044b0f7b3daa1dc76deb626353"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 2156,
+          "sha256": "05ce956f0dcf4295b7c3c2fa13289f0ad231c0103a68fcb43d52119ae0794e43"
+        }
+      ],
+      "digest": "265c6dcbdcbfd7f54a17c5bf30cd085de5ab26ef1c64c8c5a8c57a5c07e557a7"
+    },
+    {
+      "id": "sheets",
+      "kind": "skill",
+      "path": "plugins/sheets",
+      "name": "Sheets",
+      "i18n": {
+        "zh-CN": {
+          "name": "表格",
+          "description": "制作和修改 Excel 工作簿（.xlsx）与 CSV 文件：公式实时计算，日期和数字格式规范，冻结表头、筛选和条件格式一应俱全；也能读取你提供的表格，帮你分析、检查或转换。自带离线脚本，照顾中文字体和列宽。",
+          "examples": [
+            "把这份订单清单做成 Excel，按区域汇总合计，每列都能筛选。",
+            "这是我们导出的销售 CSV，上季度哪些产品增长最多？把汇总做成一个工作簿给我。",
+            "帮我检查这份预算表里有没有错误的公式和存成文本的数字。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Make and revise Excel workbooks (.xlsx) and CSV files with live formulas, real dates and number formats, frozen headers, filters and conditional formatting, and read the spreadsheets you share so the agent can analyze, check or convert them. Runs offline with a bundled script; Chinese fonts and column widths included.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/sheets",
+      "license": "MIT",
+      "icon": "plugins/sheets/icon.svg",
+      "category": "productivity",
+      "keywords": [
+        "spreadsheet",
+        "excel",
+        "xlsx",
+        "csv",
+        "workbook",
+        "table",
+        "formula",
+        "budget",
+        "tracker",
+        "data",
+        "表格",
+        "电子表格",
+        "Excel 表",
+        "数据分析"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 编写与维护，全部在本机运行",
+          "en": "Written and maintained by Wevir; runs entirely on your computer"
+        }
+      },
+      "examples": [
+        "Turn this order list into an Excel file with totals per region and a filter on every column.",
+        "Here is our sales export as CSV. Which products grew most last quarter? Give me the summary as a workbook.",
+        "Check this budget spreadsheet for broken formulas and numbers stored as text."
+      ],
+      "requires": {
+        "runtimes": [
+          "node>=22"
+        ]
+      },
+      "contents": {
+        "connectors": [],
+        "skills": [
+          {
+            "name": "sheets",
+            "description": "Make and revise Excel spreadsheets (.xlsx) and CSV files: data tables, trackers, budgets, plans, price lists, financial models and the results of an analysis, with live formulas, number and date formats, frozen headers, filters and conditional formatting. Also reads .xlsx and CSV files the user provides so their data can be analyzed, cleaned, checked or converted. Use when the user asks for a spreadsheet, an Excel or xlsx file, a CSV, a workbook, 表格, 电子表格 or Excel 表; when data or analysis results should be delivered as a table they can sort, filter and recalculate; or when they share a spreadsheet and ask what is in it, whether it is right, or to change it. Not for a table inside a document or a slide (use the docs or slides skill) or for charts on their own."
+          }
+        ],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2886,
+          "sha256": "fee708095c80cb52340fe846f4a2d5d00c037853c01f0625b5ec3b9182f12acc"
+        },
+        {
+          "path": "icon.svg",
+          "size": 456,
+          "sha256": "4375dc970d7e8b0cfee94341ceadb70f12652a81b82fc74f683906bf79bcefef"
+        },
+        {
+          "path": "skills/sheets/SKILL.md",
+          "size": 14332,
+          "sha256": "816f66877b13c19b616271e4b4a6ca859f47b7ae5cd3a8f72377b202a9b768e4"
+        },
+        {
+          "path": "skills/sheets/references/design.md",
+          "size": 5920,
+          "sha256": "a89438e9564206276451c7e7887531197f27dd1bb8d1cbb7cf91527a005731cb"
+        },
+        {
+          "path": "skills/sheets/references/format.md",
+          "size": 11884,
+          "sha256": "6e6861fb3eebf4790a5b616141f9c76b205ddf61eac12d867ef38376ad70f8a3"
+        },
+        {
+          "path": "skills/sheets/references/layout.md",
+          "size": 5855,
+          "sha256": "e229249f7c4b4a487b2553027ce31f5af3b262816022c83db533b8047f4d1e54"
+        },
+        {
+          "path": "skills/sheets/references/numbers.md",
+          "size": 6008,
+          "sha256": "18dee815ecd9d92ed8f6d384cae0c3fb2db7d4fc40e51c5ec7d0e52d3a4c0c40"
+        },
+        {
+          "path": "skills/sheets/scripts/lib/calc.mjs",
+          "size": 36515,
+          "sha256": "4b4032bb2b02e8be6327558467fe1850532c791f3906e557e81371449ab893f2"
+        },
+        {
+          "path": "skills/sheets/scripts/lib/csv.mjs",
+          "size": 2899,
+          "sha256": "a6e67aa359f0c14405c05468287c3fb2a246911d8de28347ba638218d9ad85e4"
+        },
+        {
+          "path": "skills/sheets/scripts/lib/format.mjs",
+          "size": 14698,
+          "sha256": "fc2be061fa9bf0719a61b40d92852421cfe937367496e8eb4cb68492bc82f747"
+        },
+        {
+          "path": "skills/sheets/scripts/lib/formula.mjs",
+          "size": 11904,
+          "sha256": "eebb159409d19ccb9390e3b282f2ca22b164e6ae2daad7695c2fe64bd401eceb"
+        },
+        {
+          "path": "skills/sheets/scripts/lib/lint.mjs",
+          "size": 14109,
+          "sha256": "6c047142ba2bd4957ab3c9cfd0ec32181566b710f70eab097209e154df031c80"
+        },
+        {
+          "path": "skills/sheets/scripts/lib/model.mjs",
+          "size": 44133,
+          "sha256": "91d03aca83693ee4589c25e1f13886759dbf7211d7ede4e31c25a0f0d1a9fdb5"
+        },
+        {
+          "path": "skills/sheets/scripts/lib/read.mjs",
+          "size": 11681,
+          "sha256": "41af4020da6b819f43d930b2a4fe2019d83a4f6383a3673c592d5854e4ecdea5"
+        },
+        {
+          "path": "skills/sheets/scripts/lib/xlsx.mjs",
+          "size": 18628,
+          "sha256": "ba9ca19da87f516ddc16b237db91c178de52986033f698f263d74a3d5a653bcf"
+        },
+        {
+          "path": "skills/sheets/scripts/lib/zip.mjs",
+          "size": 5573,
+          "sha256": "735dc6aa9322248c59b43b628024a7e9a7cbfc7484d9bf3ca14d0e349304fa87"
+        },
+        {
+          "path": "skills/sheets/scripts/sheet.mjs",
+          "size": 22286,
+          "sha256": "5fa8540346a6d24a50510048213e9574413f4214fe9c1dcefe1ccee52ecd22da"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1941,
+          "sha256": "099b5dfe15e8484d0e96467b4fc0b919cbd97b9c033dcb439641bdd7af0cf0c6"
+        }
+      ],
+      "digest": "1412876566dbc5bfec1e2cbeba5402fd30f3be7e340a38dd24852f25425d5c0c"
+    },
+    {
+      "id": "slack",
+      "kind": "mcp",
+      "path": "plugins/slack",
+      "name": "Slack",
+      "i18n": {
+        "zh-CN": {
+          "name": "Slack",
+          "description": "通过 Slack 官方托管的 MCP 服务搜索消息与文件、阅读频道与讨论串，并发布回复。用 Slack 账号登录。",
+          "examples": [
+            "概括 #engineering 从昨天到现在聊了什么，并列出还没解决的问题。",
+            "在 Slack 里搜索数据库迁移的决定，并给我讨论串的链接。",
+            "为 #release 里的最后一条消息起草回复，发布前先给我看。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Search messages and files, read channels and threads, and post replies in Slack through Slack's hosted MCP server. Sign in with your Slack account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://docs.slack.dev/ai/slack-mcp-server/",
+      "license": "MIT",
+      "icon": "plugins/slack/icon.svg",
+      "category": "communication",
+      "keywords": [
+        "slack",
+        "chat",
+        "messages",
+        "channels",
+        "search"
+      ],
+      "listedAt": "2026-10-22T03:27:00Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的登录设置，连接 Slack 官方托管的 MCP 服务",
+          "en": "Sign-in settings maintained by Wevir for Slack's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "Summarize what was said in #engineering since yesterday and list the open questions.",
+        "Search Slack for the decision about the database migration and link the thread.",
+        "Draft a reply to the last message in #release and show it to me before posting."
+      ],
+      "links": {
+        "privacy": "https://slack.com/trust/privacy/privacy-policy",
+        "terms": "https://slack.com/terms-of-service"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "slack",
+            "transport": "http",
+            "url": "https://mcp.slack.com/mcp"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2093,
+          "sha256": "d25887ef428160554e3f416e3ea830d1ed4c986c8e3b3e4f7e588e5fffb3aadf"
+        },
+        {
+          "path": "icon.svg",
+          "size": 1761,
+          "sha256": "7275d2ff824352b2c83add2d6cb9d89e3e4ad06c01e8a6ba12f874100882021f"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1813,
+          "sha256": "d22d47ff141c3c329e5904f07fabb1e282a531c7b1efc66ff3e46d09991a9a48"
+        }
+      ],
+      "digest": "55748795c218bfaf68c0620a4030368e94c85a6bb0e280b567cc701ffb12c714"
+    },
+    {
+      "id": "slides",
+      "kind": "skill",
+      "path": "plugins/slides",
+      "name": "Slides",
+      "i18n": {
+        "zh-CN": {
+          "name": "幻灯片",
+          "description": "制作和修改演示文稿。agent 用 HTML 写 1920×1080 的幻灯片，在真实浏览器里检查版面，导出可离线放映的网页（带演讲者备注）、PDF 或 PowerPoint 文件。",
+          "examples": [
+            "把这份会议纪要整理成周四团队例会用的 8 页幻灯片。",
+            "根据 README 给我们的产品做一份 10 页的融资路演 PPT，再导出 PDF。",
+            "把我这份幻灯片的第 3、5 页改得不那么挤，并加上演讲备注。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Make and revise presentation decks. The agent writes 1920×1080 slides as HTML, checks the layout in a real browser, and exports a self-contained HTML deck with a presenter view, a PDF, or a PowerPoint file.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/slides",
+      "license": "MIT",
+      "icon": "plugins/slides/icon.svg",
+      "category": "productivity",
+      "keywords": [
+        "slides",
+        "presentation",
+        "deck",
+        "pptx",
+        "powerpoint",
+        "pdf",
+        "keynote",
+        "幻灯片",
+        "演示文稿",
+        "PPT"
+      ],
+      "listedAt": "2026-10-22T05:08:54Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 编写与维护，全部在本机运行",
+          "en": "Written and maintained by Wevir; runs entirely on your computer"
+        }
+      },
+      "examples": [
+        "Turn these meeting notes into an eight-slide deck for Thursday's team update.",
+        "Make a ten-slide investor pitch for our product from the README, then export it as PDF.",
+        "Make slides 3 and 5 of my deck less crowded and give them speaker notes."
+      ],
+      "requires": {
+        "runtimes": [
+          "node>=22"
+        ]
+      },
+      "contents": {
+        "connectors": [],
+        "skills": [
+          {
+            "name": "slides",
+            "description": "Make and revise presentation decks: pitch decks, project updates, research readouts, training, keynotes, lecture slides. Writes one HTML file of 1920×1080 slides, checks its layout in a real browser, and exports a self-contained HTML deck with a presenter view, a PDF, or a PowerPoint (.pptx) file. Use whenever the user asks for slides, a deck, a presentation or PPT, 幻灯片 or 演示文稿, or to turn notes, a document or data into one, or to change a deck made this way."
+          }
+        ],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 2470,
+          "sha256": "50fd2123db833320c3440bf6acaf57ecd3eaa217ab3148f43e9a55b837d6f2a9"
+        },
+        {
+          "path": "icon.svg",
+          "size": 464,
+          "sha256": "880476e9c5d88b9799a2e5489c7bbb2214c43b1cc1ddb2cd91d56bedc9d5faf6"
+        },
+        {
+          "path": "skills/slides/SKILL.md",
+          "size": 12289,
+          "sha256": "0e5d031c2dd3f698a87db3c6e343f857cc680a0d029a83a7ef3f7600dd77e1f7"
+        },
+        {
+          "path": "skills/slides/references/craft.md",
+          "size": 5334,
+          "sha256": "716a5deb0fbe99482064a13a155fa7609b3712a8619e19ab068a42b4c62831aa"
+        },
+        {
+          "path": "skills/slides/references/diagrams.md",
+          "size": 8692,
+          "sha256": "195b58a51933d80b78870e1b69f1a98e199c05cd84942bc1bef44e9d5df3cde2"
+        },
+        {
+          "path": "skills/slides/references/fonts.md",
+          "size": 5053,
+          "sha256": "e94bee2397d5382061f9f8615bfe7542e7f6077a697a1569639197e29ec11a1b"
+        },
+        {
+          "path": "skills/slides/references/format.md",
+          "size": 8355,
+          "sha256": "381f371df09ea05204b6a793fda342d7d4f3c12ccb5e2a0d7c2caabcfc3f1e49"
+        },
+        {
+          "path": "skills/slides/references/images.md",
+          "size": 3232,
+          "sha256": "fe38cf6a29f053b1bf81a5e90a61fa32a44295531af05e94d613949882dd9fb4"
+        },
+        {
+          "path": "skills/slides/references/layout.md",
+          "size": 6633,
+          "sha256": "77265d25d231fe81e064d5c67078f8cb794d4a52ff7a98ffcf93d43259f237f0"
+        },
+        {
+          "path": "skills/slides/references/questions.md",
+          "size": 3141,
+          "sha256": "87dbdc000c89ac0d8f87589ec07f8e9f693a2a70edeb6287e0fca7e66e956ce9"
+        },
+        {
+          "path": "skills/slides/references/sample-deck.html",
+          "size": 13770,
+          "sha256": "bff5b3aeaaba1a9bb3af4535f79d0c28d40f2a5af6e480814dbc41d5b960f3e7"
+        },
+        {
+          "path": "skills/slides/scripts/LICENSE-lucide.txt",
+          "size": 3208,
+          "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+        },
+        {
+          "path": "skills/slides/scripts/deck.mjs",
+          "size": 14834,
+          "sha256": "efcb9aa8c3ffb52b14d5f985d04d71204e0b279a4355f76ca66711075609abce"
+        },
+        {
+          "path": "skills/slides/scripts/lib/chrome.mjs",
+          "size": 8474,
+          "sha256": "a0760d3593890a466d90734ab196fea08e798075d4a25f8ec43501675aad9f32"
+        },
+        {
+          "path": "skills/slides/scripts/lib/fonts.mjs",
+          "size": 4951,
+          "sha256": "5c601ce34a44edd03f0a05487f3e449d2dfcc33ba5cb236e10c6665952faa211"
+        },
+        {
+          "path": "skills/slides/scripts/lib/icons.mjs",
+          "size": 13079,
+          "sha256": "7ab6a3c848b0098601a94f930f3a8f8f20f030de26c17ab20377fd6736e2c7c9"
+        },
+        {
+          "path": "skills/slides/scripts/lib/lint.mjs",
+          "size": 15497,
+          "sha256": "71fec708b5b6a566aed9ce4ecb43cbce81fd4da72e744ad50f2033031cec5a8f"
+        },
+        {
+          "path": "skills/slides/scripts/lib/pptx.mjs",
+          "size": 12673,
+          "sha256": "15281bcda54996f5e7db6879f6069c8fead32aa3b0d2863081f5d86a76e5dccf"
+        },
+        {
+          "path": "skills/slides/scripts/lib/runtime.css",
+          "size": 8573,
+          "sha256": "dfc0b45b08574e3a078682f925747c5cc20ff8b868079c57b7b9180109669104"
+        },
+        {
+          "path": "skills/slides/scripts/lib/runtime.js",
+          "size": 34652,
+          "sha256": "b86595356e8707688ba796bca1864bdb94e952a340ac9d3d5c1fa0c18b8ecd60"
+        },
+        {
+          "path": "skills/slides/scripts/lib/zip.mjs",
+          "size": 3268,
+          "sha256": "f2a1e7609ed3fc853fef86675d0762c712dc27d4ff35abd5eedadc7f6bd210f9"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 1635,
+          "sha256": "9df1b58dd978a95379dbe2065b7585fb89910aa19e80795382a8300ebbce6b5c"
+        }
+      ],
+      "digest": "18dedc4539fff3309c77c03957dcad9706c81cf706edcabce28c21cb31c08fdb"
+    },
+    {
+      "id": "stripe",
+      "kind": "mcp",
+      "path": "plugins/stripe",
+      "name": "Stripe",
+      "i18n": {
+        "zh-CN": {
+          "name": "Stripe",
+          "description": "通过 Stripe 官方托管的 MCP 服务查询和管理 Stripe 的客户、产品、价格、发票、支付链接、订阅、退款与争议，并搜索 Stripe 文档。用 Stripe 账号登录。有写权限时，它能创建和作废发票、修改和取消订阅、退款，在开通了的账户里还能转出资金：除非确有需要，请在 Stripe 授权页上只授予沙盒，或只给正式环境只读权限。",
+          "examples": [
+            "列出我最近 10 笔 Stripe 付款，标出失败或被争议的。",
+            "在我的 Stripe 沙盒里创建产品“Pro 套餐”，每月 20 美元，并给我一个支付链接。",
+            "搜索 Stripe 文档，看看怎么用 Webhook 处理订阅扣款失败。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Look up and manage customers, products, prices, invoices, payment links, subscriptions, refunds and disputes in Stripe, and search Stripe's docs, through Stripe's hosted MCP server. Sign in with your Stripe account. With write access it can create and void invoices, change and cancel subscriptions, issue refunds and, where enabled, send money: on Stripe's consent page grant a sandbox, or read-only access to live mode, unless you mean it.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://docs.stripe.com/mcp",
+      "license": "MIT",
+      "icon": "plugins/stripe/icon.svg",
+      "category": "business",
+      "keywords": [
+        "stripe",
+        "payments",
+        "billing",
+        "invoices",
+        "subscriptions",
+        "customers",
+        "refunds",
+        "payment links",
+        "支付",
+        "收款",
+        "账单",
+        "发票",
+        "订阅",
+        "退款"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 Stripe 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for Stripe's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "List my 10 most recent Stripe payments and flag any that failed or were disputed.",
+        "In my Stripe sandbox, create a product \"Pro plan\" at $20 a month and give me a payment link for it.",
+        "Search the Stripe docs for how to handle failed subscription payments with webhooks."
+      ],
+      "links": {
+        "privacy": "https://stripe.com/privacy",
+        "terms": "https://stripe.com/legal/ssa"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "stripe",
+            "transport": "http",
+            "url": "https://mcp.stripe.com"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 3267,
+          "sha256": "0f3aa0bd27ded51843231e5342f618c3ff434c4b41e4d3145086523cfc1de8f0"
+        },
+        {
+          "path": "icon.svg",
+          "size": 703,
+          "sha256": "1f5d32020ac16bf1d439a837ea47a13e900679a0e055169351ffa0312501de9f"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 2326,
+          "sha256": "1ba2cfd8e3ff7b5980d27c75eb4d2384a355d436315eea87a09227f23c785424"
+        }
+      ],
+      "digest": "25c2d1095d27a3696cd36bbf48ad97ae0be4834544151ffa5f91c7842ce3abc8"
+    },
+    {
+      "id": "supabase",
+      "kind": "mcp",
+      "path": "plugins/supabase",
+      "name": "Supabase",
+      "i18n": {
+        "zh-CN": {
+          "name": "Supabase",
+          "description": "通过 Supabase 官方托管的 MCP 服务以只读方式查看你的 Supabase 项目：列出数据表与迁移、执行只读 SQL、查看日志以及安全与性能建议、生成 TypeScript 类型、搜索 Supabase 文档。用 Supabase 账号登录。",
+          "examples": [
+            "列出我 Supabase 项目里的数据表和各自的行数，说明它们之间的关系。",
+            "对我的项目运行 Supabase 的安全与性能检查，告诉我先修哪一项。",
+            "为我的 Supabase 数据库结构生成 TypeScript 类型。"
+          ]
+        }
+      },
+      "version": "1.0.0",
+      "description": "Explore your Supabase projects read-only through Supabase's hosted MCP server: list tables and migrations, run read-only SQL, read logs and security and performance advisors, generate TypeScript types, and search Supabase's docs. Sign in with your Supabase account.",
+      "author": {
+        "name": "Wevir",
+        "url": "https://www.wevir.si"
+      },
+      "homepage": "https://supabase.com/docs/guides/getting-started/mcp",
+      "license": "MIT",
+      "icon": "plugins/supabase/icon.svg",
+      "category": "developer-tools",
+      "keywords": [
+        "supabase",
+        "postgres",
+        "database",
+        "sql",
+        "backend",
+        "edge functions",
+        "auth",
+        "数据库",
+        "后端",
+        "数据表",
+        "查询"
+      ],
+      "listedAt": "2026-10-28T04:04:10Z",
+      "verification": {
+        "level": "official",
+        "since": "2026-10",
+        "note": {
+          "zh-CN": "由 Wevir 维护的连接设置，连接 Supabase 官方托管的 MCP 服务",
+          "en": "Connection settings maintained by Wevir for Supabase's own hosted MCP server"
+        }
+      },
+      "examples": [
+        "List the tables in my Supabase project with their row counts, and describe how they relate.",
+        "Run the Supabase security and performance advisors on my project and explain what to fix first.",
+        "Generate TypeScript types for my Supabase database schema."
+      ],
+      "links": {
+        "privacy": "https://supabase.com/privacy",
+        "terms": "https://supabase.com/terms"
+      },
+      "contents": {
+        "connectors": [
+          {
+            "name": "supabase",
+            "transport": "http",
+            "url": "https://mcp.supabase.com/mcp?read_only=true"
+          }
+        ],
+        "skills": [],
+        "inputs": []
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "size": 3281,
+          "sha256": "8af791191ef39041cee7748ed0c8ef52a3e90f862b2fe9f8286f690db4cc9a86"
+        },
+        {
+          "path": "icon.svg",
+          "size": 416,
+          "sha256": "d20d53f426f873a27c16907f460abe872cfe704303d690eb4947f6b85ff19f06"
+        },
+        {
+          "path": "wevir-plugin.json",
+          "size": 2002,
+          "sha256": "15537ef584f92ecc7b109b0c4b77b286b2581db8faf98b1b3684557cd888abad"
+        }
+      ],
+      "digest": "05231720abd6b9d8345bfafda7b03abcc4ec9d782b969ffe7241ed35a4e31bd2"
+    }
+  ]
+}
