@@ -1,0 +1,14 @@
+{
+  "$schema": "../../schemas/catalog-entry.schema.json",
+  "category": "writing",
+  "upstream": {
+    "repo": "https://github.com/op7418/Humanizer-zh",
+    "track": "branch:main",
+    "format": "skill",
+    "license": "MIT",
+    "keep": [
+      "README.md"
+    ],
+    "commit": "f4518a8eab97b8bfebc66a89d34320a89bef6930"
+  }
+}
