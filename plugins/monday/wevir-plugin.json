@@ -1,0 +1,39 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "monday",
+  "name": "monday.com",
+  "version": "1.0.0",
+  "description": "Read boards and items, create and update items, post updates and build boards in monday.com through monday.com's hosted MCP server. Sign in with your monday.com account.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://github.com/mondaycom/mcp",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "category": "productivity",
+  "keywords": ["monday", "monday.com", "boards", "project management", "tasks", "work management", "项目管理", "任务", "看板", "协作"],
+  "examples": [
+    "Show the items on my \"Product roadmap\" board whose status is Stuck, with their owners.",
+    "Add an item \"Update pricing page\" to the \"This week\" group of the Marketing board.",
+    "Set the status of \"Q4 launch\" on the Roadmap board to Done and post an update saying it shipped."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "monday.com",
+      "description": "通过 monday.com 官方托管的 MCP 服务读取看板与条目、创建和更新条目、发布动态并搭建看板。用 monday.com 账号登录。",
+      "examples": [
+        "列出“Product roadmap”看板上状态为 Stuck 的条目，以及各自的负责人。",
+        "在 Marketing 看板的“This week”分组里新增条目“更新定价页”。",
+        "把 Roadmap 看板上“Q4 launch”的状态改为 Done，并发一条动态说明已上线。"
+      ]
+    }
+  },
+  "privacyPolicy": "https://monday.com/l/privacy/privacy-policy/",
+  "termsOfService": "https://monday.com/l/legal/tos/",
+  "connectors": {
+    "monday": {
+      "transport": "http",
+      "url": "https://mcp.monday.com/mcp",
+      "auth": "oauth"
+    }
+  }
+}
