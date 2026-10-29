@@ -6,6 +6,7 @@
 [![Validate](https://img.shields.io/github/actions/workflow/status/Wevir-Labs/wevir-marketplace/validate.yml?branch=main&event=push&label=validate)](https://github.com/Wevir-Labs/wevir-marketplace/actions/workflows/validate.yml)
 [![Publish](https://img.shields.io/github/actions/workflow/status/Wevir-Labs/wevir-marketplace/publish.yml?branch=main&label=publish)](https://github.com/Wevir-Labs/wevir-marketplace/actions/workflows/publish.yml)
 [![License](https://img.shields.io/github/license/Wevir-Labs/wevir-marketplace?color=6e7781)](LICENSE)
+[![Telegram 交流群](https://img.shields.io/badge/Telegram-%E4%BA%A4%E6%B5%81%E7%BE%A4-26A5E4?logo=telegram&logoColor=white)](https://t.me/darkfiber_labs)
 
 [English](README.md) · 简体中文
 
