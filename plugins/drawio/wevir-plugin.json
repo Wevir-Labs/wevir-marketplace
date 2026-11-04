@@ -1,0 +1,32 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "drawio",
+  "name": "draw.io",
+  "version": "1.0.0",
+  "description": "Create and edit local, editable .drawio flowcharts, architecture diagrams and ER diagrams. Includes XML references and checks; PNG, SVG and PDF export requires an existing draw.io Desktop installation. No hosted MCP or web viewer.",
+  "author": { "name": "Wevir", "url": "https://github.com/Wevir-Labs" },
+  "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/drawio",
+  "license": "Apache-2.0",
+  "icon": "./icon.svg",
+  "skills": "./skills",
+  "category": "creative",
+  "keywords": ["drawio", "draw.io", "diagrams", "flowchart", "architecture", "erd", "xml", "png", "svg", "pdf", "流程图", "架构图", "ER图"],
+  "examples": [
+    "Create login-flow.drawio with password validation, a two-factor check and success/failure branches.",
+    "Draw a browser, API, job queue, worker and database architecture in system.drawio; export SVG if draw.io Desktop is available.",
+    "Add a Shipments entity to shop.drawio, linked to Orders, preserving the existing layout."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "draw.io",
+      "description": "创建和编辑本地可继续打开的 .drawio 流程图、架构图与 ER 图。内置 XML 参考和检查；导出 PNG、SVG、PDF 需要已安装的 draw.io Desktop。不接云端 MCP 或网页查看器。",
+      "examples": [
+        "创建 login-flow.drawio，包含密码校验、双因素验证及成功和失败分支。",
+        "将浏览器、API、任务队列、Worker 和数据库画成 system.drawio 架构图；有 draw.io Desktop 时导出 SVG。",
+        "在 shop.drawio 中添加 Shipments 实体，关联 Orders，保留现有布局。"
+      ]
+    }
+  },
+  "requires": { "runtimes": ["python>=3.9"] }
+}

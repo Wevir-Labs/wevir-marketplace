@@ -1,0 +1,31 @@
+<mxfile host="drawio-local" compressed="false">
+  <diagram id="shop" name="Shop">
+    <mxGraphModel adaptiveColors="auto" dx="1200" dy="800" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1169" pageHeight="827">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="users" value="&lt;b&gt;Users&lt;/b&gt;&lt;br&gt;id PK&lt;br&gt;email&lt;br&gt;name" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="240" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="orders" value="&lt;b&gt;Orders&lt;/b&gt;&lt;br&gt;id PK&lt;br&gt;user_id FK → Users.id&lt;br&gt;placed_at&lt;br&gt;status" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="340" y="40" width="240" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="products" value="&lt;b&gt;Products&lt;/b&gt;&lt;br&gt;id PK&lt;br&gt;name&lt;br&gt;unit_price" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="320" width="240" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="order-items" value="&lt;b&gt;OrderItems&lt;/b&gt;&lt;br&gt;id PK&lt;br&gt;order_id FK → Orders.id&lt;br&gt;product_id FK → Products.id&lt;br&gt;quantity&lt;br&gt;unit_price" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="340" y="320" width="240" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="users-orders" value="places" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;" edge="1" parent="1" source="users" target="orders">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="orders-items" value="contains" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;" edge="1" parent="1" source="orders" target="order-items">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="products-items" value="appears in" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;" edge="1" parent="1" source="products" target="order-items">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

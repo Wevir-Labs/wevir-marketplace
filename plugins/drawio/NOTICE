@@ -1,0 +1,20 @@
+draw.io skills and XML references
+Copyright 2025 JGraph Ltd
+
+This plugin adapts the official jgraph/drawio-mcp project under Apache-2.0.
+Source: https://github.com/jgraph/drawio-mcp
+Commit: 2a0f570328624eb9d7182a7389bfd9a25e223afe
+
+skills/drawio-diagrams/SKILL.md adapts plugins/codex/drawio/skills/drawio/SKILL.md.
+skills/drawio-diagrams/references/xml-essentials.md adapts shared/xml-essentials.md.
+skills/drawio-diagrams/references/xml-reference.md adapts shared/xml-reference.md.
+skills/drawio-diagrams/references/style-reference.md adapts shared/style-reference.md.
+skills/drawio-diagrams/references/mxfile.xsd copies shared/mxfile.xsd with a provenance comment.
+
+Changes: local XML authoring and persistent source delivery; bundled references;
+removed hosted MCP, URL output, online shape search and remote reference loading;
+adapted delivery to Wevir. The Python helper, examples, manifest, README and
+generic diagram icon were written for this marketplace adaptation and are also
+licensed under Apache-2.0. This is not an official JGraph distribution.
+
+The upstream distribution contains no root NOTICE file.
