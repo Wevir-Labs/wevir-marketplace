@@ -1,0 +1,43 @@
+Security Audit — Wevir marketplace adaptation
+
+Upstream creator: Trail of Bits
+Repository: https://github.com/trailofbits/skills
+Fixed commit: 711af095215ad4ecde5b90cd1d0124b3f1c4ca9e
+Upstream license: Creative Commons Attribution-ShareAlike 4.0 International
+SPDX identifier: CC-BY-SA-4.0
+License URL: https://creativecommons.org/licenses/by-sa/4.0/
+The upstream LICENSE is included unchanged as LICENSE.
+
+Adapted source paths at the fixed commit:
+
+skills/security-audit-diff/SKILL.md and references/local-git.md:
+  plugins/differential-review/skills/differential-review/SKILL.md
+  plugins/differential-review/skills/differential-review/methodology.md
+  plugins/differential-review/skills/differential-review/reporting.md
+
+skills/security-audit-defaults/SKILL.md and references/patterns.md:
+  plugins/insecure-defaults/README.md
+  plugins/insecure-defaults/references/fail-open-security.md
+  plugins/insecure-defaults/references/fallback-secrets.md
+  plugins/insecure-defaults/references/default-credentials.md
+  plugins/insecure-defaults/references/permissive-access.md
+  plugins/insecure-defaults/references/debug-features.md
+  plugins/insecure-defaults/references/weak-crypto.md
+
+skills/security-audit-variants/SKILL.md and references/searching.md:
+  plugins/variant-analysis/skills/variant-analysis/SKILL.md
+  plugins/variant-analysis/skills/variant-analysis/references/root-cause.md
+  plugins/variant-analysis/skills/variant-analysis/references/triage.md
+
+Changes: condensed and rewritten into three self-contained, read-only skills;
+removed Claude-specific tools, agents, workflows, model selection, mandatory
+report writes and cross-plugin dependencies. Added local-only execution rules,
+explicit authorization boundaries, snapshot/line evidence, refutation and
+confidence requirements, and bounded negative conclusions. Rewrote examples to
+require actual security impact rather than classify CORS wildcards, debug schema
+visibility, pre-umask modes or algorithm names by themselves as vulnerabilities.
+Added a Wevir manifest, localized listing, README and original icon.
+
+All adaptation files are offered under CC-BY-SA-4.0, retaining attribution to
+Trail of Bits for the upstream material. No endorsement is implied.
+There was no separate upstream NOTICE in the selected source at this commit.
