@@ -1,0 +1,33 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "duckdb",
+  "name": "DuckDB Local",
+  "version": "1.0.0",
+  "description": "Explore local CSV, TSV, JSON and Parquet files, attach DuckDB databases read-only, and answer questions with SQL. Requires a separately installed DuckDB CLI 2.0 or later; no account or API key.",
+  "homepage": "https://github.com/duckdb/duckdb-skills",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "skills": "./skills",
+  "category": "data",
+  "keywords": ["duckdb", "sql", "csv", "tsv", "json", "parquet", "database", "analytics", "本地分析", "数据库", "数据查询"],
+  "examples": [
+    "Explore ./data/sales.csv: show the columns, row count and a small sample without changing the file.",
+    "Attach ./analytics.duckdb read-only, list its tables and inspect the sales table schema.",
+    "Using ./data/sales.parquet, find the five regions with the highest total revenue and show the SQL."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "DuckDB 本地分析",
+      "description": "探索本地 CSV、TSV、JSON 和 Parquet 文件，只读挂载 DuckDB 数据库，用 SQL 回答数据问题。需自行安装 DuckDB CLI 2.0 或更高版本，无需账号或 API Key。",
+      "examples": [
+        "探索 ./data/sales.csv，列出字段、行数和少量样本，保留原文件。",
+        "只读挂载 ./analytics.duckdb，列出表并查看 sales 表结构。",
+        "根据 ./data/sales.parquet，找出总收入最高的五个地区，并展示 SQL。"
+      ]
+    }
+  },
+  "requires": {
+    "runtimes": ["duckdb>=2.0.0"]
+  }
+}
