@@ -1,0 +1,37 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "dev-workflows",
+  "name": "Development workflows",
+  "version": "1.0.0",
+  "description": "Investigate bugs, build behavior with focused tests, review local diffs, and verify completion with evidence. Four independent skills adapted from Superpowers and Anthropic's PR Review Toolkit, with checks proportional to risk.",
+  "author": {
+    "name": "Wevir contributors",
+    "url": "https://github.com/Wevir-Labs/wevir-marketplace"
+  },
+  "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/dev-workflows",
+  "license": "MIT AND Apache-2.0",
+  "icon": "./icon.svg",
+  "skills": "./skills",
+  "category": "developer-tools",
+  "keywords": ["debugging", "testing", "tdd", "code-review", "git-diff", "verification", "superpowers", "调试", "测试驱动", "代码评审", "完成验证"],
+  "examples": [
+    "Find why the test fails only when run with the whole suite. Reproduce it, trace the cause, and make a focused fix.",
+    "Add rejection of expired tokens using test-driven development, then run the relevant checks and report the results.",
+    "Review my staged, unstaged and untracked changes for bugs, silent failures and meaningful test gaps. Do not edit files."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "研发流程",
+      "description": "定位故障、用聚焦测试实现行为、评审本地差异，并以实际结果验证完成状态。精选改编 Superpowers 与 Anthropic PR Review Toolkit 的四个独立 Skill，检查分量与改动风险相称。",
+      "examples": [
+        "定位这个测试为何只在整套运行时失败，复现并追踪根因，完成聚焦修复。",
+        "用测试驱动开发增加过期令牌拒绝逻辑，运行相关检查并报告结果。",
+        "评审当前暂存、未暂存和未跟踪的改动，查找缺陷、静默失败和重要测试缺口，不修改文件。"
+      ]
+    }
+  },
+  "requires": {
+    "runtimes": ["git"]
+  }
+}

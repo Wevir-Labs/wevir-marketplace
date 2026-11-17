@@ -1,0 +1,15 @@
+Frontend Design
+
+Original frontend design guidance by Anthropic.
+Official same-source repository: https://github.com/anthropics/skills
+Path: skills/frontend-design/SKILL.md
+Commit: 00756142ab04c82a447693cf373c4e0c554d1005
+License: Apache-2.0; the skill-specific LICENSE.txt is included unchanged.
+
+This package adapts the user-supplied short variant of that guidance for Wevir.
+Its design sections are preserved. Changes replace user-invocable frontmatter
+with license metadata, add a source/change notice and append Working in Wevir
+instructions for project design rules, local tools/assets and preview checks.
+The manifest, Chinese listing, examples, icon and README are Wevir packaging.
+The original skill directory at the pinned commit contains no NOTICE file;
+this attribution and change notice was added for this distribution.

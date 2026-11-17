@@ -1,0 +1,32 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "frontend-design",
+  "name": "Frontend Design",
+  "version": "1.0.0",
+  "description": "Design distinctive frontend interfaces outside an existing brand system, with deliberate typography, color, motion and composition. Adapted from Anthropic's design guidance for local work in Wevir.",
+  "author": { "name": "Anthropic", "url": "https://github.com/anthropics" },
+  "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/frontend-design",
+  "license": "Apache-2.0",
+  "icon": "./icon.svg",
+  "skills": "./skills",
+  "category": "creative",
+  "keywords": ["frontend", "design", "ui", "html", "css", "typography", "layout", "landing page", "responsive", "前端", "界面设计", "排版"],
+  "examples": [
+    "Build a responsive landing page for a small ceramics studio with no existing brand. Use local assets and preview it locally.",
+    "Create a standalone HTML portfolio for a documentary photographer, with a bold visual direction and no remote fonts or images.",
+    "Design a responsive concert listing for a community jazz venue with no existing design system. Keep all assets local."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "前端设计",
+      "description": "为尚无既定品牌规范的前端界面确定鲜明的设计方向，细化字体、配色、动效与空间构图。基于 Anthropic 的设计指导，适配 Wevir 本地开发与预览。",
+      "examples": [
+        "为一家尚无品牌规范的小型陶艺工作室做响应式首页，使用本地素材并在本地预览。",
+        "为纪实摄影师制作独立 HTML 作品集，确定鲜明的视觉方向，不使用远程字体或图片。",
+        "为尚无设计系统的社区爵士乐场地设计响应式演出列表，所有素材保存在本地。"
+      ]
+    }
+  },
+  "requires": { "runtimes": ["browser"] }
+}

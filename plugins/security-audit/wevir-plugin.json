@@ -1,0 +1,46 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "security-audit",
+  "name": "Security Audit",
+  "version": "1.0.0",
+  "description": "Review local code changes for security regressions, trace dangerous defaults to their enforcement points, and find variants of a known vulnerability. Three read-only skills adapted from Trail of Bits, with evidence, trigger conditions and confidence limits for each finding.",
+  "homepage": "https://github.com/Wevir-Labs/wevir-marketplace",
+  "license": "CC-BY-SA-4.0",
+  "icon": "./icon.svg",
+  "skills": "./skills",
+  "category": "security",
+  "keywords": [
+    "security",
+    "audit",
+    "code review",
+    "git diff",
+    "insecure defaults",
+    "variant analysis",
+    "regression",
+    "Trail of Bits",
+    "安全审计",
+    "差异审查",
+    "危险默认值",
+    "同类漏洞"
+  ],
+  "examples": [
+    "Review local main...HEAD for security regressions. Trace changed trust boundaries and callers; cite path:line, evidence, trigger conditions and confidence. Do not change files.",
+    "Audit this repository for fail-open defaults. Trace missing, empty and invalid configuration through startup to security decisions; separate reachable issues from uncertain candidates.",
+    "The removed ownership check in this diff was a bug. Find other instances of the same root cause in this local repository, and explain why similar-looking guarded cases are safe."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "安全审计",
+      "description": "审查本地代码变更中的安全回归，追踪危险默认值到安全决策点，并查找已知漏洞的同类实例。基于 Trail of Bits 适配的三个只读 Skills，每条结论包含证据、触发条件与置信边界。",
+      "examples": [
+        "审查本地 main...HEAD 的安全回归，追踪变更的信任边界与调用方，给出路径行号、证据、触发条件与置信度，不修改文件。",
+        "审计当前仓库中安全控制默认放行的问题，追踪配置缺失、空值和无效值从启动到安全决策的过程，区分可达漏洞与待核实项。",
+        "这份 diff 中移除的所有权校验已确认有漏洞。查找本地仓库里相同根因的其他实例，并说明相似代码中哪些有有效保护。"
+      ]
+    }
+  },
+  "requires": {
+    "runtimes": ["git"]
+  }
+}
