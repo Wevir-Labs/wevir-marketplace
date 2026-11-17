@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schemas/catalog-entry.schema.json",
+  "category": "communication",
+  "verification": {
+    "level": "official",
+    "since": "2026-11",
+    "note": {
+      "zh-CN": "由 Wevir 维护的本地邮件插件，通过 IMAP/SMTP 连接 Zoho Mail",
+      "en": "Local mail plugin maintained by Wevir, connecting to Zoho Mail over IMAP/SMTP"
+    }
+  }
+}

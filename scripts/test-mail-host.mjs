@@ -1,5 +1,5 @@
 // Node >=24.22.1; npm ci, build:mail, then:
-// node scripts/test-mail-host.mjs --wevir /path/to/wevir-source-checkout [--plugins icloud-mail,yahoo-mail,gmail]
+// node scripts/test-mail-host.mjs --wevir /path/to/wevir-source-checkout [--plugins zoho-mail,icloud-mail]
 // Uses current Host source and a temporary home/userHome, never the running app's registry.
 import assert from 'node:assert/strict';
 import { cp, mkdtemp, readFile, realpath, rm, stat, writeFile } from 'node:fs/promises';
@@ -33,7 +33,7 @@ try {
   const adapter = new EchoAdapter({ stepDelayMs: 0 });
   const registry = new PluginRegistry({ home, userHome, roots: () => [], adapter });
   await registry.load();
-  const available = new Map([['qq-mail', 'fixture@foxmail.com'], ['netease-mail', 'fixture@126.com'], ['sina-mail', 'fixture@sina.cn'], ['icloud-mail', 'fixture@icloud.com'], ['yahoo-mail', 'fixture@yahoo.com'], ['gmail', 'fixture@gmail.com']]);
+  const available = new Map([['qq-mail', 'fixture@foxmail.com'], ['netease-mail', 'fixture@126.com'], ['sina-mail', 'fixture@sina.cn'], ['icloud-mail', 'fixture@icloud.com'], ['yahoo-mail', 'fixture@yahoo.com'], ['gmail', 'fixture@gmail.com'], ['zoho-mail', 'member@custom.test']]);
   const selected = values.plugins ? [...new Set(values.plugins.split(','))] : [...available.keys()];
   for (const id of selected) assert.ok(available.has(id), `Unknown mail plugin: ${id}`);
   const accounts = selected.map(id => [id, available.get(id)]);
@@ -44,6 +44,12 @@ try {
   }
   assert.deepEqual((await registry.engineConfig()).connectors, []);
   for (const [id, address] of accounts) await registry.setPluginInputs(id, { MAIL_ADDRESS: address, MAIL_APP_PASSWORD: PASSWORD });
+  if (selected.includes('zoho-mail')) {
+    assert.ok(!(await registry.engineConfig()).connectors.some(c => c.name === 'zoho-mail_mail'));
+    await registry.setPluginInputs('zoho-mail', { MAIL_IMAP_HOST: 'imappro.zoho.eu' });
+    assert.ok(!(await registry.engineConfig()).connectors.some(c => c.name === 'zoho-mail_mail'));
+    await registry.setPluginInputs('zoho-mail', { MAIL_SMTP_HOST: 'smtppro.zoho.eu' });
+  }
   assert.ok(!JSON.stringify(await registry.list()).includes(PASSWORD));
   const publicList = await registry.list();
   for (const [id] of accounts) {
@@ -62,6 +68,9 @@ try {
     const { config } = engine.connectors.find(c => c.name === `${id}_mail`);
     assert.equal(config.command, 'node'); assert.deepEqual(config.args, [path.join(home, 'plugins/packages', id, 'server/index.mjs')]);
     assert.equal(config.env.MAIL_ADDRESS, address); assert.equal(config.env.MAIL_PROVIDER, id); assert.equal(config.env.MAIL_APP_PASSWORD, PASSWORD);
+    if (id === 'zoho-mail') {
+      assert.equal(config.env.MAIL_IMAP_HOST, 'imappro.zoho.eu'); assert.equal(config.env.MAIL_SMTP_HOST, 'smtppro.zoho.eu');
+    }
     assert.ok(!config.args.join(' ').includes(PASSWORD)); assert.ok(!JSON.stringify(config).includes('${'));
     const client = new Client({ name: 'isolated-host-install-test', version: '1.0.0' }); clients.push(client);
     const diagnostics = [];

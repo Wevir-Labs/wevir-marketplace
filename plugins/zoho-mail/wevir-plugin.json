@@ -1,0 +1,49 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "zoho-mail",
+  "name": "Zoho Mail",
+  "version": "1.0.0",
+  "description": "Search Zoho mail, save mailbox drafts, send replies and handle selected attachments over IMAP/SMTP.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/zoho-mail",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "skills": "./skills",
+  "category": "communication",
+  "keywords": ["email", "mail", "Zoho", "IMAP", "SMTP", "邮箱", "邮件", "附件"],
+  "examples": [
+    "Find unread mail in my Zoho inbox from the last seven days.",
+    "Draft a reply to the latest project email and save it in my Zoho mailbox.",
+    "List this email's attachments and download the PDF I select to my session folder."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Zoho 邮箱",
+      "description": "通过 IMAP/SMTP 查询 Zoho 邮件，保存邮箱草稿、发送回复和处理选定附件。",
+      "examples": ["查找 Zoho 收件箱最近七天的未读邮件。", "为最新的项目邮件起草回复，保存到 Zoho 草稿箱。", "列出这封邮件的附件，将选定的 PDF 下载到会话目录。"]
+    }
+  },
+  "requires": { "runtimes": ["node>=22"] },
+  "inputs": [
+    { "key": "MAIL_ADDRESS", "label": "Email / 邮箱", "required": true },
+    { "key": "MAIL_APP_PASSWORD", "label": "App password / 应用专用密码", "secret": true, "required": true },
+    { "key": "MAIL_IMAP_HOST", "label": "IMAP host / IMAP 主机", "required": true },
+    { "key": "MAIL_SMTP_HOST", "label": "SMTP host / SMTP 主机", "required": true }
+  ],
+  "connectors": {
+    "mail": {
+      "transport": "stdio",
+      "command": "node",
+      "args": ["${pluginDir}/server/index.mjs"],
+      "env": {
+        "MAIL_PROVIDER": "zoho-mail",
+        "MAIL_ADDRESS": "${input:MAIL_ADDRESS}",
+        "MAIL_APP_PASSWORD": "${input:MAIL_APP_PASSWORD}",
+        "MAIL_IMAP_HOST": "${input:MAIL_IMAP_HOST}",
+        "MAIL_SMTP_HOST": "${input:MAIL_SMTP_HOST}"
+      },
+      "toolTimeoutSec": 120
+    }
+  }
+}
