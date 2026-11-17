@@ -1,0 +1,16 @@
+Bundled license information:
+
+timezones-ical-library/dist/mjs/index.js:
+  /*!
+  *  @preserve
+  *
+  * ++++++++++++++++++++++++++++++++++++++
+  * Add to Calendar Time Zones iCal Library
+  * ++++++++++++++++++++++++++++++++++++++
+  *
+  * Creator: Jens Kuerschner (https://jekuer.com)
+  * Project: https://github.com/add2cal/timezones-ical-library
+  * Version: 3.0.0
+  * License: Apache-2.0
+  *
+  */

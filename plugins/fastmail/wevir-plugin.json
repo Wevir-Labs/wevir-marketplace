@@ -1,0 +1,41 @@
+{
+  "$schema": "../../schemas/wevir-plugin.schema.json",
+  "schemaVersion": 1,
+  "id": "fastmail",
+  "name": "Fastmail",
+  "version": "1.0.0",
+  "description": "Handle Fastmail email, personal calendar events and contacts locally over IMAP/SMTP, CalDAV and CardDAV.",
+  "author": { "name": "Wevir", "url": "https://www.wevir.si" },
+  "homepage": "https://github.com/Wevir-Labs/wevir-marketplace/tree/main/plugins/fastmail",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "skills": "./skills",
+  "category": "communication",
+  "keywords": ["Fastmail", "email", "calendar", "contacts", "IMAP", "SMTP", "CalDAV", "CardDAV", "邮件", "日历", "联系人"],
+  "examples": [
+    "Find unread Fastmail project mail from the last seven days and save a reply draft.",
+    "Check tomorrow's Fastmail calendar and add a personal 30-minute planning event at 10am in Pacific/Auckland.",
+    "Find Li Ming in my Fastmail contacts and change the selected contact's work phone to the number I provide."
+  ],
+  "i18n": {
+    "zh-CN": {
+      "name": "Fastmail",
+      "description": "通过 IMAP/SMTP、CalDAV 和 CardDAV 在本地处理 Fastmail 邮件、个人日程和联系人。",
+      "examples": ["查找 Fastmail 最近七天的未读项目邮件，保存回复草稿。", "查看明天的 Fastmail 日历，在 Pacific/Auckland 时区上午十点添加半小时的个人规划日程。", "在 Fastmail 联系人中查找李明，将选定联系人的工作电话改为我提供的号码。"]
+    }
+  },
+  "requires": { "runtimes": ["node>=22"] },
+  "inputs": [
+    { "key": "MAIL_ADDRESS", "label": "Login / 登录名", "required": true },
+    { "key": "MAIL_APP_PASSWORD", "label": "App password / 应用密码", "secret": true, "required": true }
+  ],
+  "connectors": {
+    "mail": {
+      "transport": "stdio",
+      "command": "node",
+      "args": ["${pluginDir}/server/index.mjs"],
+      "env": { "MAIL_PROVIDER": "fastmail", "MAIL_ADDRESS": "${input:MAIL_ADDRESS}", "MAIL_APP_PASSWORD": "${input:MAIL_APP_PASSWORD}" },
+      "toolTimeoutSec": 180
+    }
+  }
+}

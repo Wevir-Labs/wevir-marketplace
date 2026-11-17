@@ -11,6 +11,7 @@ import { build } from 'esbuild';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { mailFixture, PASSWORD } from '../lib/mail/test/fixture.mjs';
+import { davFixture, LOGIN } from '../lib/fastmail/test/fixture.mjs';
 
 const { values } = parseArgs({ options: { wevir: { type: 'string' }, plugins: { type: 'string' } } });
 if (!values.wevir) throw new Error('usage: test-mail-host.mjs --wevir <Wevir source checkout>');
@@ -18,7 +19,7 @@ const source = path.resolve(values.wevir);
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const temporary = await realpath(await mkdtemp(path.join(tmpdir(), 'wevir-mail-host-')));
 const clients = [];
-let fixture;
+let fixture, dav;
 try {
   const bundled = path.join(temporary, 'host-registry.mjs');
   await build({
@@ -33,7 +34,7 @@ try {
   const adapter = new EchoAdapter({ stepDelayMs: 0 });
   const registry = new PluginRegistry({ home, userHome, roots: () => [], adapter });
   await registry.load();
-  const available = new Map([['qq-mail', 'fixture@foxmail.com'], ['netease-mail', 'fixture@126.com'], ['sina-mail', 'fixture@sina.cn'], ['icloud-mail', 'fixture@icloud.com'], ['yahoo-mail', 'fixture@yahoo.com'], ['gmail', 'fixture@gmail.com'], ['zoho-mail', 'member@custom.test']]);
+  const available = new Map([['qq-mail', 'fixture@foxmail.com'], ['netease-mail', 'fixture@126.com'], ['sina-mail', 'fixture@sina.cn'], ['icloud-mail', 'fixture@icloud.com'], ['yahoo-mail', 'fixture@yahoo.com'], ['gmail', 'fixture@gmail.com'], ['zoho-mail', 'member@custom.test'], ['fastmail', LOGIN]]);
   const selected = values.plugins ? [...new Set(values.plugins.split(','))] : [...available.keys()];
   for (const id of selected) assert.ok(available.has(id), `Unknown mail plugin: ${id}`);
   const accounts = selected.map(id => [id, available.get(id)]);
@@ -43,7 +44,11 @@ try {
     assert.equal(plugin.skills.length, 1); assert.equal(plugin.connectors.length, 1);
   }
   assert.deepEqual((await registry.engineConfig()).connectors, []);
-  for (const [id, address] of accounts) await registry.setPluginInputs(id, { MAIL_ADDRESS: address, MAIL_APP_PASSWORD: PASSWORD });
+  for (const [id, address] of accounts) {
+    await registry.setPluginInputs(id, { MAIL_ADDRESS: address });
+    assert.ok(!(await registry.engineConfig()).connectors.some(c => c.name === `${id}_mail`));
+    await registry.setPluginInputs(id, { MAIL_APP_PASSWORD: PASSWORD });
+  }
   if (selected.includes('zoho-mail')) {
     assert.ok(!(await registry.engineConfig()).connectors.some(c => c.name === 'zoho-mail_mail'));
     await registry.setPluginInputs('zoho-mail', { MAIL_IMAP_HOST: 'imappro.zoho.eu' });
@@ -60,8 +65,13 @@ try {
   }
   if (process.platform !== 'win32') assert.equal((await stat(path.join(home, 'plugins/registry.json'))).mode & 0o777, 0o600);
   fixture = await mailFixture();
+  if (selected.includes('fastmail')) dav = await davFixture();
   const preload = path.join(temporary, 'redirect.mjs'), ca = path.join(temporary, 'fixture-ca');
-  await cp(path.join(ROOT, 'lib/mail/test/redirect.mjs'), preload); await writeFile(ca, fixture.cert);
+  if (dav) {
+    for (const name of ['redirect.mjs', 'https-fetch.mjs']) await cp(path.join(ROOT, 'lib/fastmail/test', name), path.join(temporary, name));
+    await cp(path.join(ROOT, 'lib/mail/test/redirect.mjs'), path.join(temporary, 'mail-redirect.mjs'));
+  } else await cp(path.join(ROOT, 'lib/mail/test/redirect.mjs'), preload);
+  await writeFile(ca, Buffer.concat([fixture.cert, ...(dav ? [dav.cert] : [])]));
   const engine = await registry.engineConfig();
   assert.equal(engine.connectors.length, accounts.length);
   for (const [id, address] of accounts) {
@@ -75,13 +85,20 @@ try {
     const client = new Client({ name: 'isolated-host-install-test', version: '1.0.0' }); clients.push(client);
     const diagnostics = [];
     const transport = new StdioClientTransport({ command: config.command, args: ['--import', preload, ...config.args], cwd: temporary,
-      env: { PATH: process.env.PATH, ...config.env, NODE_EXTRA_CA_CERTS: ca, FIXTURE_IMAP_PORT: String(fixture.imapPort), FIXTURE_SMTP_PORT: String(fixture.smtpPort), FIXTURE_STARTTLS_PORT: String(fixture.starttlsPort) }, stderr: 'pipe' });
+      env: { PATH: process.env.PATH, ...config.env, NODE_EXTRA_CA_CERTS: ca, FIXTURE_IMAP_PORT: String(fixture.imapPort), FIXTURE_SMTP_PORT: String(fixture.smtpPort), FIXTURE_STARTTLS_PORT: String(fixture.starttlsPort), ...(dav && { FIXTURE_DAV_PORT: String(dav.port) }) }, stderr: 'pipe' });
     transport.stderr.on('data', data => diagnostics.push(data.toString()));
     await client.connect(transport);
-    assert.equal((await client.listTools()).tools.length, 9);
-    const result = await client.callTool({ name: 'mail_check_account', arguments: {} });
+    assert.equal((await client.listTools()).tools.length, id === 'fastmail' ? 18 : 9);
+    const result = await client.callTool({ name: id === 'fastmail' ? 'fastmail_check_account' : 'mail_check_account', arguments: {} });
     const status = JSON.parse(result.content[0].text);
     assert.equal(status.status, 'connected'); assert.equal(status.provider, id); assert.equal(status.address, address);
+    if (id === 'fastmail') {
+      assert.deepEqual(Object.keys(status.checks), ['imap', 'smtp', 'caldav', 'carddav']);
+      const calendars = await client.callTool({ name: 'calendar_list', arguments: {} }); assert.ok(!calendars.isError);
+      const books = JSON.parse((await client.callTool({ name: 'contacts_list_books', arguments: {} })).content[0].text);
+      const contacts = await client.callTool({ name: 'contacts_search', arguments: { bookId: books.books[0].id, query: '李明' } });
+      assert.ok(!contacts.isError); assert.equal(JSON.parse(contacts.content[0].text).contacts.length, 2);
+    }
     assert.ok(!diagnostics.join('').includes(PASSWORD));
     await registry.setPluginEnabled(id, false);
     assert.ok(!(await registry.engineConfig()).connectors.some(c => c.name === `${id}_mail`));
@@ -92,9 +109,11 @@ try {
   assert.equal((await reboot.list()).plugins.filter(p => p.enabled).length, 0);
   assert.deepEqual((await reboot.engineConfig()).connectors, []);
   assert.deepEqual(fixture.writes, []); assert.deepEqual(fixture.deliveries, []);
+  if (dav) assert.deepEqual(dav.writes, []);
   console.log(`Isolated current Host registry: ${accounts.length} plugins coexist; secrets masked, disabled state survives reload; no mail writes.`);
 } finally {
   for (const client of clients) await client.close();
   if (fixture) await fixture.close();
+  if (dav) await dav.close();
   await rm(temporary, { recursive: true, force: true });
 }

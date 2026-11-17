@@ -10,7 +10,7 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "build-index": "node scripts/build-index.mjs",
-    "test": "node --test \"scripts/*.test.mjs\"",
+    "test": "node --test --test-concurrency=1 \"scripts/*.test.mjs\"",
     "test:mail": "node --test scripts/mail.test.mjs",
     "build:mail": "node scripts/build-mail.mjs"
   },
@@ -23,11 +23,17 @@
   "devDependencies": {
     "@modelcontextprotocol/sdk": "1.32.2",
     "canonicalize": "2.1.0",
+    "debug": "4.4.3",
     "esbuild": "0.28.2",
+    "ical.js": "2.2.1",
     "imapflow": "2.12.1",
+    "luxon": "3.7.2",
     "mailparser": "3.14.5",
     "nodemailer": "10.6.0",
     "smtp-server": "3.21.6",
+    "supports-color": "8.1.1",
+    "timezones-ical-library": "3.0.0",
+    "tsdav": "2.5.1",
     "yauzl": "3.4.0",
     "zod": "4.6.7"
   }

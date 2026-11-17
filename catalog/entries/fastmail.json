@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schemas/catalog-entry.schema.json",
+  "category": "communication",
+  "verification": {
+    "level": "official",
+    "since": "2026-11",
+    "note": {
+      "zh-CN": "由 Wevir 维护的本地插件，通过 IMAP/SMTP、CalDAV 和 CardDAV 连接 Fastmail",
+      "en": "Local plugin maintained by Wevir, connecting to Fastmail over IMAP/SMTP, CalDAV and CardDAV"
+    }
+  }
+}
