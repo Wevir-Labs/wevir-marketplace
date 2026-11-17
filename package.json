@@ -10,12 +10,25 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "build-index": "node scripts/build-index.mjs",
-    "test": "node --test \"scripts/*.test.mjs\""
+    "test": "node --test \"scripts/*.test.mjs\"",
+    "test:mail": "node --test scripts/mail.test.mjs",
+    "build:mail": "node scripts/build-mail.mjs"
   },
   "dependencies": {
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1",
     "semver": "7.8.5",
     "yaml": "2.9.1"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "canonicalize": "2.1.0",
+    "esbuild": "0.28.2",
+    "imapflow": "2.12.1",
+    "mailparser": "3.14.5",
+    "nodemailer": "10.6.0",
+    "smtp-server": "3.21.6",
+    "yauzl": "3.4.0",
+    "zod": "4.6.7"
   }
 }
