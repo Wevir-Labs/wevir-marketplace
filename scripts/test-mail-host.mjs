@@ -1,8 +1,8 @@
 // Node >=24.22.1; npm ci, build:mail, then:
-// node scripts/test-mail-host.mjs --wevir /path/to/wevir-source-checkout
+// node scripts/test-mail-host.mjs --wevir /path/to/wevir-source-checkout [--plugins icloud-mail,yahoo-mail,gmail]
 // Uses current Host source and a temporary home/userHome, never the running app's registry.
 import assert from 'node:assert/strict';
-import { cp, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { cp, mkdtemp, readFile, realpath, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -12,11 +12,11 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { mailFixture, PASSWORD } from '../lib/mail/test/fixture.mjs';
 
-const { values } = parseArgs({ options: { wevir: { type: 'string' } } });
+const { values } = parseArgs({ options: { wevir: { type: 'string' }, plugins: { type: 'string' } } });
 if (!values.wevir) throw new Error('usage: test-mail-host.mjs --wevir <Wevir source checkout>');
 const source = path.resolve(values.wevir);
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
-const temporary = await mkdtemp(path.join(tmpdir(), 'wevir-mail-host-'));
+const temporary = await realpath(await mkdtemp(path.join(tmpdir(), 'wevir-mail-host-')));
 const clients = [];
 let fixture;
 try {
@@ -33,7 +33,10 @@ try {
   const adapter = new EchoAdapter({ stepDelayMs: 0 });
   const registry = new PluginRegistry({ home, userHome, roots: () => [], adapter });
   await registry.load();
-  const accounts = [['qq-mail', 'fixture@foxmail.com'], ['netease-mail', 'fixture@126.com'], ['sina-mail', 'fixture@sina.cn']];
+  const available = new Map([['qq-mail', 'fixture@foxmail.com'], ['netease-mail', 'fixture@126.com'], ['sina-mail', 'fixture@sina.cn'], ['icloud-mail', 'fixture@icloud.com'], ['yahoo-mail', 'fixture@yahoo.com'], ['gmail', 'fixture@gmail.com']]);
+  const selected = values.plugins ? [...new Set(values.plugins.split(','))] : [...available.keys()];
+  for (const id of selected) assert.ok(available.has(id), `Unknown mail plugin: ${id}`);
+  const accounts = selected.map(id => [id, available.get(id)]);
   for (const [id] of accounts) {
     const { plugin, ignored } = await registry.installPlugin(path.join(ROOT, 'plugins', id));
     assert.equal(plugin.id, id); assert.equal(plugin.enabled, true); assert.deepEqual(ignored, []);
@@ -45,15 +48,16 @@ try {
   const publicList = await registry.list();
   for (const [id] of accounts) {
     assert.ok(publicList.connectors.some(c => c.name === `${id}_mail`));
+    const manifest = JSON.parse(await readFile(path.join(ROOT, 'plugins', id, 'wevir-plugin.json'), 'utf8'));
     assert.deepEqual(publicList.plugins.find(p => p.id === id).inputs.find(i => i.key === 'MAIL_APP_PASSWORD'),
-      { key: 'MAIL_APP_PASSWORD', label: 'Authorization code / 授权码', secret: true, required: true, set: true });
+      { ...manifest.inputs.find(i => i.key === 'MAIL_APP_PASSWORD'), set: true });
   }
   if (process.platform !== 'win32') assert.equal((await stat(path.join(home, 'plugins/registry.json'))).mode & 0o777, 0o600);
   fixture = await mailFixture();
   const preload = path.join(temporary, 'redirect.mjs'), ca = path.join(temporary, 'fixture-ca');
   await cp(path.join(ROOT, 'lib/mail/test/redirect.mjs'), preload); await writeFile(ca, fixture.cert);
   const engine = await registry.engineConfig();
-  assert.equal(engine.connectors.length, 3);
+  assert.equal(engine.connectors.length, accounts.length);
   for (const [id, address] of accounts) {
     const { config } = engine.connectors.find(c => c.name === `${id}_mail`);
     assert.equal(config.command, 'node'); assert.deepEqual(config.args, [path.join(home, 'plugins/packages', id, 'server/index.mjs')]);
@@ -62,7 +66,7 @@ try {
     const client = new Client({ name: 'isolated-host-install-test', version: '1.0.0' }); clients.push(client);
     const diagnostics = [];
     const transport = new StdioClientTransport({ command: config.command, args: ['--import', preload, ...config.args], cwd: temporary,
-      env: { PATH: process.env.PATH, ...config.env, NODE_EXTRA_CA_CERTS: ca, FIXTURE_IMAP_PORT: String(fixture.imapPort), FIXTURE_SMTP_PORT: String(fixture.smtpPort) }, stderr: 'pipe' });
+      env: { PATH: process.env.PATH, ...config.env, NODE_EXTRA_CA_CERTS: ca, FIXTURE_IMAP_PORT: String(fixture.imapPort), FIXTURE_SMTP_PORT: String(fixture.smtpPort), FIXTURE_STARTTLS_PORT: String(fixture.starttlsPort) }, stderr: 'pipe' });
     transport.stderr.on('data', data => diagnostics.push(data.toString()));
     await client.connect(transport);
     assert.equal((await client.listTools()).tools.length, 9);
@@ -79,7 +83,7 @@ try {
   assert.equal((await reboot.list()).plugins.filter(p => p.enabled).length, 0);
   assert.deepEqual((await reboot.engineConfig()).connectors, []);
   assert.deepEqual(fixture.writes, []); assert.deepEqual(fixture.deliveries, []);
-  console.log('Isolated current Host registry: all three plugins coexist; secrets masked, disabled state survives reload; no mail writes.');
+  console.log(`Isolated current Host registry: ${accounts.length} plugins coexist; secrets masked, disabled state survives reload; no mail writes.`);
 } finally {
   for (const client of clients) await client.close();
   if (fixture) await fixture.close();
